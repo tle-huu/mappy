@@ -6,18 +6,14 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/14 15:52:33 by nkouris           #+#    #+#             */
-/*   Updated: 2018/05/29 09:50:50 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/05/31 18:22:37 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_server.h"
 
-void											init_fd_select(int32_t fd,
-															t_servenv *server)
+void	init_fd_select(int32_t fd, t_servenv *server)
 {
-#ifdef DEBUG
-	ft_printf("fd to init : <%d>\n", fd);
-#endif
 	if (!(SRV_SOCK.input = (fd_set *)ft_memalloc(sizeof(fd_set)))
 		|| !(SRV_SOCK.copy = (fd_set *)ft_memalloc(sizeof(fd_set))))
 	{

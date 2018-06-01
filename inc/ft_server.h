@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_irc.h                                           :+:      :+:    :+:   */
+/*   ft_server.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/05/14 18:41:35 by nkouris           #+#    #+#             */
-/*   Updated: 2018/05/31 17:20:16 by nkouris          ###   ########.fr       */
+/*   Created: 2018/05/31 18:10:48 by nkouris           #+#    #+#             */
+/*   Updated: 2018/05/31 18:29:35 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,19 +21,47 @@
 # include "client.h"
 # include "libft.h"
 
-# define KEY "PASS NICK JOIN MSG PRVMSG "
-# define SERVER_CONFIG ".ftirc_config"
-# define SRV_SOCK (server->socks)
-# define SRV_CLIENT (server->clients[server->curr_client])
-# define MAX_ATTEMPTS -3
+# define SRV_SOCK g_servenv->sock
+# define SRV_GENV g_servenv->gamenv
 
 t_servenv				*g_servenv;
+
+typedef	struct			s_board
+{
+	int32_t				x;
+	int32_t				y;
+}						t_board;
+
+typedef struct			s_inventory
+{
+	int32_t				rock;
+}						t_inventory;
+
+typedef struct			s_player
+{
+	int32_t				level;
+	t_inventory			inventory;
+}						t_player;
+
+typedef struct			s_team
+{
+	char				*name;
+	t_player			**players;
+}						t_team;
+
+typedef struct			s_gamenv
+{
+	int32_t				nteams;
+	int32_t				maxclients;
+	int32_t				timeint;
+}						t_gamenv;
 
 typedef struct			s_socks
 {
 	int32_t				sockfd;
 	int32_t				opt_val;
 	int32_t				nfds;
+	int32_t				port;
 	socklen_t			socklen;
 	struct sockaddr_in	address;
 	struct sockaddr_in	temp;
@@ -42,32 +70,13 @@ typedef struct			s_socks
 	fd_set				*copy;
 }						t_socks;
 
-typedef	struct			s_board
-{
-	int32_t				x;
-	int32_t				y;
-}						t_board;
-
-typedef struct			s_team
-{
-	char				*name;
-}						t_team;
-
 typedef struct			s_servenv
 {
-	t_socks				socks;
-	char				*name;
-	char				*setpath;
-	int32_t				pathfd;
-	int32_t				nteams;
-	int32_t				maxc;
-	int32_t				timeint;
-	t_board				board;
-	t_team				*teams;
-	t_client			**clients;
-	t_dblist			*channels;
 	int32_t				curr_client;
-	int32_t				port;
+	t_socks				sock;
+	t_board				board;
+	t_gamenv			gamenv;
+	t_team				*teams;
 }						t_servenv;
 
 typedef struct			s_action
