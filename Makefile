@@ -37,7 +37,8 @@ RES = \033[0m
 
 SRC_SRV =	\
 	smain \
-	cli_gets \
+	srv_sets1 \
+	srv_sets2 \
 	error
 #	ublock_dispatch \
 #	client_init \

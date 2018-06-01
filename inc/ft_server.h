@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/14 18:41:35 by nkouris           #+#    #+#             */
-/*   Updated: 2018/05/29 19:13:26 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/05/31 17:20:16 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,16 @@ typedef struct			s_socks
 	fd_set				*copy;
 }						t_socks;
 
-typedef	struct			s_channel
+typedef	struct			s_board
+{
+	int32_t				x;
+	int32_t				y;
+}						t_board;
+
+typedef struct			s_team
 {
 	char				*name;
-	t_client			**clients;
-}						t_channel;
+}						t_team;
 
 typedef struct			s_servenv
 {
@@ -54,6 +59,11 @@ typedef struct			s_servenv
 	char				*name;
 	char				*setpath;
 	int32_t				pathfd;
+	int32_t				nteams;
+	int32_t				maxc;
+	int32_t				timeint;
+	t_board				board;
+	t_team				*teams;
 	t_client			**clients;
 	t_dblist			*channels;
 	int32_t				curr_client;
@@ -72,10 +82,20 @@ typedef struct			s_action
 }						t_action;
 
 /*
-**	cli_gets
+**	srv_sets
 */
 
-int32_t		get_port(char **argv, t_opts *opt);
+int32_t		srv_setboardx(char **argv, __attribute__((unused))t_opts *opt);
+int32_t		srv_setboardy(char **argv, __attribute__((unused))t_opts *opt);
+int32_t		srv_setport(char **argv, t_opts *opt);
+int32_t		srv_setteams(char **argv, t_opts *opt);
+int32_t		srv_setmaxclients(char **argv, t_opts *opt);
+int32_t		srv_settimeint(char **argv, __attribute__((unused))t_opts *opt);
+
+/*
+**	cli_sets
+*/
+
 
 /*
 **	error

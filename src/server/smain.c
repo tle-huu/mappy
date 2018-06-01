@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/14 12:20:21 by nkouris           #+#    #+#             */
-/*   Updated: 2018/05/29 19:13:33 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/05/31 17:21:11 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 
 t_opts	arr_opts[] = {
-	{"-p", 1, &get_port},
+	{"p", 1, &srv_setport},
+	{"x", 1, &srv_setboardx},
+	{"y", 1, &srv_setboardy},
+	{"n", 1, &srv_setteams},
+	{"c", 1, &srv_setmaxclients},
+	{"t", 1, &srv_settimeint},
 	{NULL, 0, NULL}
 	/*
-	{"-x", 1, &set_boardwidth},
-	{"-y", 1, &set_boardheight},
-	{"-n", 1, &get_nplayers},
-	{"-c", 1, &get_maxclients},
-	{"-t", 1, &get_timediv}
 	*/
 };
 
@@ -78,6 +78,9 @@ int32_t		main(int argc, char **argv, char **envp)
 		return (EXIT_FAILURE);
 	if ((arg = ft_getopts(arr_opts, argv)) != EXIT_SUCCESS)
 		usage_warning(argv[arg]);
+#ifdef DEBUG
+	ft_printf("set port : %d\nset boardwidth : %d\nset boardheight : %d\nset max clients : %d\ntime interval : %d\n", g_servenv->port, (g_servenv->board.x), (g_servenv->board.y), g_servenv->maxc, g_servenv->timeint);
+#endif
 	/*
 	else
 		if (!(server = (t_servenv *)ft_memalloc(sizeof(t_servenv)))
