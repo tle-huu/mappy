@@ -6,12 +6,24 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 13:20:08 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/02 17:03:45 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/02 19:00:24 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_server.h"
 #include "player.h"
+
+/* method function prototypes */
+static int32_t	add_toteam(void);
+static int32_t	new(void);
+static int32_t	islost(void);
+
+/* method object */
+t_player_methods	player = {
+	&new,
+	&add_toteam,
+	&islost
+};
 
 static int32_t	add_toteam(void)
 {
@@ -70,11 +82,6 @@ static int32_t	islost(void)
 	return (0);
 }
 
-t_player_methods	player = {
-	&new,
-	&add_toteam,
-	&islost
-};
 
 /*
 static int32_t		delete(void)

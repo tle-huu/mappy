@@ -6,12 +6,12 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/14 12:20:21 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/02 13:11:32 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/02 18:24:40 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_server.h"
-
+#include "communication.h"
 
 t_opts	arr_opts[] = {
 	{"p", 1, &srv_setport},

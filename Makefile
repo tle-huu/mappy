@@ -41,7 +41,7 @@ SRC_SRV =	\
 	srv_sets2 \
 	process_incoming \
 	create_board \
-	client_init \
+	client \
 	srv_toclient \
 	player \
 	error

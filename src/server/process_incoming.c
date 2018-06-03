@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/01 14:37:46 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/02 15:58:50 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/02 17:21:38 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static inline __attribute__((always_inline))int32_t	client_message(int32_t i)
 {
 	char	buf[PEEK];
 
-	g_servenv->curr_client = i;
+	SRV_CLNT = i;
 	if (FD_ISSET(i, SRV_SOCK.input))
 	{
 		if (recv(i, &buf, PEEK, MSG_PEEK | MSG_DONTWAIT) == 0)

@@ -1,14 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   team.c                                             :+:      :+:    :+:   */
+/*   team.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/06/02 14:55:19 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/02 16:58:49 by nkouris          ###   ########.fr       */
+/*   Created: 2018/06/02 16:41:11 by nkouris           #+#    #+#             */
+/*   Updated: 2018/06/02 17:07:33 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_server.h"
-#include "team.h"
+#ifndef TEAM_H
+# define TEAM_H
+
+typedef struct	s_team_methods
+{
+//	int32_t		new(char *);
+}				t_team_methods;
+
+#endif
