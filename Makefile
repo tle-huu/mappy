@@ -39,6 +39,11 @@ SRC_SRV =	\
 	smain \
 	srv_sets1 \
 	srv_sets2 \
+	process_incoming \
+	create_board \
+	client_init \
+	srv_toclient \
+	player \
 	error
 #	ublock_dispatch \
 #	client_init \

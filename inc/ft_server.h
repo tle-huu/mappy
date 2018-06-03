@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/31 18:10:48 by nkouris           #+#    #+#             */
-/*   Updated: 2018/05/31 18:29:35 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/02 16:59:43 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,35 +18,78 @@
 # include <arpa/inet.h>
 # include <netdb.h>
 # include <termios.h>
-# include "client.h"
 # include "libft.h"
 
 # define SRV_SOCK g_servenv->sock
 # define SRV_GENV g_servenv->gamenv
+# define SRV_BORD g_servenv->board
+# define SRV_TEMP g_servenv->tempcomm
+# define SRV_CLNT g_servenv->curr_client
+# define PEEK 42
+# define NOT_ACCEPTED 21
+# define ACCEPTED 42
+
+# define NORTH 0
+# define SOUTH 1
+# define EAST 2
+# define WEST 3
+
+# define WELCOME "WELCOME\n"
+
+typedef struct			s_team		t_team;
+typedef struct			s_servenv	t_servenv;
 
 t_servenv				*g_servenv;
 
-typedef	struct			s_board
+typedef	struct			s_location
 {
 	int32_t				x;
 	int32_t				y;
-}						t_board;
+	int8_t				orientation;
+}						t_location;
 
 typedef struct			s_inventory
 {
-	int32_t				rock;
+	int32_t				linemate;
+	int32_t				sibur;
+	int32_t				deraumere;
+	int32_t				mendiane;
+	int32_t				phiras;
+	int32_t				thystame;
+//	t_inventorymethods	*vtbl;
 }						t_inventory;
 
 typedef struct			s_player
 {
 	int32_t				level;
+	int32_t				c_fd;
+	int8_t				conn_attempts;
+	char				buf[513];
 	t_inventory			inventory;
+	t_location			location;
+	t_team				*team;
+//	t_playermethods		*vtbl;
 }						t_player;
+
+typedef struct			s_tile
+{
+	t_inventory			resources;
+	t_player			**players;
+}						t_tile;
+
+typedef	struct			s_board
+{
+	int32_t				x;
+	int32_t				y;
+	t_tile				**tiles;
+//	t_boardmethods		*vtbl;
+}						t_board;
 
 typedef struct			s_team
 {
 	char				*name;
-	t_player			**players;
+	t_player			*players[FD_SETSIZE];
+//	t_teammethods		*vtbl;
 }						t_team;
 
 typedef struct			s_gamenv
@@ -70,25 +113,21 @@ typedef struct			s_socks
 	fd_set				*copy;
 }						t_socks;
 
+typedef struct			s_tempcomm
+{
+	int8_t				purgatory[FD_SETSIZE];
+	t_player			*lost[FD_SETSIZE];
+}						t_tempcomm;
+
 typedef struct			s_servenv
 {
 	int32_t				curr_client;
+	t_tempcomm			tempcomm;
 	t_socks				sock;
 	t_board				board;
 	t_gamenv			gamenv;
 	t_team				*teams;
 }						t_servenv;
-
-typedef struct			s_action
-{
-	char 				*buf;
-	char				*comm;
-	int64_t				comm_len;
-	char				*param;
-	int64_t				param_len;
-	char				*message;
-	int64_t				message_len;
-}						t_action;
 
 /*
 **	srv_sets
@@ -111,6 +150,25 @@ int32_t		srv_settimeint(char **argv, __attribute__((unused))t_opts *opt);
 */
 
 void		usage_warning(char *str);
+
+/*
+**	client_init
+*/
+
+int32_t		client_init(void);
+
+/*
+**	create_board
+*/
+
+int32_t		create_board(void);
+
+/*
+**	process_incoming
+*/
+
+int32_t		process_incoming(void);
+
 
 //void			init_fd_select(int32_t fd, t_servenv *server);
 //int32_t			ublock_dispatch(t_servenv *server);

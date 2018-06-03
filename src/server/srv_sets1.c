@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/31 17:13:36 by nkouris           #+#    #+#             */
-/*   Updated: 2018/05/31 17:17:29 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/02 12:49:10 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static inline __attribute__((always_inline))int32_t	get_nteams(char *str)
 			return (EXIT_FAILURE);
 		}
 	}
-	g_servenv->nteams = nteams;
+	SRV_GENV.nteams = nteams;
 	return (EXIT_SUCCESS);
 
 }
@@ -41,12 +41,12 @@ int32_t		srv_setteams(char **argv, t_opts *opt)
 
 	i = 0;
 	if (get_nteams(argv[i++]) == EXIT_FAILURE
-		|| !(g_servenv->nteams))
+		|| !(SRV_GENV.nteams))
 		return (EXIT_FAILURE);
-	opt->nparams += g_servenv->nteams;
-	if (!(g_servenv->teams = (t_team *)ft_memalloc(sizeof(t_team) * g_servenv->nteams)))
+	opt->nparams += SRV_GENV.nteams;
+	if (!(g_servenv->teams = (t_team *)ft_memalloc(sizeof(t_team) * SRV_GENV.nteams)))
 		return (EXIT_FAILURE);
-	while (argv[i] && (i <= g_servenv->nteams))
+	while (argv[i] && (i <= SRV_GENV.nteams))
 	{
 		if (!(TEAMNAME = (char *)ft_memalloc(ft_strlen(argv[i]) + 1))
 			|| (!(ft_strcpy(TEAMNAME, argv[i]))))
@@ -55,7 +55,7 @@ int32_t		srv_setteams(char **argv, t_opts *opt)
 	}
 	if (i != opt->nparams)
 	{
-		ft_printf("Only %d team name(s) provided out of %d\n", (i - 1), g_servenv->nteams);
+		ft_printf("Only %d team name(s) provided out of %d\n", (i - 1), SRV_GENV.nteams);
 		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);

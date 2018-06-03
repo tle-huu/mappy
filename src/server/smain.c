@@ -6,11 +6,12 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/14 12:20:21 by nkouris           #+#    #+#             */
-/*   Updated: 2018/05/31 18:36:03 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/02 13:11:32 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_server.h"
+
 
 t_opts	arr_opts[] = {
 	{"p", 1, &srv_setport},
@@ -56,6 +57,7 @@ static inline __attribute__((always_inline))int32_t	set_sock(void)
 
 static int32_t		ft_serverinit(void)
 {
+	create_board();
 	if ((set_sock() == EXIT_FAILURE)
 		|| (bind(SRV_SOCK.sockfd, ((struct sockaddr *)&(SRV_SOCK.address)),
 			sizeof(struct sockaddr_in)) < 0)
@@ -66,11 +68,14 @@ static int32_t		ft_serverinit(void)
 #ifdef DEBUG
 	ft_printf("server address and port : %s %d\n", inet_ntoa((SRV_SOCK.address).sin_addr), SRV_SOCK.port);
 #endif
-/*	while ((select(SRV_SOCK.nfds, SRV_SOCK.input, NULL, NULL, NULL)) > 0)
+	while ((select(SRV_SOCK.nfds, SRV_SOCK.input, NULL, NULL, NULL)) > 0)
 	{
-		if (ublock_dispatch(server) == EXIT_FAILURE)
+#ifdef DEBUG
+	ft_printf("pre game -- select unblock\n");
+#endif
+		if (process_incoming() == EXIT_FAILURE)
 			break ;
-	}*/
+	}
 	return (EXIT_SUCCESS);
 }
 

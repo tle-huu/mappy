@@ -1,0 +1,49 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
+!_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
+!_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
+!_TAG_PROGRAM_URL	https://ctags.io/	/official site/
+!_TAG_PROGRAM_VERSION	0.0.0	/1aef85b/
+TEAMNAME	src/server/srv_sets1.c	/^#define TEAMNAME /;"	d	file:
+add_client	src/server/process_incoming.c	/^static inline __attribute__((always_inline))int32_t	add_client(void)$/;"	f	typeref:typename:int32_t	file:
+add_fd_select	src/server/process_incoming.c	/^static inline __attribute__((always_inline))void	add_fd_select(void)$/;"	f	typeref:typename:void	file:
+arr_opts	src/server/smain.c	/^t_opts	arr_opts[] = {$/;"	v	typeref:typename:t_opts[]
+check_dupchannel	src/server/channel_manager.c	/^int32_t		check_dupchannel(t_servenv *server, t_action *act)$/;"	f	typeref:typename:int32_t
+check_dupenick	src/server/server_commands1.c	/^static int32_t		check_dupenick(t_servenv *server, t_action *act)$/;"	f	typeref:typename:int32_t	file:
+client_init	src/server/client_init.c	/^int32_t			client_init(int32_t newfd)$/;"	f	typeref:typename:int32_t
+client_message	src/server/process_incoming.c	/^static inline __attribute__((always_inline))int32_t	client_message(int32_t i)$/;"	f	typeref:typename:int32_t	file:
+comm_split	src/server/msg_splits.c	/^inline __attribute__((always_inline))int32_t	comm_split(char *buf,$/;"	f	typeref:typename:int32_t
+command	src/server/server_client_comm.c	/^static int	(*command[])(t_servenv *, t_action *) = {$/;"	v	typeref:typename:int (* [])(t_servenv *,t_action *)	file:
+concat_gen	src/server/server_commands2.c	/^static inline __attribute__((always_inline))int32_t	concat_gen(char **concat,$/;"	f	typeref:typename:int32_t	file:
+create_board	src/server/create_board.c	/^int32_t	create_board(void)$/;"	f	typeref:typename:int32_t
+create_servepath	src/server/configurator.c	/^static inline __attribute__((always_inline))int32_t	create_servepath(t_servenv *server,$/;"	f	typeref:typename:int32_t	file:
+ft_addnick	src/server/server_commands1.c	/^int32_t					ft_addnick(t_servenv *server, t_action *act)$/;"	f	typeref:typename:int32_t
+ft_chanmessage	src/server/server_commands2.c	/^int32_t		ft_chanmessage(t_servenv *server, t_action *act)$/;"	f	typeref:typename:int32_t
+ft_getenv	src/server/configurator.c	/^static char	*ft_getenv(char *name, char **envp)$/;"	f	typeref:typename:char *	file:
+ft_joinchannel	src/server/server_commands1.c	/^int32_t		ft_joinchannel(t_servenv *server, t_action *act)$/;"	f	typeref:typename:int32_t
+ft_passconfirm	src/server/server_commands1.c	/^int32_t		ft_passconfirm(t_servenv *server, t_action *act)$/;"	f	typeref:typename:int32_t
+ft_serverinit	src/server/smain.c	/^static int32_t		ft_serverinit(void)$/;"	f	typeref:typename:int32_t	file:
+ft_usnmessage	src/server/server_commands2.c	/^int32_t		ft_usnmessage(t_servenv *server, t_action *act)$/;"	f	typeref:typename:int32_t
+g_servenv	src/server/smain.c	/^t_servenv				*g_servenv;$/;"	v	typeref:typename:t_servenv *
+get_nteams	src/server/srv_sets1.c	/^static inline __attribute__((always_inline))int32_t	get_nteams(char *str)$/;"	f	typeref:typename:int32_t	file:
+init_fd_select	src/server/smain.c	/^static inline __attribute__((always_inline))int32_t	init_fd_select(void)$/;"	f	typeref:typename:int32_t	file:
+main	src/server/smain.c	/^int32_t		main(int argc, char **argv)$/;"	f	typeref:typename:int32_t
+message_split	src/server/msg_splits.c	/^inline __attribute__((always_inline))void		message_split(char *buf,$/;"	f	typeref:typename:void
+new_channel	src/server/channel_manager.c	/^int32_t		new_channel(t_servenv *server, t_action *act)$/;"	f	typeref:typename:int32_t
+param_split	src/server/msg_splits.c	/^inline __attribute__((always_inline))int32_t	param_split(char *buf,$/;"	f	typeref:typename:int32_t
+process_incoming	src/server/process_incoming.c	/^int32_t	process_incoming(void)$/;"	f	typeref:typename:int32_t
+server_client_comm	src/server/server_client_comm.c	/^int32_t		server_client_comm(t_client *client, t_servenv *server)$/;"	f	typeref:typename:int32_t
+server_config	src/server/configurator.c	/^int32_t		server_config(t_servenv *server, char **envp)$/;"	f	typeref:typename:int32_t
+set_silentterm	src/server/configurator.c	/^static inline __attribute__((always_inline))void	set_silentterm(void)$/;"	f	typeref:typename:void	file:
+set_sock	src/server/smain.c	/^static inline __attribute__((always_inline))int32_t	set_sock(void)$/;"	f	typeref:typename:int32_t	file:
+srv_setboardx	src/server/srv_sets1.c	/^int32_t		srv_setboardx(char **argv, __attribute__((unused))t_opts *opt)$/;"	f	typeref:typename:int32_t
+srv_setboardy	src/server/srv_sets1.c	/^int32_t		srv_setboardy(char **argv, __attribute__((unused))t_opts *opt)$/;"	f	typeref:typename:int32_t
+srv_setmaxclients	src/server/srv_sets2.c	/^int32_t		srv_setmaxclients(char **argv, __attribute__((unused))t_opts *opt)$/;"	f	typeref:typename:int32_t
+srv_setport	src/server/srv_sets2.c	/^int32_t		srv_setport(char **argv, __attribute__((unused))t_opts *opt)$/;"	f	typeref:typename:int32_t
+srv_setteams	src/server/srv_sets1.c	/^int32_t		srv_setteams(char **argv, t_opts *opt)$/;"	f	typeref:typename:int32_t
+srv_settimeint	src/server/srv_sets2.c	/^int32_t		srv_settimeint(char **argv, __attribute__((unused))t_opts *opt)$/;"	f	typeref:typename:int32_t
+usage_warning	src/server/error.c	/^void		usage_warning(char *str)$/;"	f	typeref:typename:void
+user_addtochannel	src/server/channel_manager.c	/^void		user_addtochannel(t_servenv *server, t_channel *channel)$/;"	f	typeref:typename:void
+usn_split	src/server/msg_splits.c	/^inline __attribute__((always_inline))int32_t	usn_split(char *buf,$/;"	f	typeref:typename:int32_t
+validate_server_password	src/server/configurator.c	/^static int32_t	validate_server_password(t_servenv *server, char *buf)$/;"	f	typeref:typename:int32_t	file:
