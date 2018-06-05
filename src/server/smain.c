@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/14 12:20:21 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/05 12:06:42 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/05 14:34:07 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,9 @@ static inline __attribute__((always_inline))int32_t	set_sock(void)
 
 static int32_t		ft_serverinit(void)
 {
+	int32_t	ret;
+
+	ret = 0;
 	board.new();
 	if ((set_sock() == EXIT_FAILURE)
 		|| (bind(SRV_SOCK.sockfd, ((struct sockaddr *)&(SRV_SOCK.address)),
@@ -65,17 +68,12 @@ static int32_t		ft_serverinit(void)
 		|| (listen(SRV_SOCK.sockfd, 128) < 0)
 		|| (init_fd_select() == EXIT_FAILURE))
 		return (EXIT_FAILURE);
-//	server_config(server, envp);
-#ifdef DEBUG
-	ft_printf("server address and port : %s %d\n", inet_ntoa((SRV_SOCK.address).sin_addr), SRV_SOCK.port);
-#endif
 	while ((select(SRV_SOCK.nfds, SRV_SOCK.input, NULL, NULL, NULL)) > 0)
 	{
-#ifdef DEBUG
-	ft_printf("pre game -- select unblock\n");
-#endif
-		if (pregame_io() == EXIT_FAILURE)
-			break ;
+		printf("pre game -- select unblock\n");
+		if ((ret = pregame_io()) == EXIT_FAILURE)
+			return (EXIT_FAILURE);
+		else if (SRV_GENV.maxclients == SRV_GENV.nclients
 	}
 	return (EXIT_SUCCESS);
 }

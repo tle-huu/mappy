@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/04 14:14:23 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/05 12:06:42 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/05 14:34:30 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,20 +39,25 @@ static inline __attribute__((always_inline))int32_t	pregame_message(int32_t i)
 		{
 			printf("client <%d> is in purgatory, and trying to join a team\n", i);
 			if (client.isplayer(i) == EXIT_FAILURE)
+			{
+				printf("fail is player\n");
 				return (EXIT_FAILURE);
+			}
 		}
 	}
 	return (EXIT_SUCCESS);
 }
 
-static inline __attribute__((always_inline))int32_t	add_client(int32_t *newfd)
+static inline __attribute__((always_inline))int32_t	add_client(void)
 {
-	*newfd = accept(SRV_SOCK.sockfd,
+	int32_t	newfd;
+
+	newfd = accept(SRV_SOCK.sockfd,
 				(struct sockaddr *)&(SRV_SOCK.temp), &(SRV_SOCK.socklen));
-	SRV_CLNT = *newfd;
-	client.new(*newfd);
-	printf("New client %d connected\n", *newfd);
-	add_fd_select(*newfd);
+	SRV_CLNT = newfd;
+	client.new(newfd);
+	printf("New client %d connected\n", newfd);
+	add_fd_select(newfd);
 	return (EXIT_SUCCESS);
 }
 
@@ -64,7 +69,6 @@ int32_t	game_io(void)
 
 int32_t	pregame_io(void)
 {
-	int32_t	newfd;
 	int32_t	i;
 
 	i = 0;
@@ -72,7 +76,7 @@ int32_t	pregame_io(void)
 	{
 		if (i == SRV_SOCK.sockfd && FD_ISSET(i, SRV_SOCK.input))
 		{
-			if (add_client(&newfd) == EXIT_FAILURE)
+			if (add_client() == EXIT_FAILURE)
 				return (EXIT_FAILURE);
 		}
 		else

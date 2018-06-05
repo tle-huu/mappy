@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/05 10:45:14 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/05 12:18:13 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/05 13:47:31 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static int32_t	send_dimens(int32_t cl)
 	nlen = ft_numlen(SRV_BORD.x);
 	nlen += ft_numlen(SRV_BORD.y);
 	nlen += 2;
-	if ((!(num = ft_itoa(SRV_BORD.x)))
+	if (!(num = ft_itoa(SRV_BORD.x))
 		|| !(str = (char *)calloc(1, (nlen + 1)))
 		|| !(str = strcat(str, num)))
 		return (EXIT_FAILURE);
@@ -47,7 +47,7 @@ static int32_t	send_dimens(int32_t cl)
 		|| !(num = ft_itoa(SRV_BORD.y))
 		|| !(str = strcat(str, num))
 		|| !(str = strcat(str, "\n"))
-		|| !(communicate.toclient.outgoing(cl, str)))
+		|| (communicate.toclient.outgoing(cl, str) == EXIT_FAILURE))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

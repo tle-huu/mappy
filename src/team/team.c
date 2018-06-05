@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 14:55:19 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/05 12:18:12 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/05 13:47:30 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,8 +69,8 @@ static int32_t	add_player(int32_t cl, int32_t tm)
 	(p->team->players)[cl] = p;
 	SRV_GENV.nclients++;
 	SRV_TEMP.lost[cl] = NULL;
-	if (team.send_freespots(cl) == EXIT_FAILURE
-		|| board.send_dimens(cl) == EXIT_FAILURE)
+	if ((team.send_freespots(cl) == EXIT_FAILURE)
+		|| (board.send_dimens(cl) == EXIT_FAILURE))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
