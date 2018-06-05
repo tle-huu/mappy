@@ -1,21 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   team.h                                             :+:      :+:    :+:   */
+/*   client_toserver.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/06/02 16:41:11 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/02 17:07:33 by nkouris          ###   ########.fr       */
+/*   Created: 2018/06/04 14:28:16 by nkouris           #+#    #+#             */
+/*   Updated: 2018/06/04 14:40:42 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TEAM_H
-# define TEAM_H
+#include "ft_server.h"
+#include "communication.h"
 
-typedef struct	s_team_methods
-{
-//	int32_t		new(char *);
-}				t_team_methods;
-
-#endif

@@ -10,9 +10,20 @@ CC = gcc
 # Source directories identifiers                                               #
 ################################################################################
 
+SRCDIR_BRD = src/board/
+SRCDIR_CLN = src/client/
+SRCDIR_COM = src/communication/
+SRCDIR_PLR = src/player/
 SRCDIR_SRV = src/server/
+SRCDIR_TEM = src/team/
 
-OBJSRC_SRV = $(patsubst %, %.o, $(addprefix $(SRCDIR_SRV), $(SRC_SRV)))
+OBJSRC = $(patsubst %, %.o, $(addprefix $(SRCDIR_BRD), $(SRC_BRD)))
+OBJSRC += $(patsubst %, %.o, $(addprefix $(SRCDIR_CLN), $(SRC_CLN)))
+OBJSRC += $(patsubst %, %.o, $(addprefix $(SRCDIR_COM), $(SRC_COM)))
+OBJSRC += $(patsubst %, %.o, $(addprefix $(SRCDIR_PLR), $(SRC_PLR)))
+OBJSRC += $(patsubst %, %.o, $(addprefix $(SRCDIR_SRV), $(SRC_SRV)))
+OBJSRC += $(patsubst %, %.o, $(addprefix $(SRCDIR_TEM), $(SRC_TEM)))
+
 #OBJSRC = $(patsubst %, %.o, $(addprefix \
 #		 $(addprefix $(SRCDIR), $(SRCDIR_IO)), \
 #		 $(SRC_IO)))
@@ -35,24 +46,28 @@ RES = \033[0m
 # SOURCE FILES                                                                 #
 ################################################################################
 
+SRC_BRD =	\
+	create_board		
+
+SRC_CLN =	\
+	client_init \
+	client
+
+SRC_COM =	\
+	srv_toclient
+
+SRC_PLR =	\
+	player
+
 SRC_SRV =	\
-	smain \
+	io \
 	srv_sets1 \
 	srv_sets2 \
-	process_incoming \
-	create_board \
-	client \
-	srv_toclient \
-	player \
+	smain \
 	error
-#	ublock_dispatch \
-#	client_init \
-#	msg_splits \
-#	server_commands1 \
-#	server_commands2 \
-#	configurator \
-#	server_client_comm \
-#	channel_manager
+
+SRC_TEM =	\
+	team
 
 all: $(LIB) $(SRV)
 
@@ -60,9 +75,9 @@ debug: CFLAGS += -g -fsanitize=address -fsanitize=null -DDEBUG
 debug: $(LIBDEBUG)
 debug: $(SRV)
 
-$(SRV): $(OBJSRC_SRV)
+$(SRV): $(OBJSRC)
 	@ echo "$(CYAN)Compiling binary$(RES)"
-	$(CC) $(CFLAGS) $(INCLUDES) $(OBJSRC_SRV) $(LINK) -o $(SRV)
+	$(CC) $(CFLAGS) $(INCLUDES) $(OBJSRC) $(LINK) -o $(SRV)
 	@ echo "$(GREEN)$(SRV) Made$(RES)"
 
 $(LIB):
@@ -76,7 +91,7 @@ $(LIBDEBUG):
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
-	rm -f $(OBJSRC_SRV)
+	rm -f $(OBJSRC)
 	make clean -C lib/
 	@ echo "$(RED)Cleaning folders of object files...$(RES)"
 

@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/31 18:10:48 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/02 17:07:32 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/04 19:05:36 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ typedef	struct			s_board
 typedef struct			s_team
 {
 	char				*name;
+	int32_t				n;
 	t_player			*players[FD_SETSIZE];
 //	t_teammethods		*vtbl;
 }						t_team;
@@ -96,6 +97,7 @@ typedef struct			s_gamenv
 {
 	int32_t				nteams;
 	int32_t				maxclients;
+	int32_t				nclients;
 	int32_t				timeint;
 }						t_gamenv;
 
@@ -164,10 +166,11 @@ int32_t		client_init(void);
 int32_t		create_board(void);
 
 /*
-**	process_incoming
+**	incoming
 */
 
-int32_t		process_incoming(void);
+//int32_t		game_io(void);
+int32_t		pregame_io(void);
 
 
 //void			init_fd_select(int32_t fd, t_servenv *server);

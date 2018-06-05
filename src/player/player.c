@@ -6,17 +6,19 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 13:20:08 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/02 19:00:24 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/04 19:05:34 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_server.h"
 #include "player.h"
+#include "team.h"
+#include "communication.h"
 
 /* method function prototypes */
-static int32_t	add_toteam(void);
-static int32_t	new(void);
-static int32_t	islost(void);
+static int32_t	add_toteam(int32_t client);
+static int32_t	new(int32_t client);
+static int32_t	islost(int32_t client);
 
 /* method object */
 t_player_methods	player = {
@@ -25,63 +27,56 @@ t_player_methods	player = {
 	&islost
 };
 
-static int32_t	add_toteam(void)
+static int32_t	add_toteam(int32_t client)
 {
 	t_player	*p;
 	int32_t		ret;
 	int32_t		i;
 
-	p = SRV_TEMP.lost[SRV_CLNT];
-	i = 0;
-	bzero(p->buf, 513);
+	p = (SRV_TEMP.lost)[client];
 	ret = 0;
-	if ((ret = recv(SRV_CLNT, p->buf, 512, 0)) < 0)
-		return (EXIT_FAILURE);
-	if (!ret)
-	{
-		close(SRV_CLNT);
-		FD_CLR(SRV_CLNT, SRV_SOCK.copy);
+	i = 0;
+	// add client removal on too many attempts
+	if ((ret = communicate.fromclient.recieve(p)) == -1)
 		return (EXIT_SUCCESS);
-	}
-	while ((i < SRV_GENV.nteams)
-			&& !(ft_strequ(p->buf, g_servenv->teams[i].name)))
-		i++;
-	if (i == SRV_GENV.nteams)
+	else if (ret == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	if (team.name_exists(client) == -1)
 	{
-		send(SRV_CLNT, "INVALID_TEAMNAME\n", sizeof("INVALID_TEAMNAME\n"), 0);
+		ret = communicate.toclient.message("INVALID TEAMNAME\n");
 		p->conn_attempts++;
 	}
 	else
 	{
-		p->team = &(g_servenv->teams[i]);
-		(p->team->players)[SRV_CLNT] = p;
-		SRV_TEMP.lost[SRV_CLNT] = NULL;
+		ret = team.add_player(client, i);
+		SRV_TEMP.purgatory[client] = ACCEPTED;
 	}
 	return (ret);
 }
 
-static int32_t	new(void)
+static int32_t	new(int32_t client)
 {
 	t_player	*p;
 	int32_t		ret;
 	int32_t		i;
 	
+	printf("Creating new player <%d>\n", client);
 	ret  = 0;
 	i = 0;
 	if (!(p = (t_player *)ft_memalloc(sizeof(t_player))))
 		return (EXIT_FAILURE);
-	p->c_fd = SRV_CLNT;
-	SRV_TEMP.lost[SRV_CLNT] = p;
+	p->c_fd = client;
+	(SRV_TEMP.lost)[client] = p;
 	return (EXIT_SUCCESS);
 }
 
-static int32_t	islost(void)
+static int32_t	islost(int32_t client)
 {
-	if (SRV_TEMP.lost[SRV_CLNT])
+	printf("Checking if player <%d> is lost\n", client);
+	if ((SRV_TEMP.lost)[client])
 		return (1);
 	return (0);
 }
-
 
 /*
 static int32_t		delete(void)

@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 13:40:27 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/02 19:00:26 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/04 19:05:35 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,22 +25,23 @@ int32_t			client_init(void)
 	int32_t		ret;
 
 	ret = EXIT_SUCCESS;
-#ifdef DEBUG
-	ft_printf("<--- CLIENT INIT --->\n");
-#endif
+	printf("<--- CLIENT INIT --->\n");
 	if (!((SRV_TEMP.purgatory)[SRV_CLNT]))
 	{
-		if ((ret = communicate.toclient.welcome()) == EXIT_FAILURE)
-			SRV_TEMP.purgatory[SRV_CLNT] = NOT_ACCEPTED;
+		ret = communicate.toclient.message("WELCOME\n");
+		(SRV_TEMP.purgatory)[SRV_CLNT] = NOT_ACCEPTED;
 	}
 	else
 	{
-		if (player.islost())
-			ret = player.add_toteam();
+		if (player.islost(SRV_CLNT))
+		{
+			printf("Player is lost\n");
+			ret = player.add_toteam(SRV_CLNT);
+		}
 		else
 		{
-			ret = player.new();
-			ret = player.add_toteam();
+			ret = player.new(SRV_CLNT);
+			ret = player.add_toteam(SRV_CLNT);
 		}
 	}
 	return (ret);

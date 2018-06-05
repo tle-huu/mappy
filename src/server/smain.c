@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/14 12:20:21 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/02 18:24:40 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/04 14:16:33 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static int32_t		ft_serverinit(void)
 #ifdef DEBUG
 	ft_printf("pre game -- select unblock\n");
 #endif
-		if (process_incoming() == EXIT_FAILURE)
+		if (pregame_io() == EXIT_FAILURE)
 			break ;
 	}
 	return (EXIT_SUCCESS);
