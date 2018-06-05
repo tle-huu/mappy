@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_server.h                                        :+:      :+:    :+:   */
+/*   server.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/31 18:10:48 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/04 19:05:36 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/05 12:18:13 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_SERVER_H
-# define FT_SERVER_H
+#ifndef SERVER_H
+# define SERVER_H
 
 # include <sys/socket.h>
 # include <sys/select.h>
@@ -171,28 +171,5 @@ int32_t		create_board(void);
 
 //int32_t		game_io(void);
 int32_t		pregame_io(void);
-
-
-//void			init_fd_select(int32_t fd, t_servenv *server);
-//int32_t			ublock_dispatch(t_servenv *server);
-//int32_t			ft_passconfirm(t_servenv *server, t_action *act);
-//int32_t			param_split(char *buf, t_action *act);
-//int32_t			comm_split(char *buf, t_action *act);
-//int32_t			server_config(t_servenv *server, char **envp);
-//int32_t			server_client_comm(t_client *client, t_servenv *server);
-//int32_t			ft_addnick(t_servenv *server, t_action *act);
-//int32_t			default_nick(t_client *client, char **envp);
-//int32_t			combine_send(int (*f)(t_client *client), t_client *client);
-//int32_t			send_pass(t_client *client);
-//int32_t			send_ognick(t_client *client);
-//void			user_addtochannel(t_servenv *server, t_channel *channel);
-//int32_t			check_dupchannel(t_servenv *server, t_action *act);
-//int32_t			new_channel(t_servenv *server, t_action *act);
-//int32_t			ft_joinchannel(t_servenv *server, t_action *act);
-//int32_t			ft_message(t_servenv *server, t_action *act);
-//int32_t			ft_chanmessage(t_servenv *server, t_action *act);
-//int32_t			ft_usnmessage(t_servenv *server, t_action *act);
-//void			message_split(char *buf, t_action *act);
-//int32_t			usn_split(char *buf, t_action *act);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 16:41:11 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/04 12:23:34 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/05 12:18:14 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ typedef struct	s_team_methods
 {
 	int32_t		(*name_exists)(int32_t);
 	int32_t		(*add_player)(int32_t, int32_t);
+	int32_t		(*send_freespots)(int32_t);
 }				t_team_methods;
 
 extern t_team_methods	team;

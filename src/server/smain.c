@@ -6,11 +6,12 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/14 12:20:21 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/04 14:16:33 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/05 12:06:42 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_server.h"
+#include "server.h"
+#include "board.h"
 #include "communication.h"
 
 t_opts	arr_opts[] = {
@@ -57,7 +58,7 @@ static inline __attribute__((always_inline))int32_t	set_sock(void)
 
 static int32_t		ft_serverinit(void)
 {
-	create_board();
+	board.new();
 	if ((set_sock() == EXIT_FAILURE)
 		|| (bind(SRV_SOCK.sockfd, ((struct sockaddr *)&(SRV_SOCK.address)),
 			sizeof(struct sockaddr_in)) < 0)

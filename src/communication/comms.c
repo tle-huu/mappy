@@ -1,29 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   srv_toclient.c                                     :+:      :+:    :+:   */
+/*   comms.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/06/01 18:33:47 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/04 19:05:34 by nkouris          ###   ########.fr       */
+/*   Created: 2018/06/05 09:41:17 by nkouris           #+#    #+#             */
+/*   Updated: 2018/06/05 12:05:42 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_server.h"
+#include "server.h"
+#include "client.h"
 #include "communication.h"
 
 /* method function prototypes */
-static int32_t	message(char *str);
-static int32_t	recieve(t_player *p);
+static int32_t	outgoing(int32_t cl, char *str);
+static int32_t	incoming(t_player *p);
 
 t_communicate communicate = {
 	/* methods */
 	{
-		&message
+		&outgoing
 	},
 	{
-		&recieve
+		&incoming
 	}
 };
 
@@ -31,9 +32,9 @@ t_communicate communicate = {
 **	srv_toclient
 */
 
-static int32_t	message(char *str)
+static int32_t	outgoing(int32_t cl, char *str)
 {
-	if (send(SRV_CLNT, str, strlen(str), 0) < 0)
+	if (send(cl, str, strlen(str), 0) < 0)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
@@ -42,7 +43,7 @@ static int32_t	message(char *str)
 **	client_toserver
 */
 
-static int32_t	recieve(t_player *p)
+static int32_t	incoming(t_player *p)
 {
 	int32_t	ret;
 
@@ -53,8 +54,7 @@ static int32_t	recieve(t_player *p)
 		return (EXIT_FAILURE);
 	else if (!ret)
 	{
-		close(p->c_fd);
-		FD_CLR(p->c_fd, SRV_SOCK.copy);
+		client.del(p->c_fd);
 		return (-1);
 	}
 	p->buf[(ret - 1)] = '\0';

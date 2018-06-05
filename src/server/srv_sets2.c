@@ -6,11 +6,11 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/31 17:15:59 by nkouris           #+#    #+#             */
-/*   Updated: 2018/05/31 18:50:50 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/05 11:44:53 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "ft_server.h"
+# include "server.h"
 
 int32_t		srv_settimeint(char **argv, __attribute__((unused))t_opts *opt)
 {

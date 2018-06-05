@@ -6,11 +6,11 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/31 17:13:36 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/02 12:49:10 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/05 11:44:56 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "ft_server.h"
+# include "server.h"
 
 #define TEAMNAME ((g_servenv->teams)[(i - 1)]).name
 

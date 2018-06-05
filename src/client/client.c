@@ -6,43 +6,61 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 13:40:27 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/04 19:05:35 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/05 12:04:38 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_server.h"
+#include "server.h"
+#include "client.h"
 #include "communication.h"
 #include "player.h"
-//#include "client.h"
 
 
-///* method function prototypes */
-//static int32_t	new
+/* method function prototypes */
+static int32_t	new(int32_t cl);
+static int32_t	isplayer(int32_t cl);
+static void		del(int32_t cl);
+
 /* method object */
+t_client_methods	client = {
+	&new,
+	&isplayer,
+	&del
+};
 
-int32_t			client_init(void)
+static int32_t		new(int32_t cl)
 {
-	int32_t		ret;
+	int32_t	ret;
 
 	ret = EXIT_SUCCESS;
-	printf("<--- CLIENT INIT --->\n");
-	if (!((SRV_TEMP.purgatory)[SRV_CLNT]))
+	printf("<--- NEW CLIENT --->\n");
+	if (!((SRV_TEMP.purgatory)[cl]))
 	{
-		ret = communicate.toclient.message("WELCOME\n");
-		(SRV_TEMP.purgatory)[SRV_CLNT] = NOT_ACCEPTED;
+		ret = communicate.toclient.outgoing(cl, "WELCOME\n");
+		(SRV_TEMP.purgatory)[cl] = NOT_ACCEPTED;
+	}
+	return (ret);
+}
+
+static int32_t		isplayer(int32_t cl)
+{
+	int32_t	ret;
+
+	if (player.islost(cl))
+	{
+		printf("Player is lost\n");
+		ret = player.add_toteam(cl);
 	}
 	else
 	{
-		if (player.islost(SRV_CLNT))
-		{
-			printf("Player is lost\n");
-			ret = player.add_toteam(SRV_CLNT);
-		}
-		else
-		{
-			ret = player.new(SRV_CLNT);
-			ret = player.add_toteam(SRV_CLNT);
-		}
+		ret = player.new(cl);
+		ret = player.add_toteam(cl);
 	}
 	return (ret);
+}
+
+static void			del(int32_t cl)
+{
+	close(cl);
+	FD_CLR(cl, SRV_SOCK.copy);
 }

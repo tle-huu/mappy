@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 16:11:12 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/04 19:05:36 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/05 11:45:43 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 
 typedef struct			s_srv_toclient
 {
-	int32_t				(*message)(char *);
+	int32_t				(*outgoing)(int32_t, char *);
 }						t_srv_toclient;
 
 typedef struct			s_client_tosrv
 {
-	int32_t				(*recieve)(t_player *);
+	int32_t				(*incoming)(t_player *);
 }						t_client_tosrv;
 
 typedef struct			s_communicate

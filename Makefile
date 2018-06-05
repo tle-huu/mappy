@@ -47,24 +47,23 @@ RES = \033[0m
 ################################################################################
 
 SRC_BRD =	\
-	create_board		
+	board		
 
 SRC_CLN =	\
-	client_init \
 	client
 
 SRC_COM =	\
-	srv_toclient
+	comms
 
 SRC_PLR =	\
 	player
 
 SRC_SRV =	\
+	error \
 	io \
-	srv_sets1 \
-	srv_sets2 \
 	smain \
-	error
+	srv_sets1 \
+	srv_sets2 
 
 SRC_TEM =	\
 	team

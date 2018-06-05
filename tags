@@ -6,31 +6,26 @@
 !_TAG_PROGRAM_URL	https://ctags.io/	/official site/
 !_TAG_PROGRAM_VERSION	0.0.0	/1aef85b/
 TEAMNAME	src/server/srv_sets1.c	/^#define TEAMNAME /;"	d	file:
-add_client	src/server/process_incoming.c	/^static inline __attribute__((always_inline))int32_t	add_client(int32_t *newfd)$/;"	f	typeref:typename:int32_t	file:
-add_fd_select	src/server/process_incoming.c	/^static inline __attribute__((always_inline))void	add_fd_select(int32_t sock)$/;"	f	typeref:typename:void	file:
-add_toteam	src/player/player.c	/^static int32_t	add_toteam(void)$/;"	f	typeref:typename:int32_t	file:
+add_client	src/server/io.c	/^static inline __attribute__((always_inline))int32_t	add_client(int32_t *newfd)$/;"	f	typeref:typename:int32_t	file:
+add_fd_select	src/server/io.c	/^static inline __attribute__((always_inline))void	add_fd_select(int32_t sock)$/;"	f	typeref:typename:void	file:
+add_player	src/team/team.c	/^static int32_t	add_player(int32_t client, int32_t tm)$/;"	f	typeref:typename:int32_t	file:
+add_toteam	src/player/player.c	/^static int32_t	add_toteam(int32_t client)$/;"	f	typeref:typename:int32_t	file:
 arr_opts	src/server/smain.c	/^t_opts	arr_opts[] = {$/;"	v	typeref:typename:t_opts[]
-check_dupenick	src/server/server_commands1.c	/^static int32_t		check_dupenick(t_servenv *server, t_action *act)$/;"	f	typeref:typename:int32_t	file:
 client_init	src/client/client.c	/^int32_t			client_init(void)$/;"	f	typeref:typename:int32_t
-client_message	src/server/process_incoming.c	/^static inline __attribute__((always_inline))int32_t	client_message(int32_t i)$/;"	f	typeref:typename:int32_t	file:
-command	src/communication/server_client_comm.c	/^static int	(*command[])(t_servenv *, t_action *) = {$/;"	v	typeref:typename:int (* [])(t_servenv *,t_action *)	file:
-communicate	src/communication/srv_toclient.c	/^t_communicate communicate = {$/;"	v	typeref:typename:t_communicate
-concat_gen	src/server/server_commands2.c	/^static inline __attribute__((always_inline))int32_t	concat_gen(char **concat,$/;"	f	typeref:typename:int32_t	file:
+communicate	src/communication/comms.c	/^t_communicate communicate = {$/;"	v	typeref:typename:t_communicate
 create_board	src/board/create_board.c	/^int32_t	create_board(void)$/;"	f	typeref:typename:int32_t
-ft_addnick	src/server/server_commands1.c	/^int32_t					ft_addnick(t_servenv *server, t_action *act)$/;"	f	typeref:typename:int32_t
-ft_chanmessage	src/server/server_commands2.c	/^int32_t		ft_chanmessage(t_servenv *server, t_action *act)$/;"	f	typeref:typename:int32_t
-ft_joinchannel	src/server/server_commands1.c	/^int32_t		ft_joinchannel(t_servenv *server, t_action *act)$/;"	f	typeref:typename:int32_t
-ft_passconfirm	src/server/server_commands1.c	/^int32_t		ft_passconfirm(t_servenv *server, t_action *act)$/;"	f	typeref:typename:int32_t
 ft_serverinit	src/server/smain.c	/^static int32_t		ft_serverinit(void)$/;"	f	typeref:typename:int32_t	file:
-ft_usnmessage	src/server/server_commands2.c	/^int32_t		ft_usnmessage(t_servenv *server, t_action *act)$/;"	f	typeref:typename:int32_t
 get_nteams	src/server/srv_sets1.c	/^static inline __attribute__((always_inline))int32_t	get_nteams(char *str)$/;"	f	typeref:typename:int32_t	file:
 init_fd_select	src/server/smain.c	/^static inline __attribute__((always_inline))int32_t	init_fd_select(void)$/;"	f	typeref:typename:int32_t	file:
-islost	src/player/player.c	/^static int32_t	islost(void)$/;"	f	typeref:typename:int32_t	file:
+islost	src/player/player.c	/^static int32_t	islost(int32_t client)$/;"	f	typeref:typename:int32_t	file:
 main	src/server/smain.c	/^int32_t		main(int argc, char **argv)$/;"	f	typeref:typename:int32_t
-new	src/player/player.c	/^static int32_t	new(void)$/;"	f	typeref:typename:int32_t	file:
+message	src/communication/comms.c	/^static int32_t	message(char *str)$/;"	f	typeref:typename:int32_t	file:
+name_exists	src/team/team.c	/^static int32_t	name_exists(int32_t client)$/;"	f	typeref:typename:int32_t	file:
+new	src/player/player.c	/^static int32_t	new(int32_t client)$/;"	f	typeref:typename:int32_t	file:
 player	src/player/player.c	/^t_player_methods	player = {$/;"	v	typeref:typename:t_player_methods
-process_incoming	src/server/process_incoming.c	/^int32_t	process_incoming(void)$/;"	f	typeref:typename:int32_t
-server_client_comm	src/communication/server_client_comm.c	/^int32_t		server_client_comm(t_client *client, t_servenv *server)$/;"	f	typeref:typename:int32_t
+pregame_io	src/server/io.c	/^int32_t	pregame_io(void)$/;"	f	typeref:typename:int32_t
+pregame_message	src/server/io.c	/^static inline __attribute__((always_inline))int32_t	pregame_message(int32_t i)$/;"	f	typeref:typename:int32_t	file:
+recieve	src/communication/comms.c	/^static int32_t	recieve(t_player *p)$/;"	f	typeref:typename:int32_t	file:
 set_sock	src/server/smain.c	/^static inline __attribute__((always_inline))int32_t	set_sock(void)$/;"	f	typeref:typename:int32_t	file:
 srv_setboardx	src/server/srv_sets1.c	/^int32_t		srv_setboardx(char **argv, __attribute__((unused))t_opts *opt)$/;"	f	typeref:typename:int32_t
 srv_setboardy	src/server/srv_sets1.c	/^int32_t		srv_setboardy(char **argv, __attribute__((unused))t_opts *opt)$/;"	f	typeref:typename:int32_t
@@ -38,5 +33,5 @@ srv_setmaxclients	src/server/srv_sets2.c	/^int32_t		srv_setmaxclients(char **arg
 srv_setport	src/server/srv_sets2.c	/^int32_t		srv_setport(char **argv, __attribute__((unused))t_opts *opt)$/;"	f	typeref:typename:int32_t
 srv_setteams	src/server/srv_sets1.c	/^int32_t		srv_setteams(char **argv, t_opts *opt)$/;"	f	typeref:typename:int32_t
 srv_settimeint	src/server/srv_sets2.c	/^int32_t		srv_settimeint(char **argv, __attribute__((unused))t_opts *opt)$/;"	f	typeref:typename:int32_t
+team	src/team/team.c	/^t_team_methods	team = {$/;"	v	typeref:typename:t_team_methods
 usage_warning	src/server/error.c	/^void		usage_warning(char *str)$/;"	f	typeref:typename:void
-welcome	src/communication/srv_toclient.c	/^static int32_t	welcome(void)$/;"	f	typeref:typename:int32_t	file:
