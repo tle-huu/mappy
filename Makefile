@@ -13,6 +13,7 @@ CC = gcc
 SRCDIR_BRD = src/board/
 SRCDIR_CLN = src/client/
 SRCDIR_COM = src/communication/
+SRCDIR_INV = src/inventory/
 SRCDIR_PLR = src/player/
 SRCDIR_SRV = src/server/
 SRCDIR_TEM = src/team/
@@ -20,6 +21,7 @@ SRCDIR_TEM = src/team/
 OBJSRC = $(patsubst %, %.o, $(addprefix $(SRCDIR_BRD), $(SRC_BRD)))
 OBJSRC += $(patsubst %, %.o, $(addprefix $(SRCDIR_CLN), $(SRC_CLN)))
 OBJSRC += $(patsubst %, %.o, $(addprefix $(SRCDIR_COM), $(SRC_COM)))
+OBJSRC += $(patsubst %, %.o, $(addprefix $(SRCDIR_INV), $(SRC_INV)))
 OBJSRC += $(patsubst %, %.o, $(addprefix $(SRCDIR_PLR), $(SRC_PLR)))
 OBJSRC += $(patsubst %, %.o, $(addprefix $(SRCDIR_SRV), $(SRC_SRV)))
 OBJSRC += $(patsubst %, %.o, $(addprefix $(SRCDIR_TEM), $(SRC_TEM)))
@@ -54,6 +56,9 @@ SRC_CLN =	\
 
 SRC_COM =	\
 	comms
+
+SRC_INV =	\
+	inventory
 
 SRC_PLR =	\
 	player

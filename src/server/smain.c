@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/14 12:20:21 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/05 14:34:07 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/05 19:05:04 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ static int32_t		ft_serverinit(void)
 		printf("pre game -- select unblock\n");
 		if ((ret = pregame_io()) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
-		else if (SRV_GENV.maxclients == SRV_GENV.nclients
 	}
 	return (EXIT_SUCCESS);
 }

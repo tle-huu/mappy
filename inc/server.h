@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/31 18:10:48 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/05 12:18:13 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/05 17:24:32 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <arpa/inet.h>
 # include <netdb.h>
 # include <termios.h>
+# include <stdlib.h>
 # include "libft.h"
 
 # define SRV_SOCK g_servenv->sock
@@ -50,13 +51,7 @@ typedef	struct			s_location
 
 typedef struct			s_inventory
 {
-	int32_t				linemate;
-	int32_t				sibur;
-	int32_t				deraumere;
-	int32_t				mendiane;
-	int32_t				phiras;
-	int32_t				thystame;
-//	t_inventorymethods	*vtbl;
+	uint64_t			items;
 }						t_inventory;
 
 typedef struct			s_player
@@ -68,20 +63,21 @@ typedef struct			s_player
 	t_inventory			inventory;
 	t_location			location;
 	t_team				*team;
-//	t_playermethods		*vtbl;
+	struct s_player		*next;
 }						t_player;
 
 typedef struct			s_tile
 {
 	t_inventory			resources;
-	t_player			**players;
+	t_player			*players[FD_SETSIZE];
+	struct s_tile		*column;
 }						t_tile;
 
 typedef	struct			s_board
 {
 	int32_t				x;
 	int32_t				y;
-	t_tile				**tiles;
+	t_tile				*tiles;
 //	t_boardmethods		*vtbl;
 }						t_board;
 
