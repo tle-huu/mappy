@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/14 12:20:21 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/05 19:05:04 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/07 19:54:01 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,11 @@ static inline __attribute__((always_inline))int32_t	set_sock(void)
 
 static int32_t		ft_serverinit(void)
 {
-	int32_t	ret;
+	int32_t			ret;
+	struct timeval	*time;
 
 	ret = 0;
+	time = NULL;
 	board.new();
 	if ((set_sock() == EXIT_FAILURE)
 		|| (bind(SRV_SOCK.sockfd, ((struct sockaddr *)&(SRV_SOCK.address)),
@@ -68,11 +70,18 @@ static int32_t		ft_serverinit(void)
 		|| (listen(SRV_SOCK.sockfd, 128) < 0)
 		|| (init_fd_select() == EXIT_FAILURE))
 		return (EXIT_FAILURE);
-	while ((select(SRV_SOCK.nfds, SRV_SOCK.input, NULL, NULL, NULL)) > 0)
+	while ((select(SRV_SOCK.nfds, SRV_SOCK.input, NULL, NULL, time)) > 0)
 	{
+//		commands.checkqueue();
+		// because we can't assume that select unblocked due to a timeout
+		// or a fd being ready to read, function will use gettimeofday to
+		// compare the top of the command pqueue and execute and respond to 
+		// commands that have timestamps greater than or equal to the time
 		printf("pre game -- select unblock\n");
-		if ((ret = pregame_io()) == EXIT_FAILURE)
+		if ((ret = game_io()) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
+		// use gettimeofday to set a timeout val that corresponds to the
+		// next time that select would need to unblock
 	}
 	return (EXIT_SUCCESS);
 }
@@ -91,9 +100,6 @@ int32_t		main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	if ((arg = ft_getopts(arr_opts, argv)) != EXIT_SUCCESS)
 		usage_warning(argv[arg]);
-#ifdef DEBUG
-	ft_printf("set port : %d\nset boardwidth : %d\nset boardheight : %d\nset max clients : %d\ntime interval : %d\n", SRV_SOCK.port, (g_servenv->board.x), (g_servenv->board.y), SRV_GENV.maxclients, SRV_GENV.timeint);
-#endif
 	if (ft_serverinit() == EXIT_FAILURE)
 		perror(strerror(errno));
 	return (EXIT_SUCCESS);

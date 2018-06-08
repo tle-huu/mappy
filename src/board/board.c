@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/05 10:45:14 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/05 19:03:28 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/07 18:53:29 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,15 +57,15 @@ static int32_t	send_dimensions(int32_t cl)
 	nlen += 2;
 	if (!(num = ft_itoa(SRV_BORD.x))
 		|| !(str = (char *)calloc(1, (nlen + 1)))
-		|| !(str = strcat(str, num)))
+		|| !(str = ft_strfreecat(str, num)))
 		return (EXIT_FAILURE);
-	free(num);
 	if (!(str = strcat(str, " "))
 		|| !(num = ft_itoa(SRV_BORD.y))
-		|| !(str = strcat(str, num))
+		|| !(str = ft_strfreecat(str, num))
 		|| !(str = strcat(str, "\n"))
 		|| (communicate.toclient.outgoing(cl, str) == EXIT_FAILURE))
 		return (EXIT_FAILURE);
+	free(str);
 	return (EXIT_SUCCESS);
 }
 

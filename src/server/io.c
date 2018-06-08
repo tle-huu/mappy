@@ -6,68 +6,37 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/04 14:14:23 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/05 19:04:41 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/07 18:41:57 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
 #include "client.h"
+#include "communication.h"
+#include "player.h"
 #include "team.h"
 
-static inline __attribute__((always_inline))void	add_fd_select(int32_t sock)
-{
-	printf("fd to add : <%d>\ncurrent nfds : <%d>\n", sock, SRV_SOCK.nfds);
-	FD_SET(sock, SRV_SOCK.copy);
-	if (SRV_SOCK.nfds <= sock)
-		SRV_SOCK.nfds = (sock + 1);
-}
-
-static inline __attribute__((always_inline))int32_t	pregame_message(int32_t i)
+static inline __attribute__((always_inline))int32_t	known_socket(int32_t cl)
 {
 	char	buf[PEEK];
 
-	SRV_CLNT = i;
-	if (FD_ISSET(i, SRV_SOCK.input))
+	SRV_CLNT = cl;
+	if (recv(cl, &buf, PEEK, MSG_PEEK | MSG_DONTWAIT) == 0)
+		client.del(cl);
+	else if ((SRV_ALLP.client_stat)[cl] == NOT_ACCEPTED)
 	{
-		if (recv(i, &buf, PEEK, MSG_PEEK | MSG_DONTWAIT) == 0)
-		{
-			close(i);
-			FD_CLR(i, SRV_SOCK.copy);
-			printf("Remove client <%d> from fdset\n", i);
-		}
-		else if ((SRV_TEMP.purgatory)[i] == NOT_ACCEPTED)
-		{
-			printf("client <%d> is in purgatory, and trying to join a team\n", i);
-			if (client.isplayer(i) == EXIT_FAILURE)
-			{
-				printf("fail is player\n");
-				return (EXIT_FAILURE);
-			}
-		}
+		printf("client <%d> is in client_stat, and trying to join a team\n", cl);
+		if (SRV_ALLP.lookup[cl])
+			player.add_toteam(cl);
+		else
+			client.isplayer(cl);
 	}
+	else
+		communicate.fromclient.printraw(cl);
 	return (EXIT_SUCCESS);
 }
 
-static inline __attribute__((always_inline))int32_t	add_client(void)
-{
-	int32_t	newfd;
-
-	newfd = accept(SRV_SOCK.sockfd,
-				(struct sockaddr *)&(SRV_SOCK.temp), &(SRV_SOCK.socklen));
-	SRV_CLNT = newfd;
-	client.new(newfd);
-	printf("New client %d connected\n", newfd);
-	add_fd_select(newfd);
-	return (EXIT_SUCCESS);
-}
-
-/*
 int32_t	game_io(void)
-{
-}
-*/
-
-int32_t	pregame_io(void)
 {
 	int32_t	i;
 
@@ -76,12 +45,12 @@ int32_t	pregame_io(void)
 	{
 		if (i == SRV_SOCK.sockfd && FD_ISSET(i, SRV_SOCK.input))
 		{
-			if (add_client() == EXIT_FAILURE)
+			if (client.new() == EXIT_FAILURE)
 				return (EXIT_FAILURE);
 		}
-		else
+		else if (FD_ISSET(i, SRV_SOCK.input))
 		{
-			if (pregame_message(i) == EXIT_FAILURE)
+			if (known_socket(i) == EXIT_FAILURE)
 				return (EXIT_FAILURE);
 		}
 		i++;

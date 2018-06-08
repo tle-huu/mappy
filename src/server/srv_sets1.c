@@ -6,13 +6,13 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/31 17:13:36 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/05 11:44:56 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/07 17:12:34 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "server.h"
 
-#define TEAMNAME ((g_servenv->teams)[(i - 1)]).name
+#define TEAM ((g_servenv->teams)[(i - 1)])
 
 static inline __attribute__((always_inline))int32_t	get_nteams(char *str)
 {
@@ -48,9 +48,10 @@ int32_t		srv_setteams(char **argv, t_opts *opt)
 		return (EXIT_FAILURE);
 	while (argv[i] && (i <= SRV_GENV.nteams))
 	{
-		if (!(TEAMNAME = (char *)ft_memalloc(ft_strlen(argv[i]) + 1))
-			|| (!(ft_strcpy(TEAMNAME, argv[i]))))
+		if (!(TEAM.name = (char *)ft_memalloc(ft_strlen(argv[i]) + 1))
+			|| (!(ft_strcpy(TEAM.name, argv[i]))))
 			return (EXIT_FAILURE);
+		TEAM.nplayers = 1;
 		i++;
 	}
 	if (i != opt->nparams)

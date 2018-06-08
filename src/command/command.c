@@ -1,27 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   board.h                                            :+:      :+:    :+:   */
+/*   command.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/06/05 11:14:26 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/05 19:43:30 by nkouris          ###   ########.fr       */
+/*   Created: 2018/06/07 16:12:30 by nkouris           #+#    #+#             */
+/*   Updated: 2018/06/07 19:54:08 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BOARD_H
-# define BOARD_H
+#include "server.h"
 
-# define RAND_RESOURCE ((((((SRV_BORD.tiles)[x]).column)[y]).resources).items)
+t_command_methods = {
+	&checkqueue
+};
 
-typedef struct			s_board_methods
+static int32_t	checkqueue(void)
 {
-	int32_t				(*new)(void);
-	int32_t				(*send_dimensions)(int32_t);
-	void				(*resource_gen)(void);
-}						t_board_methods;
-
-extern t_board_methods	board;
-
-#endif
+	if (!
+}
