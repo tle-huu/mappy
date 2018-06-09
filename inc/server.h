@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/31 18:10:48 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/08 17:13:26 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/09 16:44:39 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <sys/select.h>
 # include <sys/time.h>
 # include <arpa/inet.h>
+# include <math.h>
 # include <netdb.h>
 # include <termios.h>
 # include <stdlib.h>
@@ -36,7 +37,7 @@
 # define NORTH 0
 # define SOUTH 1
 # define EAST 2
-# define WEST 3
+# define WEST 4
 
 # define WELCOME "WELCOME\n"
 
@@ -72,6 +73,7 @@ typedef struct			s_player
 	int32_t				level;
 	int32_t				c_fd;
 	int8_t				conn_attempts;
+	int8_t				orientation;
 	char				buf[513];
 	t_inventory			inventory;
 	t_location			location;
@@ -91,7 +93,6 @@ typedef	struct			s_board
 	int32_t				x;
 	int32_t				y;
 	t_tile				*tiles;
-//	t_boardmethods		*lost;
 }						t_board;
 
 typedef struct			s_team
@@ -107,22 +108,22 @@ typedef struct			s_gamenv
 	int32_t				nteams;
 	int32_t				maxclients;
 	int32_t				nclients;
-	int32_t				timeint;
+	float				timeint;
 }						t_gamenv;
 
 typedef struct			s_command
 {
 	t_timeval			alarm;
-	int32_t				(*action)(void);
+	int32_t				(*action)(int32_t);
 	int32_t				player;
 }						t_command;
-
+/*
 typedef struct			s_commandpool
 {
-	t_queue				*commandqueue;
+	t_queue				*command;
 	t_queue				*opencommand;
 }						t_commandpool;
-
+*/
 typedef struct			s_socks
 {
 	int32_t				sockfd;
@@ -150,7 +151,7 @@ typedef struct			s_servenv
 	t_socks				sock;
 	t_board				board;
 	t_gamenv			gamenv;
-	t_commandpool		command;
+//	t_commandpool		command;
 	t_timeval			time;
 	t_team				*teams;
 	char				*sendbuf;

@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 10:53:55 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/08 17:25:53 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/09 16:44:39 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,29 @@ static void		settimer(t_timeval **time)
 		(*time)->tv_sec = (*time)->tv_sec - temp.tv_sec;
 		(*time)->tv_usec = (*time)->tv_usec - temp.tv_usec;
 	}
+}
+
+static void		setalarm(t_alarmval **alarm, float factor)
+{
+	t_alarmval	temp;
+	double		interval;
+	int64_t		i_interval;
+	double		integer;
+	int64_t		i_integer;
+
+	getalarmofday(&temp, NULL);
+	interval = factor/SRV_GENV.alarmint;
+	integer = 0;
+	if (interval > 1)
+		interval = modf(interval, &integer);
+	i_interval = (i_interval * 1000000);
+	i_interval = (int64_t)interval;
+	i_integer = (int64_t)integer;
+	if (i_interval >= (1000000 - temp->tv_usec))
+	{
+		i_integer++;
+		i_interval = i_interval - (1000000 - temp->tv_usec);
+	}
+	(*alarm)->tv_sec = temp->tv_sec + i_integer;
+	(*alarm)->tv_usec = temp->tv_usec + i_interval;
 }

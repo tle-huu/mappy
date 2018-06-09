@@ -1,29 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   commandqueue.h                                     :+:      :+:    :+:   */
+/*   commands.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/06/08 16:31:37 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/09 10:37:14 by nkouris          ###   ########.fr       */
+/*   Created: 2018/06/08 19:21:54 by nkouris           #+#    #+#             */
+/*   Updated: 2018/06/09 11:36:59 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef COMMANDQUEUE_H
-# define COMMANDQUEUE_H
+#ifndef COMMANDS_H
+# define COMMANDS_H
 
-typedef struct	s_commandqueue_methods
+typedef struct	s_commhold
 {
-	t_queue		*data;
-	t_queue		*pool;
-	int32_t		(*check)(void);
-	int32_t		(*addtoqueue)(t_dblist *);
-	int32_t		(*createpool)(void);
-	int32_t		(*addtopool)(void);
-	t_dblist	*(*popfrompool)(void);
-}				t_commandqueue_methods;
+	char		*str;
+	int32_t		(*action)(int32_t);
+	float		factor;
+}				t_commhold;
 
-extern t_commandqueue_methods	commandqueue;
+/*
+typedef struct	s_command_methods
+{
+	int32_t		(*advance)(int32_t);
+}				t_command_methods;
+*/
+
+extern t_command_methods	commands;
+extern t_commhold			commandlookup[1];
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 15:12:03 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/08 17:27:11 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/09 11:17:43 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ static int32_t	addtopool(void);
 static t_dblist	*popfrompool(void);
 
 t_commandqueue_methods commandqueue = {
+	NULL,
+	NULL,
 	&check,
 	&addtoqueue,
 	&createpool,
@@ -35,15 +37,15 @@ static int32_t	check(void)
 
 	printf("Check time against command queue\n");
 	gettimeofday(&(SRV_TIME), NULL);
-	if (SRV_CMND.commandqueue)
+	if (commandqueue.data)
 	{
-		cmd = (SRV_CMND.commandqueue->first);
+		cmd = (commandqueue.data->first);
 		while (cmd)
 		{
-			cmd = (SRV_CMND.commandqueue->first);
+			cmd = (commandqueue.data->first);
 			if (server.comparetime(&CQU_OBJ->alarm))
 			{
-				CQU_OBJ->action();
+				CQU_OBJ->action(CQU_OBJ->player);
 				commandqueue.addtopool();
 			}
 			else
@@ -73,7 +75,7 @@ static int32_t	timeoutsort(t_dblist *one, t_dblist *two)
 
 static int32_t	addtoqueue(t_dblist *command)
 {
-	if (!(ft_penqueue(SRV_CMND.commandqueue, command, 0, &timeoutsort)))
+	if (!(ft_penqueue(commandqueue.data, command, 0, &timeoutsort)))
 		return (EXIT_FAILURE); //?? error.memory() ??
 	return (EXIT_SUCCESS);
 }
@@ -86,13 +88,13 @@ static int32_t	createpool(void)
 
 	i = 0;
 	reps = (SRV_GENV.nteams * 6 * 10);
-	if (!(SRV_CMND.opencommand = (t_queue *)calloc(1, sizeof(t_queue)))
-		|| !(SRV_CMND.commandqueue = (t_queue *)calloc(1, sizeof(t_queue))))
+	if (!(commandqueue.pool = (t_queue *)calloc(1, sizeof(t_queue)))
+		|| !(commandqueue.data = (t_queue *)calloc(1, sizeof(t_queue))))
 		return (EXIT_FAILURE);		//error.memory
 	while (i < reps)
 	{
 		if (!(temp = (t_command *)calloc(1, sizeof(t_command)))
-			|| !(ft_enqueue(SRV_CMND.opencommand, temp, sizeof(t_command))))
+			|| !(ft_enqueue(commandqueue.pool, temp, sizeof(t_command))))
 			return (EXIT_FAILURE);		//error.memory
 		i++;
 	}
@@ -103,16 +105,16 @@ static int32_t	addtopool(void)
 {
 	t_dblist	*cmd;
 
-	cmd = ft_popfirst(SRV_CMND.commandqueue);
+	cmd = ft_popfirst(commandqueue.pool);
 	server.cleartime(&(CQU_OBJ->alarm));
 	CQU_OBJ->player = 0;
 	CQU_OBJ->action = NULL;
-	if (!(ft_enqueue(SRV_CMND.opencommand, cmd, 0)))
+	if (!(ft_enqueue(commandqueue.pool, cmd, 0)))
 			return (EXIT_FAILURE);		//error.memory
 	return (EXIT_SUCCESS);
 }
 
 static t_dblist	*popfrompool(void)
 {
-	return (ft_popfirst(SRV_CMND.opencommand));
+	return (ft_popfirst(commandqueue.pool));
 }

@@ -22,6 +22,7 @@ SRCDIR_TEM = src/team/
 
 OBJSRC = $(patsubst %, %.o, $(addprefix $(SRCDIR_BRD), $(SRC_BRD)))
 OBJSRC += $(patsubst %, %.o, $(addprefix $(SRCDIR_CLN), $(SRC_CLN)))
+OBJSRC += $(patsubst %, %.o, $(addprefix $(SRCDIR_CMD), $(SRC_CMD)))
 OBJSRC += $(patsubst %, %.o, $(addprefix $(SRCDIR_CQU), $(SRC_CQU)))
 OBJSRC += $(patsubst %, %.o, $(addprefix $(SRCDIR_COM), $(SRC_COM)))
 OBJSRC += $(patsubst %, %.o, $(addprefix $(SRCDIR_INV), $(SRC_INV)))
@@ -53,6 +54,9 @@ RES = \033[0m
 
 SRC_BRD =	\
 	board		
+
+SRC_CMD =	\
+	commands
 
 SRC_CLN =	\
 	client

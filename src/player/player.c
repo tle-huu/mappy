@@ -6,15 +6,18 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 13:20:08 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/07 18:37:16 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/09 16:44:44 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
 #include "client.h"
 #include "communication.h"
+#include "commands.h"
 #include "player.h"
 #include "team.h"
+
+#define PBUF ((SRV_ALLP.lookup)[cl])->buf
 
 /* method function prototypes */
 static int32_t	add_toteam(int32_t cl);
@@ -24,6 +27,7 @@ static int32_t	new(int32_t cl);
 t_player_methods	player = {
 	&new,
 	&add_toteam,
+	&parse_command
 };
 
 static int32_t	add_toteam(int32_t cl)
@@ -69,6 +73,35 @@ static int32_t	new(int32_t cl)
 	p->c_fd = cl;
 	(SRV_ALLP.lookup)[cl] = p;
 	return (EXIT_SUCCESS);
+}
+
+static int32_t	parse_command(int32_t cl)
+{
+	char	*firstword_delim;
+	char	hold;
+
+	if (communicate.fromclient.incoming((SRV_ALLP.lookup)[cl]) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	if ((firstword_delim = strchr(PBUF, ' ')))
+	{
+		hold = *firstword_delim;
+		*firstword_delim = '\0';
+	}
+	commands.lookup(cl);
+	return (EXIT_SUCCESS);
+	// if command not recognized, print raw
+
+}
+
+static void		placeonboard(int32_t cl)
+{
+	t_player	*pl;
+
+	pl = (SRV_ALLP.lookup)[cl];
+	pl.location.x = arc4random_uniform((uint32_t)SRV_BORD.x);
+	pl.location.y = arc4random_uniform((uint32_t)SRV_BORD.y);
+	pl.location.orientation = arc4random_uniform((uint32_t)4);
+	board.setplayer(cl);
 }
 
 /*

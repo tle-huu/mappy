@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/05 11:14:26 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/08 12:26:14 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/09 16:44:38 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ typedef struct			s_board_methods
 	int32_t				(*new)(void);
 	int32_t				(*send_dimensions)(int32_t);
 	void				(*resource_gen)(void);
+	void				(*setplayer)(int32_t);
 }						t_board_methods;
 
 extern t_board_methods	board;

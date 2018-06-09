@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/04 14:14:23 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/07 18:41:57 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/09 16:44:38 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,12 +27,15 @@ static inline __attribute__((always_inline))int32_t	known_socket(int32_t cl)
 	{
 		printf("client <%d> is in client_stat, and trying to join a team\n", cl);
 		if (SRV_ALLP.lookup[cl])
+		{
 			player.add_toteam(cl);
+			player.placeonboard(cl);
+		}
 		else
 			client.isplayer(cl);
 	}
-	else
-		communicate.fromclient.printraw(cl);
+	else if (player.parse_command(cl) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 

@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/05 10:45:14 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/07 18:53:29 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/09 16:07:27 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,14 @@
 static int32_t	send_dimensions(int32_t cl);
 static int32_t	new(void);
 static void		resource_gen(void);
+static void		setplayer(int32_t cl);
 
 /* method object */
 t_board_methods	board = {
 	&new,
 	&send_dimensions,
-	&resource_gen
+	&resource_gen,
+	&setplayer
 };
 
 static int32_t	new(void)
@@ -90,6 +92,7 @@ static inline __attribute__((always_inline))void	rand_resc(uint32_t x,
 	else if (resc == 6)
 		RAND_RESOURCE = inventory.ad_thys(RAND_RESOURCE);
 }
+
 static void		resource_gen(void)
 {
 	int32_t		ntiles;
@@ -108,4 +111,16 @@ static void		resource_gen(void)
 		while (gen-- > 0)
 			rand_resc(x, y);
 	}
+}
+
+static void		setplayer(cl)
+{
+	t_player	*pl;
+	int32_t		x;
+	int32_t		y;
+
+	pl = (SRV_ALLP.lookup)[cl];
+	x = pl.location.x;
+	y = pl.location.y;
+	(((((SRV_BORD.tiles)[x]).column)[y]).players)[cl] = pl;
 }
