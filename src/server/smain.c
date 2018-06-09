@@ -6,13 +6,14 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/14 12:20:21 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/07 19:54:01 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/08 17:22:30 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
 #include "board.h"
 #include "communication.h"
+#include "commandqueue.h"
 
 t_opts	arr_opts[] = {
 	{"p", 1, &srv_setport},
@@ -59,7 +60,7 @@ static inline __attribute__((always_inline))int32_t	set_sock(void)
 static int32_t		ft_serverinit(void)
 {
 	int32_t			ret;
-	struct timeval	*time;
+	t_timeval		*time;
 
 	ret = 0;
 	time = NULL;
@@ -68,20 +69,22 @@ static int32_t		ft_serverinit(void)
 		|| (bind(SRV_SOCK.sockfd, ((struct sockaddr *)&(SRV_SOCK.address)),
 			sizeof(struct sockaddr_in)) < 0)
 		|| (listen(SRV_SOCK.sockfd, 128) < 0)
-		|| (init_fd_select() == EXIT_FAILURE))
+		|| (init_fd_select() == EXIT_FAILURE)
+		|| (commandqueue.createpool() == EXIT_FAILURE))
 		return (EXIT_FAILURE);
 	while ((select(SRV_SOCK.nfds, SRV_SOCK.input, NULL, NULL, time)) > 0)
 	{
-//		commands.checkqueue();
+		printf("\n\nBody of Select\n\n");
+		commandqueue.check();
 		// because we can't assume that select unblocked due to a timeout
 		// or a fd being ready to read, function will use gettimeofday to
 		// compare the top of the command pqueue and execute and respond to 
 		// commands that have timestamps greater than or equal to the time
-		printf("pre game -- select unblock\n");
 		if ((ret = game_io()) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
 		// use gettimeofday to set a timeout val that corresponds to the
 		// next time that select would need to unblock
+		server.settimer(&time);
 	}
 	return (EXIT_SUCCESS);
 }

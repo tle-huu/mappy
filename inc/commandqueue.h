@@ -1,23 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   commands.h                                         :+:      :+:    :+:   */
+/*   commandqueue.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/06/07 15:13:03 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/07 18:54:52 by nkouris          ###   ########.fr       */
+/*   Created: 2018/06/08 16:31:37 by nkouris           #+#    #+#             */
+/*   Updated: 2018/06/08 16:37:34 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef COMMANDS_H
-# define COMMANDS_H
+#ifndef COMMANDQUEUE_H
+# define COMMANDQUEUE_H
 
-typedef struct	s_command_methods
+typedef struct	s_commandqueue_methods
 {
-	t_queue		
-}				t_command_methods;
+	int32_t		(*check)(void);
+	int32_t		(*addtoqueue)(t_dblist *);
+	int32_t		(*createpool)(void);
+	int32_t		(*addtopool)(void);
+	t_dblist	*(*popfrompool)(void);
+}				t_commandqueue_methods;
 
-extern t_comman_methods	commands;
+extern t_commandqueue_methods	commandqueue;
 
 #endif

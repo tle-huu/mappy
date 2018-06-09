@@ -12,6 +12,8 @@ CC = gcc
 
 SRCDIR_BRD = src/board/
 SRCDIR_CLN = src/client/
+SRCDIR_CMD = src/commands/
+SRCDIR_CQU = src/commandqueue/
 SRCDIR_COM = src/communication/
 SRCDIR_INV = src/inventory/
 SRCDIR_PLR = src/player/
@@ -20,6 +22,7 @@ SRCDIR_TEM = src/team/
 
 OBJSRC = $(patsubst %, %.o, $(addprefix $(SRCDIR_BRD), $(SRC_BRD)))
 OBJSRC += $(patsubst %, %.o, $(addprefix $(SRCDIR_CLN), $(SRC_CLN)))
+OBJSRC += $(patsubst %, %.o, $(addprefix $(SRCDIR_CQU), $(SRC_CQU)))
 OBJSRC += $(patsubst %, %.o, $(addprefix $(SRCDIR_COM), $(SRC_COM)))
 OBJSRC += $(patsubst %, %.o, $(addprefix $(SRCDIR_INV), $(SRC_INV)))
 OBJSRC += $(patsubst %, %.o, $(addprefix $(SRCDIR_PLR), $(SRC_PLR)))
@@ -54,6 +57,9 @@ SRC_BRD =	\
 SRC_CLN =	\
 	client
 
+SRC_CQU =	\
+	commandqueue
+
 SRC_COM =	\
 	comms
 
@@ -68,7 +74,8 @@ SRC_SRV =	\
 	io \
 	smain \
 	srv_sets1 \
-	srv_sets2 
+	srv_sets2 \
+	time
 
 SRC_TEM =	\
 	team
