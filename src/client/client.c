@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 13:40:27 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/09 16:44:42 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/09 20:58:17 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,8 @@ static int32_t		isplayer(int32_t cl)
 
 	ret = player.new(cl);
 	ret = player.add_toteam(cl);
-	ret = player.placeonboard(cl);
+	player.placeonboard(cl);
+// check egg queue and egg status	
 	return (ret);
 }
 

@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/05 09:41:17 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/08 19:03:39 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/09 22:35:45 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,21 +45,21 @@ static int32_t	outgoing(int32_t cl, char *str)
 **	client_toserver
 */
 
-static int32_t	incoming(t_player *p)
+static int32_t	incoming(t_player *pl)
 {
 	int32_t	ret;
 
-	printf("Recieving message from client <%d>\n", p->c_fd);
+	printf("Recieving message from client <%d>\n", pl->c_fd);
 	ret = 0;
-	bzero(p->buf, 513);
-	if ((ret = recv(p->c_fd, p->buf, 512, 0)) < 0)
+	bzero(pl->buf, 513);
+	if ((ret = recv(pl->c_fd, pl->buf, 512, 0)) < 0)
 		return (EXIT_FAILURE);
 	else if (!ret)
 	{
-		client.del(p->c_fd);
+		client.del(pl->c_fd);
 		return (-1);
 	}
-	p->buf[(ret - 1)] = '\0';
+	pl->buf[(ret - 1)] = '\0';
 	return (EXIT_SUCCESS);
 }
 

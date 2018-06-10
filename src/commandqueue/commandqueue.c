@@ -6,14 +6,14 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 15:12:03 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/09 11:17:43 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/09 22:35:44 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
 #include "commandqueue.h"
 
-#define CQU_OBJ ((t_command *)(cmd))
+#define CQU_OBJ ((t_command *)(cmd->data))
 
 static int32_t	check(void);
 static int32_t	addtoqueue(t_dblist *command);
@@ -42,7 +42,6 @@ static int32_t	check(void)
 		cmd = (commandqueue.data->first);
 		while (cmd)
 		{
-			cmd = (commandqueue.data->first);
 			if (server.comparetime(&CQU_OBJ->alarm))
 			{
 				CQU_OBJ->action(CQU_OBJ->player);
@@ -50,6 +49,7 @@ static int32_t	check(void)
 			}
 			else
 				break ;
+			cmd = (commandqueue.data->first);
 		}
 	}
 	return (EXIT_SUCCESS);
@@ -105,16 +105,18 @@ static int32_t	addtopool(void)
 {
 	t_dblist	*cmd;
 
-	cmd = ft_popfirst(commandqueue.pool);
+	cmd = ft_popfirst(commandqueue.data);
 	server.cleartime(&(CQU_OBJ->alarm));
 	CQU_OBJ->player = 0;
 	CQU_OBJ->action = NULL;
 	if (!(ft_enqueue(commandqueue.pool, cmd, 0)))
 			return (EXIT_FAILURE);		//error.memory
+	printf("Nodes available in commandqueue pool : %d\n", (commandqueue.pool)->qlen);
 	return (EXIT_SUCCESS);
 }
 
 static t_dblist	*popfrompool(void)
 {
+	printf("Nodes available in commandqueue pool : %d\n", (commandqueue.pool)->qlen);
 	return (ft_popfirst(commandqueue.pool));
 }

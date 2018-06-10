@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/05 10:45:14 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/09 16:07:27 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/09 17:32:33 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,7 +120,7 @@ static void		setplayer(cl)
 	int32_t		y;
 
 	pl = (SRV_ALLP.lookup)[cl];
-	x = pl.location.x;
-	y = pl.location.y;
+	x = pl->location.x;
+	y = pl->location.y;
 	(((((SRV_BORD.tiles)[x]).column)[y]).players)[cl] = pl;
 }

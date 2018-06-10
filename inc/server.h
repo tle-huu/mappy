@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/31 18:10:48 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/09 16:44:39 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/09 22:35:42 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,16 @@ typedef struct			s_server_methods
 	int32_t				(*comparetime)(t_timeval *);
 	void				(*cleartime)(t_timeval *);
 	void				(*settimer)(t_timeval **);
+	void				(*setalarm)(t_timeval *, float);
 }						t_server_methods;
 
 extern t_server_methods	server;
+
+typedef struct			s_egg
+{
+	t_expiration		*expiration;
+	int32_t				teamindex;
+}						t_egg;
 
 typedef	struct			s_location
 {
@@ -77,6 +84,7 @@ typedef struct			s_player
 	char				buf[513];
 	t_inventory			inventory;
 	t_location			location;
+	t_expiration		*expiration;
 	t_team				*team;
 	struct s_player		*next;
 }						t_player;
@@ -100,7 +108,7 @@ typedef struct			s_team
 	char				*name;
 	int32_t				nplayers;
 	t_player			*players[FD_SETSIZE];
-//	t_teammethods		*vtbl;
+	t_queue				eggcarton;
 }						t_team;
 
 typedef struct			s_gamenv
@@ -117,13 +125,7 @@ typedef struct			s_command
 	int32_t				(*action)(int32_t);
 	int32_t				player;
 }						t_command;
-/*
-typedef struct			s_commandpool
-{
-	t_queue				*command;
-	t_queue				*opencommand;
-}						t_commandpool;
-*/
+
 typedef struct			s_socks
 {
 	int32_t				sockfd;

@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/14 12:20:21 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/09 22:35:46 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/09 22:35:44 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static int32_t		ft_serverinit(void)
 		|| (init_fd_select() == EXIT_FAILURE)
 		|| (commandqueue.createpool() == EXIT_FAILURE))
 		return (EXIT_FAILURE);
-	while ((select(SRV_SOCK.nfds, SRV_SOCK.input, NULL, NULL, time)) >= 0)
+	while ((select(SRV_SOCK.nfds, SRV_SOCK.input, NULL, NULL, time)) > 0)
 	{
 		printf("\n\nBody of Select\n\n");
 		commandqueue.check();
@@ -81,15 +81,11 @@ static int32_t		ft_serverinit(void)
 		// compare the top of the command pqueue and execute and respond to 
 		// commands that have timestamps greater than or equal to the time
 		if ((ret = game_io()) == EXIT_FAILURE)
-		{
-			printf("gameio failure\n");
 			return (EXIT_FAILURE);
-		}
 		// use gettimeofday to set a timeout val that corresponds to the
 		// next time that select would need to unblock
 		server.settimer(&time);
 	}
-	printf("EXIT\n");
 	return (EXIT_SUCCESS);
 }
 
@@ -107,7 +103,7 @@ int32_t		main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	if ((arg = ft_getopts(arr_opts, argv)) != EXIT_SUCCESS)
 		usage_warning(argv[arg]);
-	ft_serverinit();
-	perror(strerror(errno));
+	if (ft_serverinit() == EXIT_FAILURE)
+		perror(strerror(errno));
 	return (EXIT_SUCCESS);
 }
