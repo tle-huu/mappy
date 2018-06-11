@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/05 18:30:25 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/05 19:43:29 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/10 17:07:40 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,9 @@
 # define THYSTAME(x) ((x >> 48) & 0xFF)
 # define THYSTAME_INS(x, y) ((x & 0xFF00FFFFFFFFFFFF) | (y << 48))
 
-typedef struct	s_inventory_methods
+typedef struct		s_inventory_methods
 {
+	t_check
 	uint64_t		(*ad_food)(uint64_t);
 	uint64_t		(*rm_food)(uint64_t);
 	uint64_t		(*ad_line)(uint64_t);
@@ -44,7 +45,7 @@ typedef struct	s_inventory_methods
 	uint64_t		(*rm_phir)(uint64_t);
 	uint64_t		(*ad_thys)(uint64_t);
 	uint64_t		(*rm_thys)(uint64_t);
-}				t_inventory_methods;
+}					t_inventory_methods;
 
 extern	t_inventory_methods	inventory;
 

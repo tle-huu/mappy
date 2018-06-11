@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 15:12:03 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/09 22:35:44 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/10 15:01:01 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ static int32_t	createpool(void)
 	int32_t		reps;
 
 	i = 0;
-	reps = (SRV_GENV.nteams * 6 * 10);
+	reps = (MAX_CLIENTS * 10);
 	if (!(commandqueue.pool = (t_queue *)calloc(1, sizeof(t_queue)))
 		|| !(commandqueue.data = (t_queue *)calloc(1, sizeof(t_queue))))
 		return (EXIT_FAILURE);		//error.memory

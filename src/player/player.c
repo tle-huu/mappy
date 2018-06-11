@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 13:20:08 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/09 22:35:43 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/10 17:07:38 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,21 @@ static int32_t	add_toteam(int32_t cl);
 static int32_t	new(int32_t cl);
 static int32_t	parse_command(int32_t cl);
 static void		placeonboard(int32_t cl);
+static int32_t	createpool(void);
+static void		death(void);
+static void		addtopool(t_player *add);
 
 /* method object */
 t_player_methods	player = {
+	NULL,
 	&new,
+	&createpool,
 	&add_toteam,
 	&parse_command,
-	&placeonboard
+	&placeonboard,
+	&createpool,
+	&death,
+	&addtopool
 };
 
 static int32_t	new(int32_t cl)
@@ -44,12 +52,44 @@ static int32_t	new(int32_t cl)
 	printf("Creating new player <%d>\n", cl);
 	ret  = 0;
 	i = 0;
-	if (!(pl = (t_player *)ft_memalloc(sizeof(t_player))))
+	if (!(pl = player.frompool()))
 		return (EXIT_FAILURE);
 	pl->c_fd = cl;
 	(SRV_ALLP.lookup)[cl] = pl;
 	while (i++ < 10)
 		inventory.ad_food(pl->inventory.items);
+	player.timeofdeath(pl);
+	return (EXIT_SUCCESS);
+}
+
+static t_player		*frompool(void)
+{
+	t_dblist	*temp;
+	t_player	*pl;
+
+	temp = ft_popfirst(player.pool);
+	pl = (t_player *)(temp->data);
+	return (pl);
+}
+
+static int32_t	createpool(void)
+{
+	t_player	*temp;
+	int32_t		i;
+	int32_t		reps;
+
+	i = 0;
+	reps = MAX_CLIENTS;
+	if (!(player.pool = (t_queue *)calloc(1, sizeof(t_queue))))
+		return (EXIT_FAILURE); // memory error
+	while (i < reps)
+	{
+		if (!(temp = (t_player *)calloc(1, sizeof(t_player)))
+			|| !(temp->expiration = (t_expiration *)calloc(1, sizeof(t_expiration)))
+			|| !(ft_enqueue(player.pool, temp, sizeof(t_player))))
+			return (EXIT_FAILURE); // memory error
+		i++;
+	}
 	return (EXIT_SUCCESS);
 }
 
@@ -107,6 +147,36 @@ static void		placeonboard(int32_t cl)
 	pl->location.y = arc4random_uniform((uint32_t)SRV_BORD.y);
 	pl->location.orientation = arc4random_uniform((uint32_t)4);
 	board.setplayer(cl);
+}
+
+static void		death(void)
+{
+	char			*str;
+	t_expiration	*expiration;
+	t_dblist		*temp;
+	t_player		*riplayer;
+
+	temp = ft_popfirst(deathqueue.players);
+	riplayer = (t_player *)((t_expiration *)temp->data)->entity;
+	// generate death message to send client
+	expiration = riplayer->expiration;
+	if (!FOOD(riplayer->inventory.items))
+	{
+		bzero(riplayer, sizeof(t_player));
+		riplayer->expiration = expiration;
+		communicate.toclient.outgoing(riplayer->c_fd, "death\n");
+		player.addtopool(riplayer);
+	}
+}
+
+static void		addtopool(t_player *add)
+{
+	ft_enqueue(player.pool, add, 0);
+	printf("Player added back to player pool\n");
+}
+
+static void		timeofdeath(t_player *pl)
+{
 }
 
 /*

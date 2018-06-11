@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/14 12:20:21 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/09 22:35:46 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/10 17:07:39 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,10 @@ static int32_t		ft_serverinit(void)
 			sizeof(struct sockaddr_in)) < 0)
 		|| (listen(SRV_SOCK.sockfd, 128) < 0)
 		|| (init_fd_select() == EXIT_FAILURE)
-		|| (commandqueue.createpool() == EXIT_FAILURE))
+		|| (player.createpool() == EXIT_FAILURE)
+		|| (eggs.createpool() == EXIT_FAILURE)
+		|| (commandqueue.createpool() == EXIT_FAILURE)
+		|| (deathqueue.new() == EXIT_FAILURE))
 		return (EXIT_FAILURE);
 	while ((select(SRV_SOCK.nfds, SRV_SOCK.input, NULL, NULL, time)) >= 0)
 	{
@@ -87,6 +90,7 @@ static int32_t		ft_serverinit(void)
 		}
 		// use gettimeofday to set a timeout val that corresponds to the
 		// next time that select would need to unblock
+		deathqueue.check();
 		server.settimer(&time);
 	}
 	printf("EXIT\n");

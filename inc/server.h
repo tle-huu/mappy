@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/31 18:10:48 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/09 22:35:42 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/10 17:07:41 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,11 @@
 # define SRV_CLNT g_servenv->curr_client
 # define SRV_CMND g_servenv->command
 # define SRV_TIME g_servenv->time
+# define SRV_RIP g_servenv->rip
 # define PEEK 42
 # define NOT_ACCEPTED 21
 # define ACCEPTED 42
+# define MAX_CLIENTS (FD_SETSIZE - 10)
 
 # define NORTH 0
 # define SOUTH 1
@@ -57,11 +59,6 @@ typedef struct			s_server_methods
 
 extern t_server_methods	server;
 
-typedef struct			s_egg
-{
-	t_expiration		*expiration;
-	int32_t				teamindex;
-}						t_egg;
 
 typedef	struct			s_location
 {
@@ -108,7 +105,7 @@ typedef struct			s_team
 	char				*name;
 	int32_t				nplayers;
 	t_player			*players[FD_SETSIZE];
-	t_queue				eggcarton;
+	t_queue				eggqueue;
 }						t_team;
 
 typedef struct			s_gamenv
@@ -155,6 +152,7 @@ typedef struct			s_servenv
 	t_gamenv			gamenv;
 //	t_commandpool		command;
 	t_timeval			time;
+	t_timeval			rip;
 	t_team				*teams;
 	char				*sendbuf;
 }						t_servenv;
