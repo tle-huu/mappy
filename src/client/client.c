@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 13:40:27 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/09 20:58:17 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/11 22:30:16 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,17 +45,16 @@ static int32_t		new(void)
 	printf("<--- NEW CLIENT --->\n");
 	newfd = accept(SRV_SOCK.sockfd,
 				(struct sockaddr *)&(SRV_SOCK.temp), &(SRV_SOCK.socklen));
-	SRV_CLNT = newfd;
-	ret = communicate.toclient.outgoing(newfd, "WELCOME\n");
-	(SRV_ALLP.client_stat)[newfd] = NOT_ACCEPTED;
+	(SRV_ALLP.status)[newfd] = NOT_ACCEPTED;
 	add_fd_select(newfd);
-	if (!SRV_GENV.maxclients)
+	if (!SRV_GENV.maxinitial_clients && !SRV_GENV.maxingame_players)
 	{
 		client.del(newfd);
 		printf("Client %d rejected, not allowed\n", newfd);
 	}
 	else
 		printf("New client %d connected\n", newfd);
+	ret = communicate.toclient.outgoing(newfd, "WELCOME\n");
 	return (ret);
 }
 
@@ -65,28 +64,24 @@ static int32_t		isplayer(int32_t cl)
 
 	ret = player.new(cl);
 	ret = player.add_toteam(cl);
-	player.placeonboard(cl);
 // check egg queue and egg status	
 	return (ret);
 }
 
 static void			del(int32_t cl)
 {
-	printf("Remove client <%d> from fdset\n", cl);
+	printf("Remove client <%d> from fdset and lookup\n", cl);
 	if (SRV_ALLP.lookup[cl])
 	{
 		if ((((SRV_ALLP.lookup)[cl])->team))
 		{
 			printf("Deleting reference to player in team\n");
-			(((SRV_ALLP.lookup)[cl])->team)->nplayers++;
 			((((SRV_ALLP.lookup)[cl])->team)->players)[cl] = NULL;
 		}
-		printf("Deleting reference to player in lookup\n");
-		free((SRV_ALLP.lookup)[cl]);
-		(SRV_ALLP.lookup)[cl] = NULL;
 	}
+	if ((SRV_ALLP.client_stat)[cl] != DEAD)
+		SRV_GENV.maxclients++;
 	(SRV_ALLP.client_stat)[cl] = 0;
-	SRV_GENV.maxclients++;
 	close(cl);
 	FD_CLR(cl, SRV_SOCK.copy);
 }

@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/05 11:14:26 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/09 16:44:38 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/11 12:48:26 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,20 @@
 # define BOARD_H
 
 # define RAND_RESOURCE ((((((SRV_BORD.tiles)[x]).column)[y]).resources).items)
+
+typedef struct			s_tile
+{
+	t_inventory			resources;
+	t_player			*players[FD_SETSIZE];
+	struct s_tile		*column;
+}						t_tile;
+
+typedef	struct			s_board
+{
+	int32_t				x;
+	int32_t				y;
+	t_tile				*tiles;
+}						t_board;
 
 typedef struct			s_board_methods
 {

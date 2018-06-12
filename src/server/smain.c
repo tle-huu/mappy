@@ -6,14 +6,11 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/14 12:20:21 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/10 17:07:39 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/11 19:56:03 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
-#include "board.h"
-#include "communication.h"
-#include "commandqueue.h"
 
 t_opts	arr_opts[] = {
 	{"p", 1, &srv_setport},

@@ -1,33 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   team.h                                             :+:      :+:    :+:   */
+/*   universal.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/06/02 16:41:11 by nkouris           #+#    #+#             */
+/*   Created: 2018/06/11 12:46:41 by nkouris           #+#    #+#             */
 /*   Updated: 2018/06/11 19:56:03 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TEAM_H
-# define TEAM_H
+#ifndef UNIVERSAL_H
+# define UNIVERSAL_H
 
-typedef struct  s_team
+typedef struct			s_inventory
 {
-	char		*name;
-	int32_t		nplayers;
-	t_player	*players[FD_SETSIZE];
-	t_queue 	eggqueue;
-}				t_team;
+	uint64_t			items;
+}						t_inventory;
 
-typedef struct	s_team_methods
+typedef	struct			s_location
 {
-	int32_t		(*name_exists)(int32_t);
-	int32_t		(*add_player)(int32_t, int32_t);
-	int32_t		(*send_freespots)(int32_t, int32_t);
-}				t_team_methods;
+	int32_t				x;
+	int32_t				y;
+	int8_t				orientation;
+}						t_location;
 
-extern t_team_methods	team;
-
-#endif
+# endif

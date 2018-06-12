@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/31 17:13:36 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/07 17:12:34 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/11 11:15:47 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ int32_t		srv_setteams(char **argv, t_opts *opt)
 			|| (!(ft_strcpy(TEAM.name, argv[i]))))
 			return (EXIT_FAILURE);
 		TEAM.nplayers = 1;
+		TEAM.teamindex = (i - 1);
 		i++;
 	}
 	if (i != opt->nparams)

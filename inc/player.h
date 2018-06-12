@@ -6,12 +6,27 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 15:30:42 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/10 15:46:13 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/11 22:21:46 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PLAYER_H
 # define PLAYER_H
+
+typedef struct			s_player
+{
+	int32_t				c_fd;
+	uint64_t			player_id;
+	int8_t				conn_attempts;
+	int8_t				level;
+	char				buf[513];
+	t_inventory			inventory;
+	t_location			location;
+	t_expiration		expiration;
+	t_queue				pending;
+	t_team				*team;
+	t_dblist			*container;
+}						t_player;
 
 typedef struct	s_player_methods
 {

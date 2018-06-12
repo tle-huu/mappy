@@ -6,18 +6,11 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 13:20:08 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/10 17:07:38 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/11 22:30:15 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
-#include "board.h"
-#include "client.h"
-#include "communication.h"
-#include "commands.h"
-#include "inventory.h"
-#include "player.h"
-#include "team.h"
 
 #define PBUF ((SRV_ALLP.lookup)[cl])->buf
 
@@ -43,35 +36,6 @@ t_player_methods	player = {
 	&addtopool
 };
 
-static int32_t	new(int32_t cl)
-{
-	t_player	*pl;
-	int32_t		ret;
-	int32_t		i;
-	
-	printf("Creating new player <%d>\n", cl);
-	ret  = 0;
-	i = 0;
-	if (!(pl = player.frompool()))
-		return (EXIT_FAILURE);
-	pl->c_fd = cl;
-	(SRV_ALLP.lookup)[cl] = pl;
-	while (i++ < 10)
-		inventory.ad_food(pl->inventory.items);
-	player.timeofdeath(pl);
-	return (EXIT_SUCCESS);
-}
-
-static t_player		*frompool(void)
-{
-	t_dblist	*temp;
-	t_player	*pl;
-
-	temp = ft_popfirst(player.pool);
-	pl = (t_player *)(temp->data);
-	return (pl);
-}
-
 static int32_t	createpool(void)
 {
 	t_player	*temp;
@@ -85,11 +49,45 @@ static int32_t	createpool(void)
 	while (i < reps)
 	{
 		if (!(temp = (t_player *)calloc(1, sizeof(t_player)))
-			|| !(temp->expiration = (t_expiration *)calloc(1, sizeof(t_expiration)))
 			|| !(ft_enqueue(player.pool, temp, sizeof(t_player))))
 			return (EXIT_FAILURE); // memory error
 		i++;
 	}
+	return (EXIT_SUCCESS);
+}
+
+static t_dblist		*popfrompool(void)
+{
+	return (ft_popfirst(player.pool));
+}
+
+static void		addtopool(t_player *pl)
+{
+	ft_enqueue(player.pool, pl->container, 0);
+	printf("Player added back to player pool\n");
+}
+
+static int32_t	new(int32_t cl)
+{
+	t_dblist	*temp;
+	t_player	*pl;
+	int32_t		ret;
+	int32_t		i;
+	
+	printf("Creating new player <%d>\n", cl);
+	ret  = 0;
+	i = 0;
+	if (!(temp = player.popfrompool()))
+		return (EXIT_FAILURE);
+	pl = (t_player *)temp->data;
+	pl->container = temp;
+	pl->c_fd = cl;
+	pl->player_id = (SERV_GENV.track_playerid)++;
+	(SRV_ALLP.lookup)[cl] = pl;
+	while (i++ < 10)
+		inventory.ad_food(pl->inventory.items);
+	pl.expiration.entity = pl;
+	player.eating(pl);
 	return (EXIT_SUCCESS);
 }
 
@@ -116,7 +114,7 @@ static int32_t	add_toteam(int32_t cl)
 	}
 	else
 	{
-		ret = team.add_player(cl, i);
+		ret = team.add_player(pl, i);
 		SRV_ALLP.client_stat[cl] = ACCEPTED;
 	}
 	return (ret);
@@ -149,34 +147,32 @@ static void		placeonboard(int32_t cl)
 	board.setplayer(cl);
 }
 
+static void		impendingdeath(t_player *pl)
+{
+	server.setalarm(&(pl->expiration->alarm), 0);
+	SRV_ALLP.status[pl->c_fd] = DOOMED;
+	ft_enqueue(deathqueue.players, pl->container, 0);
+}
+
 static void		death(void)
 {
-	char			*str;
-	t_expiration	*expiration;
 	t_dblist		*temp;
-	t_player		*riplayer;
+	t_player		*pl;
 
 	temp = ft_popfirst(deathqueue.players);
-	riplayer = (t_player *)((t_expiration *)temp->data)->entity;
+	pl = (t_player *)(temp->data);
 	// generate death message to send client
-	expiration = riplayer->expiration;
-	if (!FOOD(riplayer->inventory.items))
-	{
-		bzero(riplayer, sizeof(t_player));
-		riplayer->expiration = expiration;
-		communicate.toclient.outgoing(riplayer->c_fd, "death\n");
-		player.addtopool(riplayer);
-	}
+	communicate.toclient.outgoing(pl->c_fd, "death\n");
+	SRV_ALLP.client_stat[pl->c_fd] = DEAD;
+	client.del(pl->c_fd);
+	bzero(pl, sizeof(t_player));
+	pl->container = temp;
+	player.addtopool(pl);
 }
 
-static void		addtopool(t_player *add)
+static void		eating(t_player *pl)
 {
-	ft_enqueue(player.pool, add, 0);
-	printf("Player added back to player pool\n");
-}
-
-static void		timeofdeath(t_player *pl)
-{
+	commands.add(&(commandlookup[EATCOMMAND]), pl);
 }
 
 /*

@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/31 17:15:59 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/05 11:44:53 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/11 18:09:12 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int32_t		srv_setmaxclients(char **argv, __attribute__((unused))t_opts *opt)
 			return (EXIT_FAILURE);
 		}
 	}
-	SRV_GENV.maxclients = maxc;
+	SRV_GENV.maxclients = maxc * SRV_GENV.nteams;
 	return (EXIT_SUCCESS);
 }
 

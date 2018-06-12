@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/09 22:27:39 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/10 15:44:09 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/11 19:56:01 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,11 @@
 typedef struct		s_egg
 {
 	int32_t			teamindex;
-	t_expiration	*expiration;
+	uint64_t		egg_id;
+	t_location		location;
+	t_expiration	expiration;
+	t_dblist		*container;
+	t_dblist		*deathcontainer;
 }					t_egg;
 
 typedef struct		s_egg_methods

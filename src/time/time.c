@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 10:53:55 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/09 22:35:44 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/11 21:15:08 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,6 @@ static int32_t	comparetime(t_timeval *time)
 		return (1);
 	}
 	return (0);
-}
-
-static void		cleartime(t_timeval *comtime)
-{
-	comtime->tv_sec = 0;
-	comtime->tv_usec = 0;
 }
 
 static void		settimer(t_timeval **time)
@@ -80,7 +74,7 @@ static void		setalarm(t_timeval *alarm, float factor)
 
 	gettimeofday(&temp, NULL);
 	printf("\nSET ALARM\nIt is <%ld> seconds & <%d> microseconds\n", temp.tv_sec, temp.tv_usec);
-	interval = factor/SRV_GENV.timeint;
+	interval = factor/SRV_GENV.timeinterval;
 	integer = 0;
 	if (interval > 1)
 		interval = modf(interval, &integer);
