@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 13:20:08 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/11 22:30:15 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/12 12:15:25 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -172,7 +172,7 @@ static void		death(void)
 
 static void		eating(t_player *pl)
 {
-	commands.add(&(commandlookup[EATCOMMAND]), pl);
+	commands.isvalid(&(commandlookup[EATCOMMAND]), pl, 0);
 }
 
 /*

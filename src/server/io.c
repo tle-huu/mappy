@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/04 14:14:23 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/09 22:35:43 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/12 12:39:01 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 
 static inline __attribute__((always_inline))int32_t	known_socket(int32_t cl)
 {
+	//add handling for graphical client
 	char	buf[PEEK];
 
 	SRV_CLNT = cl;

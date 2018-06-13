@@ -6,26 +6,24 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 10:53:55 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/11 21:15:08 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/12 10:32:31 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
 #include "commandqueue.h"
 
-static int32_t	comparetime(t_timeval *comtime);
-static void		cleartime(t_timeval *comtime);
+static int32_t	compare(t_timeval *comtime);
 static void		settimer(t_timeval **time);
 static void		setalarm(t_timeval *alarm, float factor);
 
-t_server_methods server = {
-	&comparetime,
-	&cleartime,
+t_time_methods time = {
+	&compare,
 	&settimer,
 	&setalarm
 };
 
-static int32_t	comparetime(t_timeval *time)
+static int32_t	compare(t_timeval *time)
 {
 	printf("\nCOMPARE TIME\nTimer set for <%ld> seconds & <%d> microseconds\nvs\n<%ld> seconds & <%d> microseconds\n", time->tv_sec, time->tv_usec, SRV_TIME.tv_sec, SRV_TIME.tv_usec);
 	if ((SRV_TIME.tv_sec > time->tv_sec)

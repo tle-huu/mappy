@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/10 13:06:05 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/11 21:39:30 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/12 10:31:54 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static int32_t		player(void)
 		temp = (deathqueue.players->first);
 		while (temp)
 		{
-			if (server.comparetime(&(TEMP_PLY.expiration.alarm)))
+			if (time.compare(&(TEMP_PLY.expiration.alarm)))
 				player.death();
 			else
 				break ;
@@ -72,7 +72,7 @@ static int32_t		egg(void)
 		temp = (deathqueue.eggs->first);
 		while (temp)
 		{
-			if (server.comparetime(&temp_OBJ->alarm))
+			if (time.compare(&temp_OBJ->alarm))
 				egg.death();
 			else
 				break ;

@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 16:41:11 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/11 19:56:03 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/12 10:28:57 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ typedef struct  s_team
 {
 	char		*name;
 	int32_t		nplayers;
+	int32_t		teamindex;
 	t_player	*players[FD_SETSIZE];
 	t_queue 	eggqueue;
 }				t_team;
