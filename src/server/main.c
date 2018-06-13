@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   smain.c                                            :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/05/14 12:20:21 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/11 19:56:03 by nkouris          ###   ########.fr       */
+/*   Created: 2018/06/13 11:16:44 by nkouris           #+#    #+#             */
+/*   Updated: 2018/06/13 11:40:17 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,21 +61,22 @@ static int32_t		ft_serverinit(void)
 
 	ret = 0;
 	time = NULL;
-	board.new();
 	if ((set_sock() == EXIT_FAILURE)
 		|| (bind(SRV_SOCK.sockfd, ((struct sockaddr *)&(SRV_SOCK.address)),
 			sizeof(struct sockaddr_in)) < 0)
 		|| (listen(SRV_SOCK.sockfd, 128) < 0)
 		|| (init_fd_select() == EXIT_FAILURE)
-		|| (player.createpool() == EXIT_FAILURE)
-		|| (eggs.createpool() == EXIT_FAILURE)
-		|| (commandqueue.createpool() == EXIT_FAILURE)
-		|| (deathqueue.new() == EXIT_FAILURE))
+		|| (board.new() == EXIT_FAILURE)
+		|| (events.queue.new() == EXIT_FAILURE)
+		|| (events.pool.new() == EXIT_FAILURE)
+		|| (player.pool.new() == EXIT_FAILURE)
+		|| (eggs.pool.new() == EXIT_FAILURE)
+		|| (death.track.new() == EXIT_FAILURE))
 		return (EXIT_FAILURE);
 	while ((select(SRV_SOCK.nfds, SRV_SOCK.input, NULL, NULL, time)) >= 0)
 	{
 		printf("\n\nBody of Select\n\n");
-		commandqueue.check();
+		events.queue.check();
 		// because we can't assume that select unblocked due to a timeout
 		// or a fd being ready to read, function will use gettimeofday to
 		// compare the top of the command pqueue and execute and respond to 
@@ -87,8 +88,8 @@ static int32_t		ft_serverinit(void)
 		}
 		// use gettimeofday to set a timeout val that corresponds to the
 		// next time that select would need to unblock
-		deathqueue.check();
-		server.settimer(&time);
+		death.track.check();
+		time.settimer(&time);
 	}
 	printf("EXIT\n");
 	return (EXIT_SUCCESS);

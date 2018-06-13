@@ -1,25 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   communication.h                                    :+:      :+:    :+:   */
+/*   graphics.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/06/02 16:11:12 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/13 16:19:14 by nkouris          ###   ########.fr       */
+/*   Created: 2018/06/13 14:07:15 by nkouris           #+#    #+#             */
+/*   Updated: 2018/06/13 16:21:12 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_COMM_H
-# define FT_COMM_H
+#ifndef GRAPHIC_H
+# define GRAPHIC_H
 
-typedef struct			s_communication_methods
+typedef struct	s_graphic_methods
 {
-	int32_t				(*outgoing)(int32_t, char *);
-	int32_t				(*incoming)(int32_t);
-	int32_t				(*printraw)(int32_t);
-}						t_communication_methods;
-
-t_communication_methods			communication;
+	int32_t		nothing;
+}				t_graphic_methods;
 
 #endif

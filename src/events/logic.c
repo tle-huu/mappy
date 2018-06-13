@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 21:31:19 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/12 22:15:15 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/13 14:33:15 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static int32_t	add(t_eventhold *eventhold, void *entity, int32_t preprocess)
 	ev->container = temp;
 	if (preprocess)
 	{
-		if (SRV_ALLP.client_status[PLAYER_ENT->c_fd] == WORKING)
+		if (SRV_ALLP.status[PLAYER_ENT->c_fd] == WORKING)
 		{
 			if (PLAYER_ENT->pending.qlen < 9)
 				ft_enqueue(PLAYER_ENT->pending, ev->container, 0);
@@ -74,5 +74,5 @@ static int32_t	add(t_eventhold *eventhold, void *entity, int32_t preprocess)
 
 static void		fail(int32_t cl)
 {
-	communicate.toclient.outgoing(cl, "ko\n");
+	communication.outgoing(cl, "ko\n");
 }

@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 22:14:04 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/12 22:15:32 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/13 14:34:50 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,9 @@ static int32_t	ft_fork(void *entity)
 
 	pl = (t_player *)entity;
 	if (egg.incubate(pl) == -1)
-		communicate.toclient.outgoing(pl->c_fd, "ko\n");
+		communication.outgoing(pl->c_fd, "ko\n");
 	else
-		communicate.toclient.outgoing(pl->c_fd, "ok\n");
+		communication.outgoing(pl->c_fd, "ok\n");
 	return (EXIT_SUCCESS);
 }
 

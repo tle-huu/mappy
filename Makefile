@@ -10,25 +10,71 @@ CC = gcc
 # Source directories identifiers                                               #
 ################################################################################
 
-SRCDIR_BRD = src/board/
-SRCDIR_CLN = src/client/
-SRCDIR_CMD = src/commands/
-SRCDIR_CQU = src/commandqueue/
-SRCDIR_COM = src/communication/
-SRCDIR_INV = src/inventory/
-SRCDIR_PLR = src/player/
-SRCDIR_SRV = src/server/
-SRCDIR_TEM = src/team/
+SRCDIR = src/
+SRCDIR_BRD = board/
+SRCDIR_CLN = client/
+SRCDIR_COM = communication/
+SRCDIR_DTH = death/
+SRCDIR_EGG = egg/
+SRCDIR_ERR = error/
+SRCDIR_EVS = events/
+SRCDIR_EVS_GFX = gfx/
+SRCDIR_EVS_PLR = player/
+SRCDIR_EVS_SRV = server/
+SRCDIR_INV = inventory/
+SRCDIR_PLR = player/
+SRCDIR_SRV = server/
+SRCDIR_TEM = team/
+SRCDIR_TIM = team/
 
-OBJSRC = $(patsubst %, %.o, $(addprefix $(SRCDIR_BRD), $(SRC_BRD)))
-OBJSRC += $(patsubst %, %.o, $(addprefix $(SRCDIR_CLN), $(SRC_CLN)))
-OBJSRC += $(patsubst %, %.o, $(addprefix $(SRCDIR_CMD), $(SRC_CMD)))
-OBJSRC += $(patsubst %, %.o, $(addprefix $(SRCDIR_CQU), $(SRC_CQU)))
-OBJSRC += $(patsubst %, %.o, $(addprefix $(SRCDIR_COM), $(SRC_COM)))
-OBJSRC += $(patsubst %, %.o, $(addprefix $(SRCDIR_INV), $(SRC_INV)))
-OBJSRC += $(patsubst %, %.o, $(addprefix $(SRCDIR_PLR), $(SRC_PLR)))
-OBJSRC += $(patsubst %, %.o, $(addprefix $(SRCDIR_SRV), $(SRC_SRV)))
-OBJSRC += $(patsubst %, %.o, $(addprefix $(SRCDIR_TEM), $(SRC_TEM)))
+OBJSRC = $(patsubst %, %.o, $(addprefix \
+		 $(addprefix $(SRCDIR), $(SRCDIR_BRD)), \
+		 $(SRC_BRD)))
+OBJSRC += $(patsubst %, %.o, $(addprefix \
+		  $(addprefix $(SRCDIR), $(SRCDIR_CLN)), \
+		  $(SRC_CLN)))
+OBJSRC += $(patsubst %, %.o, $(addprefix \
+		  $(addprefix $(SRCDIR), $(SRCDIR_COM)), \
+		  $(SRC_COM)))
+OBJSRC += $(patsubst %, %.o, $(addprefix \
+		  $(addprefix $(SRCDIR), $(SRCDIR_DTH)), \
+		  $(SRC_DTH)))
+OBJSRC += $(patsubst %, %.o, $(addprefix \
+		  $(addprefix $(SRCDIR), $(SRCDIR_EGG)), \
+		  $(SRC_EGG)))
+OBJSRC += $(patsubst %, %.o, $(addprefix \
+		  $(addprefix $(SRCDIR), $(SRCDIR_ERR)), \
+		  $(SRC_ERR)))
+OBJSRC += $(patsubst %, %.o, $(addprefix \
+		  $(addprefix $(SRCDIR), $(SRCDIR_EVS)), \
+		  $(SRC_EVS)))
+OBJSRC += $(patsubst %, %.o, $(addprefix \
+		  $(addprefix $(SRCDIR), \
+		  $(addprefix $(SRCDIR_EVS), $(SRCDIR_EVS_GFX))), \
+		  $(SRC_EVS_GFX)))
+OBJSRC += $(patsubst %, %.o, $(addprefix \
+		  $(addprefix $(SRCDIR), \
+		  $(addprefix $(SRCDIR_EVS), $(SRCDIR_EVS_PLR))), \
+		  $(SRC_EVS_PLR)))
+OBJSRC += $(patsubst %, %.o, $(addprefix \
+		  $(addprefix $(SRCDIR), \
+		  $(addprefix $(SRCDIR_EVS), $(SRCDIR_EVS_SRV))), \
+		  $(SRC_EVS_SRV)))
+OBJSRC += $(patsubst %, %.o, $(addprefix \
+		  $(addprefix $(SRCDIR), $(SRCDIR_INV)), \
+		  $(SRC_INV)))
+OBJSRC += $(patsubst %, %.o, $(addprefix \
+		  $(addprefix $(SRCDIR), $(SRCDIR_PLR)), \
+		  $(SRC_PLR)))
+OBJSRC += $(patsubst %, %.o, $(addprefix \
+		  $(addprefix $(SRCDIR), $(SRCDIR_SRV)), \
+		  $(SRC_SRV)))
+OBJSRC += $(patsubst %, %.o, $(addprefix \
+		  $(addprefix $(SRCDIR), $(SRCDIR_TEM)), \
+		  $(SRC_TEM)))
+OBJSRC += $(patsubst %, %.o, $(addprefix \
+		  $(addprefix $(SRCDIR), $(SRCDIR_TIM)), \
+		  $(SRC_TIM)))
 
 #OBJSRC = $(patsubst %, %.o, $(addprefix \
 #		 $(addprefix $(SRCDIR), $(SRCDIR_IO)), \
@@ -52,37 +98,64 @@ RES = \033[0m
 # SOURCE FILES                                                                 #
 ################################################################################
 
-SRC_BRD =	\
-	board		
+SRC_BRD = \
+	board
 
-SRC_CMD =	\
-	commands
-
-SRC_CLN =	\
+SRC_CLN = \
 	client
 
-SRC_CQU =	\
-	commandqueue
+SRC_COM = \
+	communication
 
-SRC_COM =	\
-	comms
+SRC_DTH = \
+	death
 
-SRC_INV =	\
+SRC_EGG = \
+	death \
+	egg \
+	place \
+	pool
+
+SRC_ERR = \
+	error
+
+SRC_EVS = \
+	logic \
+	pool \
+	queue
+
+#SRC_EVS_GFX = \	
+SRC_EVS_PLR = \
+	commandset_1
+
+SRC_EVS_SRV = \
+	actions
+
+SRC_INV = \
 	inventory
 
-SRC_PLR =	\
-	player
+SRC_PLR = \
+	death \
+	parse \
+	place \
+	player \
+	pool
 
-SRC_SRV =	\
-	error \
+SRC_SRV = \
 	io \
-	smain \
+	main \
 	srv_sets1 \
-	srv_sets2 \
+	srv_sets2
+
+SRC_TEM = \
+	team
+
+SRC_TIM = \
 	time
 
-SRC_TEM =	\
-	team
+################################################################################
+# SOURCE FILES                                                                 #
+################################################################################
 
 all: $(LIB) $(SRV)
 

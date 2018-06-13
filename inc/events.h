@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 15:58:08 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/12 22:15:11 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/13 16:20:24 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ typedef struct		s_eventqueue
 	t_queue			*data;
 	int32_t			(*new)(void);
 	int32_t			(*sort)(t_dblist *, t_dblist *);
-	int32_t			(*add)(t_command *);
+	int32_t			(*add)(t_event *);
 	t_dblist		*(*pop)(void);
 	int32_t			(*check)(void);
 }					t_eventqueue;
@@ -47,7 +47,7 @@ typedef struct		s_eventpool
 {
 	t_queue			*data;
 	int32_t			(*new)(void);
-	int32_t			(*add)(void);
+	void			(*add)(t_event *);
 	t_dblist		*(*pop)(void);
 }					t_eventpool;
 
@@ -56,7 +56,7 @@ typedef struct		s_event_methods
 	t_eventpool		pool;
 	t_eventqueue	queue;
 	int32_t			(*lookup)(int32_t);
-	int32_t			(*add)(t_commhold *, int32_t);
+	int32_t			(*add)(t_eventhold *, void *, int32_t);
 	void			(*fail)(int32_t);
 }					t_event_methods;
 

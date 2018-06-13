@@ -6,34 +6,12 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/31 18:10:48 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/11 21:54:44 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/13 16:08:14 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SERVER_H
 # define SERVER_H
-
-# include <sys/socket.h>
-# include <sys/select.h>
-# include <sys/time.h>
-# include <arpa/inet.h>
-# include <math.h>
-# include <netdb.h>
-# include <termios.h>
-# include <stdlib.h>
-# include "libft.h"
-# include "universal.h"
-# include "board.h"
-# include "client.h"
-# include "commandqueue.h"
-# include "commands.h"
-# include "communication.h"
-# include "deathqueue.h"
-# include "egg.h"
-# include "inventory.h"
-# include "player.h"
-# include "team.h"
-# include "time.h"
 
 # define SRV_ALLP g_servenv->allplayers
 # define SRV_SOCK g_servenv->socket
@@ -58,10 +36,6 @@
 # define WEST 4
 
 # define WELCOME "WELCOME\n"
-
-typedef struct			s_servenv	t_servenv;
-
-t_servenv				*g_servenv;
 
 typedef struct			s_gamenv
 {
@@ -102,8 +76,11 @@ typedef struct			s_servenv
 	t_timeval			time;
 	t_timeval			deathtime;
 	t_team				*teams;
-	char				*sendbuf;
+	char				sendbuf[513];
+	char				recievbuf[513];
 }						t_servenv;
+
+t_servenv				*g_servenv;
 
 /*
 **	srv_sets

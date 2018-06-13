@@ -6,27 +6,23 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 14:55:19 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/12 15:55:41 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/13 14:41:37 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
-#include "board.h"
-#include "client.h"
-#include "communication.h"
-#include "team.h"
 
 /* method function prototypes */
 static int32_t	name_exists(int32_t cl);
 static int32_t	add_player(int32_t cl, int32_t tm);
 static int32_t	send_freespots(int32_t cl, int32_t tm);
 
-/* method object */
-t_team_methods	team = {
-	&name_exists,
-	&add_player,
-	&send_freespots
-};
+__attribute__((constructor))void	construct_team(void)
+{
+	team.name_exists = &name_exists;
+	team.add_player = &add_player;
+	team.send_freespots = &send_freespots;
+}
 
 static int32_t	name_exists(int32_t cl)
 {
@@ -61,7 +57,7 @@ static int32_t	add_player(t_player *pl, int32_t teamindex)
 		SRV_GENV.maxingame_players--;
 		tm->nplayers--;
 		if (tm->eggqueue)
-			egg.transferlocation(pl);
+			player.place.onegg(pl);
 		else 
 			player.placeonboard(cl);
 		printf("Adding player <%d> to |%s|\n", cl, tm.name);
@@ -72,7 +68,7 @@ static int32_t	add_player(t_player *pl, int32_t teamindex)
 	else
 	{
 		printf("player <%d> tried to join |%s|,no room\n", cl, tm.name);
-		client.del(cl);
+		client.disconnect(cl);
 	}
 	return (EXIT_SUCCESS);
 }
@@ -86,14 +82,8 @@ static int32_t	send_freespots(int32_t cl, t_team *tm)
 		|| (!(str = calloc(1, strlen(num) + 2)))
 		|| (!(str = ft_strfreecat(str, num)))
 		|| (!(str = strcat(str, "\n")))
-		|| (communicate.toclient.outgoing(cl, str) == EXIT_FAILURE))
+		|| (communication.outgoing(cl, str) == EXIT_FAILURE)))
 		return (EXIT_FAILURE);
 	free(str);
 	return (EXIT_SUCCESS);
 }
-
-/*
-static int32_t	new(int32_t cl)
-{
-}
-*/

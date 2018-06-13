@@ -1,65 +1,74 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   comms.c                                            :+:      :+:    :+:   */
+/*   communication.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/06/05 09:41:17 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/09 22:35:45 by nkouris          ###   ########.fr       */
+/*   Created: 2018/06/13 14:11:03 by nkouris           #+#    #+#             */
+/*   Updated: 2018/06/13 14:11:05 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
-#include "client.h"
-#include "communication.h"
 
 /* method function prototypes */
 static int32_t	outgoing(int32_t cl, char *str);
 static int32_t	incoming(t_player *p);
 static int32_t	printraw(int32_t cl);
 
-t_communicate communicate = {
-	/* methods */
-	{
-		&outgoing
-	},
-	{
-		&incoming,
-		&printraw
-	}
-};
+__attribute__((constructor))void	construct_communication(void)
+{
+	communication.outgoing = &outgoing;
+	communication.incoming = &incoming;
+	communication.printraw = &printraw;
+}
 
-/*
-**	srv_toclient
-*/
+static int32_t	from_graphic(__attribute__((unused))t_graphic *gr)
+{
+	return (EXIT_SUCCESS);
+}
+
+static int32_t	from_player(t_player *pl)
+{
+	int32_t		ret;
+
+	printf("Recieving message from client <%d>\n", pl->c_fd);
+	bzero(g_servenv.recievebuf, 513);
+	if ((ret = recv(pl->c_fd, g_servenv.recievebuf, 512, 0)) < 0)
+		return (EXIT_FAILURE);
+	else if (!ret)
+	{
+		client.disconnect(pl->c_fd);
+		return (-1);
+	}
+	g_servenv.recievebuf[(ret - 1)] = '\0';
+	return (EXIT_SUCCESS);
+}
+
+static int32_t	incoming(int32_t cl)
+{
+	t_player	*pl;
+	t_graphic	*gr;
+	int32_t		ret;
+
+	if (SRV_ALLP.status == GRAPHIC)
+	{
+		gr = SRV_ALLP.lookup[cl];
+		ret = from_graphic(gr);
+	}
+	else
+	{
+		pl = SRV_ALLP.lookup[cl];
+		ret = from_player(pl);
+	}
+	return (ret);
+}
 
 static int32_t	outgoing(int32_t cl, char *str)
 {
 	if (send(cl, str, strlen(str), 0) < 0)
 		return (EXIT_FAILURE);
-	return (EXIT_SUCCESS);
-}
-
-/*
-**	client_toserver
-*/
-
-static int32_t	incoming(t_player *pl)
-{
-	int32_t	ret;
-
-	printf("Recieving message from client <%d>\n", pl->c_fd);
-	ret = 0;
-	bzero(pl->buf, 513);
-	if ((ret = recv(pl->c_fd, pl->buf, 512, 0)) < 0)
-		return (EXIT_FAILURE);
-	else if (!ret)
-	{
-		client.del(pl->c_fd);
-		return (-1);
-	}
-	pl->buf[(ret - 1)] = '\0';
 	return (EXIT_SUCCESS);
 }
 

@@ -6,41 +6,50 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 15:30:42 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/11 22:21:46 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/13 16:44:32 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PLAYER_H
 # define PLAYER_H
 
-typedef struct			s_player
-{
-	int32_t				c_fd;
-	uint64_t			player_id;
-	int8_t				conn_attempts;
-	int8_t				level;
-	char				buf[513];
-	t_inventory			inventory;
-	t_location			location;
-	t_expiration		expiration;
-	t_queue				pending;
-	t_team				*team;
-	t_dblist			*container;
-}						t_player;
 
-typedef struct	s_player_methods
+typedef struct		s_playerpool
 {
-	t_queue		*pool;
-	int32_t		(*new)(int32_t);
-	int32_t		(*createpool)(int32_t);
-	int32_t		(*add_toteam)(int32_t);
-	int32_t		(*parse_command)(int32_t);
-	void		(*placeonboard)(int32_t);
-	int32_t		(*createpool)(void);
-	void		(*death)(void);
-	void		(*addtopool)(t_player *add);
-}				t_player_methods;
+	t_queue			*data;
+	int32_t			(*new)(void);
+	t_dblist		*(*pop)(void);
+	void			(*add)(t_player *add)
+}					t_playerpool;
 
-extern t_player_methods	player;
+typedef struct		s_playerparse
+{
+	int32_t			(*team)(t_player *);
+	int32_t			(*command)(t_player *);
+}					t_playerparse;
+
+typedef struct		s_playerplace
+{
+	void			(*onboard)(t_player *);
+	void			(*onegg)(t_player *);
+}					t_playerplace;
+
+typedef struct		s_playerdeath
+{
+	void			(*soon)(t_player *);
+	void			(*now)(void);
+}					t_playerdeath;
+
+typedef struct		s_player_methods
+{
+	t_pool			pool;
+	t_playerparse	parse;
+	t_playerplace	place;
+	t_playerdeath	death;
+	int32_t			(*new)(int32_t);
+	void			(*eats)(t_player *);
+}					t_player_methods;
+
+t_player_methods	player;
 
 #endif

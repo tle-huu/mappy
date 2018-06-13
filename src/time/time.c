@@ -6,22 +6,22 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 10:53:55 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/12 10:32:31 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/13 13:54:20 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
-#include "commandqueue.h"
 
 static int32_t	compare(t_timeval *comtime);
 static void		settimer(t_timeval **time);
 static void		setalarm(t_timeval *alarm, float factor);
 
-t_time_methods time = {
-	&compare,
-	&settimer,
-	&setalarm
-};
+__attribute__((constructor))void	construct_time(void)
+{
+	time.compare = &compare;
+	time.settimer = &settimer;
+	time.setalarm = &setalarm;
+}
 
 static int32_t	compare(t_timeval *time)
 {

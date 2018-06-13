@@ -6,20 +6,26 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/05 10:45:14 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/11 19:56:03 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/13 16:44:26 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "server.h"
-#include "board.h"
-#include "communication.h"
-#include "inventory.h"
+#include "types.h"
+#include "universal.h"
 
 /* method function prototypes */
 static int32_t	send_dimensions(int32_t cl);
 static int32_t	new(void);
 static void		resource_gen(void);
-static void		setplayer(int32_t cl);
+static void		setplayer(t_player *pl);
+
+__attribute__((constructor))void	construct_board(void)
+{
+	board.new = &new;
+	board.sen_dimensions = &send_dimensions;
+	board.resource_gen = &resource_gen;
+	board.setplayer = &setplayer;
+}
 
 /* method object */
 t_board_methods	board = {
@@ -65,7 +71,7 @@ static int32_t	send_dimensions(int32_t cl)
 		|| !(num = ft_itoa(SRV_BORD.y))
 		|| !(str = ft_strfreecat(str, num))
 		|| !(str = strcat(str, "\n"))
-		|| (communicate.toclient.outgoing(cl, str) == EXIT_FAILURE))
+		|| (communication.outgoing(cl, str) == EXIT_FAILURE))
 		return (EXIT_FAILURE);
 	free(str);
 	return (EXIT_SUCCESS);
@@ -113,13 +119,11 @@ static void		resource_gen(void)
 	}
 }
 
-static void		setplayer(cl)
+static void		setplayer(t_player *pl)
 {
-	t_player	*pl;
 	int32_t		x;
 	int32_t		y;
 
-	pl = (SRV_ALLP.lookup)[cl];
 	x = pl->location.x;
 	y = pl->location.y;
 	(((((SRV_BORD.tiles)[x]).column)[y]).players)[cl] = pl;

@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 16:41:11 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/12 10:28:57 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/13 16:22:37 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,6 @@ typedef struct	s_team_methods
 	int32_t		(*send_freespots)(int32_t, int32_t);
 }				t_team_methods;
 
-extern t_team_methods	team;
+t_team_methods	team;
 
 #endif

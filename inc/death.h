@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   deathqueue.h                                       :+:      :+:    :+:   */
+/*   death.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/06/10 13:06:39 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/11 19:56:07 by nkouris          ###   ########.fr       */
+/*   Created: 2018/06/13 16:04:34 by nkouris           #+#    #+#             */
+/*   Updated: 2018/06/13 16:15:27 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,21 +25,25 @@
 **	right before the timer is set for the next loop.
 */
 
-typedef struct	s_expiration
+typedef struct		s_expiration
 {
-	t_timeval	alarm;
-	void		*entity;
-}				t_expiration;
+	t_timeval		alarm;
+	void			*entity;
+}					t_expiration;
 
-typedef	struct	s_deathqueue
+typedef struct		s_deathtracks
 {
-	t_queue		*players;
-	t_queue		*eggs;
-	int32_t		(*check)(void);
-	int32_t		(*player)(void);
-	int32_t		(*egg)(void);
-}				t_deathqueue;
+	t_queue			*players;
+	t_queue			*eggs;
+	int32_t			(*new)(void);
+	int32_t			(*check)(void);
+}					t_deathtracks;
 
-extern t_deathqueue	deathqueue;
+typedef	struct		s_death
+{
+	t_deathtracks	track;
+}					t_death;
+
+t_death				death;
 
 #endif
