@@ -6,16 +6,21 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 23:16:32 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/13 14:35:31 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/13 22:55:42 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "server.h"
+#include "universal.h"
+#include "player.h"
+#include "death.h"
+#include "client.h"
+#include "communication.h"
+#include "time.h"
 
 static void		soon(t_player *pl);
 static void		now(void);
 
-__attribute__((constructor))void	construct_playerpool(void)
+__attribute__((constructor))void	construct_playerdeath(void)
 {
 	player.death.soon = &soon;
 	player.death.now = &now;
@@ -23,7 +28,7 @@ __attribute__((constructor))void	construct_playerpool(void)
 
 static void		soon(t_player *pl)
 {
-	server.setalarm(&(pl->expiration->alarm), 0);
+	time.setalarm(&(pl->expiration.alarm), 0);
 	SRV_ALLP.status[pl->c_fd] = DOOMED;
 	ft_enqueue(death.track.players, pl->container, 0);
 }

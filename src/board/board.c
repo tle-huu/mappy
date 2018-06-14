@@ -6,12 +6,14 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/05 10:45:14 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/13 16:44:26 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/13 17:10:37 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "types.h"
 #include "universal.h"
+#include "board.h"
+#include "inventory.h"
+#include "communication.h"
 
 /* method function prototypes */
 static int32_t	send_dimensions(int32_t cl);
@@ -22,18 +24,10 @@ static void		setplayer(t_player *pl);
 __attribute__((constructor))void	construct_board(void)
 {
 	board.new = &new;
-	board.sen_dimensions = &send_dimensions;
+	board.send_dimensions = &send_dimensions;
 	board.resource_gen = &resource_gen;
 	board.setplayer = &setplayer;
 }
-
-/* method object */
-t_board_methods	board = {
-	&new,
-	&send_dimensions,
-	&resource_gen,
-	&setplayer
-};
 
 static int32_t	new(void)
 {
@@ -126,5 +120,5 @@ static void		setplayer(t_player *pl)
 
 	x = pl->location.x;
 	y = pl->location.y;
-	(((((SRV_BORD.tiles)[x]).column)[y]).players)[cl] = pl;
+	(((((SRV_BORD.tiles)[x]).column)[y]).players)[pl->c_fd] = pl;
 }

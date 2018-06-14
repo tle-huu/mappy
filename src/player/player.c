@@ -6,16 +6,19 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 13:20:08 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/13 13:26:07 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/13 22:56:43 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "server.h"
+#include "universal.h"
+#include "player.h"
+#include "inventory.h"
+#include "events.h"
 
 static int32_t	new(int32_t cl);
 static void		eats(t_player *pl);
 
-__attribute__((constructor))void	construct_playerpool(void)
+__attribute__((constructor))void	construct_player(void)
 {
 	player.new = &new;
 	player.eats = &eats;
@@ -36,17 +39,17 @@ static int32_t	new(int32_t cl)
 	pl = (t_player *)temp->data;
 	pl->container = temp;
 	pl->c_fd = cl;
-	pl->player_id = (SERV_GENV.track_playerid)++;
+	pl->player_id = (SRV_GENV.track_playerid)++;
 	(SRV_ALLP.lookup)[cl] = pl;
 	while (i++ < 10)
 		inventory.ad_food(pl->inventory.items);
-	pl.expiration.entity = pl;
-	if (player.parse.team(pl) == EXIT_SUCCESS);
-		player.eating(pl);
+	pl->expiration.entity = pl;
+	if (player.parse.teamname(pl) == EXIT_SUCCESS)
+		player.eats(pl);
 	return (EXIT_SUCCESS);
 }
 
 static void		eats(t_player *pl)
 {
-	event.add(&(commandlookup[EATCOMMAND]), pl, 0);
+	event.add(&(eventlookup[EATCOMMAND]), pl, 0);
 }

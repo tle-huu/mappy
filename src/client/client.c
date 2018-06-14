@@ -6,11 +6,13 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 13:40:27 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/13 14:35:18 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/13 17:13:14 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "server.h"
+#include "universal.h"
+#include "client.h"
+#include "communication.h"
 
 static int32_t	new(void);
 static void		disconnect(int32_t cl);
@@ -18,7 +20,7 @@ static void		disconnect(int32_t cl);
 __attribute__((constructor))void	construct_client(void)
 {
 	client.new = &new;
-	client.disconnect = &disconnect
+	client.disconnect = &disconnect;
 }
 
 static inline __attribute__((always_inline))void	add_fd_select(int32_t sock)
@@ -65,8 +67,8 @@ static void			disconnect(int32_t cl)
 			((((SRV_ALLP.lookup)[cl])->team)->players)[cl] = NULL;
 		}
 	}
-	if ((SRV_ALLP.status)[cl] != DEAD)
-		SRV_GENV.maxclients++;
+//	if ((SRV_ALLP.status)[cl] != DEAD)
+//		SRV_GENV.max++;
 	(SRV_ALLP.status)[cl] = 0;
 	close(cl);
 	FD_CLR(cl, SRV_SOCK.copy);

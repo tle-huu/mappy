@@ -6,11 +6,12 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 16:52:08 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/12 22:35:06 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/13 18:09:44 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "server.h"
+#include "universal.h"
+#include "events.h"
 
 static int32_t		new(void);
 static t_dblist		*pop(void);
@@ -31,12 +32,12 @@ static int32_t	new(void)
 
 	i = 0;
 	reps = (MAX_CLIENTS * 10);
-	if (!(events.pool.data = (t_queue *)calloc(1, sizeof(t_queue))))
+	if (!(event.pool.data = (t_queue *)calloc(1, sizeof(t_queue))))
 		return (EXIT_FAILURE);		//error.memory
 	while (i < reps)
 	{
 		if (!(temp = (t_event *)calloc(1, sizeof(t_event)))
-			|| !(ft_enqueue(events.pool.data, temp, sizeof(t_event))))
+			|| !(ft_enqueue(event.pool.data, temp, sizeof(t_event))))
 			return (EXIT_FAILURE);		//error.memory
 		i++;
 	}
@@ -45,7 +46,7 @@ static int32_t	new(void)
 
 static t_dblist	*pop(void)
 {
-	return (ft_popfirst(events.pool.data));
+	return (ft_popfirst(event.pool.data));
 }
 
 static void		add(t_event *ev)
@@ -55,7 +56,6 @@ static void		add(t_event *ev)
 	temp = ev->container;
 	bzero(ev, sizeof(t_event));
 	ev->container = temp;
-	ft_enqueue(events.pool.data, temp, 0);
-	printf("Nodes available in events.pool.data : %d\n", (events.pool.data)->qlen);
-	return (EXIT_SUCCESS);
+	ft_enqueue(event.pool.data, temp, 0);
+	printf("Nodes available in events.pool.data : %d\n", (event.pool.data)->qlen);
 }

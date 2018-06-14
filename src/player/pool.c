@@ -6,11 +6,16 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 22:27:23 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/12 23:16:12 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/13 22:37:36 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "server.h"
+#include "universal.h"
+#include "player.h"
+
+static int32_t		new(void);
+static t_dblist		*pop(void);
+static void			add(t_player *pl);
 
 __attribute__((constructor))void	construct_playerpool(void)
 {

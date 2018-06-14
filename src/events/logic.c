@@ -6,11 +6,14 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 21:31:19 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/13 14:33:15 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/13 22:30:48 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "server.h"
+#include "universal.h"
+#include "events.h"
+#include "time.h"
+#include "communication.h"
 
 # define PLAYER_ENT ((t_player *)entity)
 
@@ -32,13 +35,13 @@ static int32_t	lookup(int32_t cl)
 
 	pl = SRV_ALLP.lookup[cl];
 	i = 0;
-	printf("Looking up event |%s|\n", pl->buf);
+	printf("Looking up event |%s|\n", RECVBUF);
 	while (i < NCOMMANDS)
 	{
-		if (ft_strequ(pl->buf, eventlookup[i].str))
+		if (ft_strequ(RECVBUF, eventlookup[i].str))
 		{
 			printf("event found\n");
-			event.isvalid(&(eventlookup[i]), pl, 1);
+			event.add(&(eventlookup[i]), pl, 1);
 			return (EXIT_SUCCESS);
 		}
 		i++;
@@ -52,7 +55,7 @@ static int32_t	add(t_eventhold *eventhold, void *entity, int32_t preprocess)
 	t_dblist	*temp;
 	t_event		*ev;
 
-	temp = eventqueue.popfrompool();
+	temp = event.pool.pop();
 	ev = (t_event *)(temp->data);
 	ev->action = eventhold->action;
 	time.setalarm(&(ev->alarm), eventhold->factor);
@@ -63,12 +66,12 @@ static int32_t	add(t_eventhold *eventhold, void *entity, int32_t preprocess)
 		if (SRV_ALLP.status[PLAYER_ENT->c_fd] == WORKING)
 		{
 			if (PLAYER_ENT->pending.qlen < 9)
-				ft_enqueue(PLAYER_ENT->pending, ev->container, 0);
+				ft_enqueue(&(PLAYER_ENT->pending), ev->container, 0);
 			else
-				eventqueue.addtopool(ev);
+				event.queue.add(ev);
 		}
 	}
-	eventqueue.addtoqueue(ev);
+	event.queue.add(ev);
 	return (EXIT_SUCCESS);
 }
 

@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/05 18:30:25 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/13 16:39:15 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/13 16:51:26 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,6 @@
 # define PHIRAS_INS(x, y) ((x & 0xFFFF00FFFFFFFFFF) | (y << 40))
 # define THYSTAME(x) ((x >> 48) & 0xFF)
 # define THYSTAME_INS(x, y) ((x & 0xFF00FFFFFFFFFFFF) | (y << 48))
-
-typedef struct			s_inventory
-{
-	uint64_t			items;
-}						t_inventory;
 
 typedef struct		s_inventory_methods
 {

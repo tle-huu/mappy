@@ -6,19 +6,20 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/31 17:15:59 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/11 18:09:12 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/13 22:53:17 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "server.h"
+#include "universal.h"
+#include "server.h"
 
 int32_t		srv_settimeint(char **argv, __attribute__((unused))t_opts *opt)
 {
 	int32_t	i;
-	int32_t	time;
+	int32_t	timeint;
 
 	i = 0;
-	if (!(time = ft_atoi(*argv)))
+	if (!(timeint = ft_atoi(*argv)))
 	{
 		while ((*argv)[i] == '0')
 			i++;
@@ -28,7 +29,7 @@ int32_t		srv_settimeint(char **argv, __attribute__((unused))t_opts *opt)
 			return (EXIT_FAILURE);
 		}
 	}
-	SRV_GENV.timeint = time;
+	SRV_GENV.timeinterval = timeint;
 	return (EXIT_SUCCESS);
 }
 
@@ -48,7 +49,7 @@ int32_t		srv_setmaxclients(char **argv, __attribute__((unused))t_opts *opt)
 			return (EXIT_FAILURE);
 		}
 	}
-	SRV_GENV.maxclients = maxc * SRV_GENV.nteams;
+	SRV_GENV.maxinitial_clients = maxc * SRV_GENV.nteams;
 	return (EXIT_SUCCESS);
 }
 

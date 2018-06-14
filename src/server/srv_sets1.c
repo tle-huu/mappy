@@ -6,11 +6,12 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/31 17:13:36 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/11 11:15:47 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/13 22:44:58 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "server.h"
+#include "universal.h"
+#include "server.h"
 
 #define TEAM ((g_servenv->teams)[(i - 1)])
 

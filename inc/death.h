@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/13 16:04:34 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/13 16:15:27 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/13 16:51:27 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,6 @@
 **	Deathtrack checks will be instigated in the main body of select,
 **	right before the timer is set for the next loop.
 */
-
-typedef struct		s_expiration
-{
-	t_timeval		alarm;
-	void			*entity;
-}					t_expiration;
 
 typedef struct		s_deathtracks
 {

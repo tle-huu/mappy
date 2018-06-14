@@ -6,19 +6,25 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 22:14:04 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/13 14:34:50 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/13 22:09:11 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "server.h"
+#include "universal.h"
+#include "events.h"
+#include "communication.h"
+#include "egg.h"
 
 static int32_t		advance(void *entity);
 static int32_t		ft_fork(void *entity);
 
 __attribute__((constructor))void	construct_playercommands_set1(void)
 {
-	eventlookup[0] = {"advance", &advance, 7};
-	eventlookup[1] = {"fork", &ft_fork, 42};
+	struct s_eventhold ev0 = {"advance", &advance, 7};
+	struct s_eventhold ev1 = {"fork", &ft_fork, 42};
+	
+	eventlookup[0] = ev0;
+	eventlookup[1] = ev1;
 }
 
 static int32_t	ft_fork(void *entity)

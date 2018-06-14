@@ -6,11 +6,13 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 20:48:31 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/12 22:15:28 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/13 18:14:57 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "sever.h"
+#include "universal.h"
+#include "events.h"
+#include "time.h"
 
 #define CQU_OBJ ((t_event *)(temp->data))
 
@@ -33,6 +35,7 @@ static int32_t	new(void)
 {
 	if (!(event.queue.data = (t_queue *)calloc(1, sizeof(t_queue))))
 		return (EXIT_FAILURE);	//error.memory
+	return (EXIT_FAILURE);
 }
 
 static int32_t	sort(t_dblist *one, t_dblist *two)
@@ -53,9 +56,9 @@ static int32_t	sort(t_dblist *one, t_dblist *two)
 	return (1);
 }
 
-static int32_t	add(t_event *event)
+static int32_t	add(t_event *ev)
 {
-	if (!(ft_penqueue(event.pool.data, event->container, 0, &event.queue.sort)))
+	if (!(ft_penqueue(event.pool.data, ev->container, 0, event.queue.sort)))
 		return (EXIT_FAILURE); //?? error.memory() ??
 	return (EXIT_SUCCESS);
 }
@@ -79,8 +82,8 @@ static int32_t	check(void)
 			if (time.compare(&CQU_OBJ->alarm))
 			{
 				CQU_OBJ->action(CQU_OBJ->entity);
-				temp = event.queue.pop_q();
-				event.pool.add_p(CQU_OBJ);
+				temp = event.queue.pop();
+				event.pool.add(CQU_OBJ);
 			}
 			else
 				break ;

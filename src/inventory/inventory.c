@@ -6,12 +6,11 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/05 18:37:04 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/11 10:27:51 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/13 22:15:01 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "server.h"
-#include "board.h"
+#include "universal.h"
 #include "inventory.h"
 
 /* method function prototypes */

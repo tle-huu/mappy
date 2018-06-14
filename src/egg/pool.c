@@ -6,11 +6,12 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 23:31:20 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/13 13:18:50 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/13 18:01:39 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "server.h"
+#include "universal.h"
+#include "egg.h"
 
 static int32_t		new(void);
 static void			add(t_egg *eg);
@@ -31,15 +32,16 @@ static int32_t		new(void)
 
 	i = 0;
 	reps = ((MAX_CLIENTS) * (300/42));
-	if (!(egg.pool = (t_queue *)calloc(1, sizeof(t_queue))))
+	if (!(egg.pool.data = (t_queue *)calloc(1, sizeof(t_queue))))
 		return (EXIT_FAILURE); // memory error
 	while (i < reps)
 	{
 		if (!(temp = (t_egg *)calloc(1, sizeof(t_egg)))
-			|| (!(temp->deathcontainer = (t_dblist *)calloc(1, sizeof(t_dblist))))
-			|| !(ft_enqueue(egg.pool, temp, sizeof(t_egg))))
+			|| (!(temp->deathcontainer = (t_dblist *)calloc(1, sizeof(t_dblist)))))
 			return (EXIT_FAILURE); // memory error
 		temp->deathcontainer->data = temp;
+		if (!(ft_enqueue(egg.pool.data, temp, sizeof(t_egg))))
+			return (EXIT_FAILURE); // memory error
 		i++;
 	}
 	return (EXIT_SUCCESS);

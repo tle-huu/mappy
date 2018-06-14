@@ -25,7 +25,7 @@ SRCDIR_INV = inventory/
 SRCDIR_PLR = player/
 SRCDIR_SRV = server/
 SRCDIR_TEM = team/
-SRCDIR_TIM = team/
+SRCDIR_TIM = time/
 
 OBJSRC = $(patsubst %, %.o, $(addprefix \
 		 $(addprefix $(SRCDIR), $(SRCDIR_BRD)), \
@@ -124,7 +124,7 @@ SRC_EVS = \
 	pool \
 	queue
 
-#SRC_EVS_GFX = \	
+##SRC_EVS_GFX = \	
 SRC_EVS_PLR = \
 	commandset_1
 
