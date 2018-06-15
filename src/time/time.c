@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 10:53:55 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/14 18:44:47 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/15 13:23:18 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,10 @@ static void		settimer(t_timeval **timer)
 		(*timer)->tv_sec = alarm->tv_sec - temp.tv_sec;
 		if ((*timer)->tv_sec < 0)
 			(*timer)->tv_sec = 0;
-		if (alarm->tv_usec > (100000 - temp.tv_usec))
-			(*timer)->tv_usec = (100000 + alarm->tv_usec) - temp.tv_usec;
+		if (alarm->tv_usec >= (1000000 - temp.tv_usec))
+			(*timer)->tv_usec = abs(alarm->tv_usec - temp.tv_usec);
 		else
-			(*timer)->tv_usec = temp.tv_usec - alarm->tv_usec;
+			(*timer)->tv_usec = abs(temp.tv_usec - alarm->tv_usec);
 		printf("  Timer set for <%ld> seconds & <%d> microseconds\n",
 		(*timer)->tv_sec, (*timer)->tv_usec);
 	}
@@ -108,7 +108,8 @@ static void		setalarm(t_timeval *alarm, float factor)
 	printf("  This is the interval now : %lld\n  This is the integer : %lld\n",
 			i_interval, i_integer);
 	alarm->tv_sec = temp.tv_sec + i_integer;
-	alarm->tv_usec = temp.tv_usec + i_interval;
+	if ((alarm->tv_usec = temp.tv_usec + i_interval) >= 1000000)
+		alarm->tv_usec -= 1000000;
 	printf("  Alarm at <%ld> seconds & <%d> microseconds\n",
 			alarm->tv_sec, alarm->tv_usec);
 }

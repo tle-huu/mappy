@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 20:48:31 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/14 15:48:20 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/15 11:03:21 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,15 +44,15 @@ static int32_t	sort(t_dblist *one, t_dblist *two)
 	t_event	*cmdone;
 	t_event	*cmdtwo;
 
-	cmdone = one->data;
-	cmdtwo = two->data;
+	cmdone = (t_event *)(one->data);
+	cmdtwo = (t_event *)(two->data);
 	if (cmdone->alarm.tv_sec < cmdtwo->alarm.tv_sec
-		|| (cmdone->alarm.tv_sec == cmdtwo->alarm.tv_sec
-			&& cmdone->alarm.tv_usec < cmdone->alarm.tv_usec))
+		|| ((cmdone->alarm.tv_sec == cmdtwo->alarm.tv_sec)
+			&& (cmdone->alarm.tv_usec < cmdtwo->alarm.tv_usec)))
 		return (1);
-	else if (cmdtwo->alarm.tv_sec < cmdtwo->alarm.tv_sec
-			|| (cmdtwo->alarm.tv_sec == cmdtwo->alarm.tv_sec
-				&& cmdtwo->alarm.tv_usec < cmdtwo->alarm.tv_usec))
+	else if (cmdtwo->alarm.tv_sec < cmdone->alarm.tv_sec
+			|| (cmdtwo->alarm.tv_sec == cmdone->alarm.tv_sec
+				&& cmdtwo->alarm.tv_usec < cmdone->alarm.tv_usec))
 		return (2);
 	return (1);
 }
@@ -66,6 +66,7 @@ static int32_t	add(t_event *ev)
 
 static t_dblist	*pop(void)
 {
+	printf("[EVENT]  First queue node, pop\n");
 	return (ft_popfirst(event.queue.data));
 }
 

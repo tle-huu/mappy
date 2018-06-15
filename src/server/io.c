@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/04 14:14:23 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/14 17:26:10 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/15 15:27:58 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static inline __attribute__((always_inline))int32_t	known_socket(int32_t cl)
 	char	buf[PEEK];
 
 	if (recv(cl, &buf, PEEK, MSG_PEEK | MSG_DONTWAIT) == 0)
-		client.disconnect(cl);
+		client.crash(cl);
 	else if ((SRV_ALLP.status)[cl] == NOT_ACCEPTED)
 	{
 		printf("client <%d> is in status, and trying to join a team\n", cl);

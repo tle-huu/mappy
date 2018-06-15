@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/11 12:46:41 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/14 15:50:45 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/15 13:45:56 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,7 @@ typedef struct			s_gamenv
 	int32_t				maxingame_players;
 	uint64_t			track_playerid;
 	uint64_t			track_eggid;
+	void				*entitytoremove;
 	float				timeinterval;
 }						t_gamenv;
 

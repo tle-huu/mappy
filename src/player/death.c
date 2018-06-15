@@ -6,13 +6,14 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 23:16:32 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/14 15:51:21 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/15 16:01:15 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "universal.h"
 #include "player.h"
 #include "death.h"
+#include "events.h"
 #include "client.h"
 #include "communication.h"
 #include "time.h"
@@ -41,10 +42,10 @@ static void		now(void)
 	temp = ft_popfirst(death.track.players);
 	pl = (t_player *)(temp->data);
 	// generate death message to send client
+	event.remove((void *)pl);
 	communication.outgoing(pl->c_fd, "death\n");
 	SRV_ALLP.status[pl->c_fd] = DEAD;
 	client.disconnect(pl->c_fd);
-	bzero(pl, sizeof(t_player));
-	pl->container = temp;
+	player.clear(pl);
 	player.pool.add(pl);
 }

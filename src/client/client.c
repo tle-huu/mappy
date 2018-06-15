@@ -6,22 +6,25 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 13:40:27 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/14 17:34:04 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/15 15:49:44 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "universal.h"
 #include "client.h"
 #include "communication.h"
+#include "events.h"
 #include "player.h"
 
 static int32_t	new(void);
 static void		disconnect(int32_t cl);
+static void		crash(int32_t cl);
 
 __attribute__((constructor))void	construct_client(void)
 {
 	client.new = &new;
 	client.disconnect = &disconnect;
+	client.crash = &crash;
 }
 
 static inline __attribute__((always_inline))void	add_fd_select(int32_t sock)
@@ -56,6 +59,18 @@ static int32_t		new(void)
 	return (ret);
 }
 
+static void			crash(int32_t cl)
+{
+	if (SRV_ALLP.lookup[cl])
+		event.remove(SRV_ALLP.lookup[cl]);
+	if (SRV_ALLP.status[cl] != GRAPHIC || SRV_ALLP.status[cl] != DEAD)
+	{
+		player.clear(SRV_ALLP.lookup[cl]);
+		player.pool.add(SRV_ALLP.lookup[cl]);
+	}
+	client.disconnect(cl);
+}
+
 static void			disconnect(int32_t cl)
 {
 	printf("Remove client <%d> from fdset and lookup\n", cl);
@@ -66,8 +81,6 @@ static void			disconnect(int32_t cl)
 			printf("Deleting reference to player in team\n");
 			((((SRV_ALLP.lookup)[cl])->team)->players)[cl] = NULL;
 		}
-		if (SRV_ALLP.status[cl] != GRAPHIC)
-			player.pool.add(SRV_ALLP.lookup[cl]);
 	}
 	(SRV_ALLP.status)[cl] = 0;
 	close(cl);

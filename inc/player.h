@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 15:30:42 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/13 22:22:05 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/15 14:59:44 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ typedef struct		s_player_methods
 	t_playerdeath	death;
 	int32_t			(*new)(int32_t);
 	void			(*eats)(t_player *);
+	void			(*clear)(t_player *);
 }					t_player_methods;
 
 t_player_methods	player;

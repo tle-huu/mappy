@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/10 14:25:49 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/13 22:13:03 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/15 12:48:58 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,22 +36,24 @@ static int32_t	incubate(t_player *pl)
 	eg->teamindex = pl->teamindex;
 	eg->egg_id = SRV_GENV.track_eggid++;
 	egg.place.onboard(eg);
-	event.add(&(eventlookup[EGGCOMMAND]), eg->container, 0);
+	event.add(&(eventlookup[EGGCOMMAND]), eg, 0);
 	return (EXIT_SUCCESS);
 }
 
 static int32_t	hatch(void	*entity)
 {
-	t_team	*team;
+	t_team	*tm;
 	t_egg	*eg;
 
+	printf("[ACTION]\n  Hatching!\n");
 	eg = (t_egg *)(entity);
 	// add to the queue of eggs available on a team (basically only there
 	// for reference as a tile the newly connected client will go to
-	team = &(SRV_TEAM[eg->teamindex]);
-	team->nplayers++;
+	tm = &(SRV_TEAM[eg->teamindex]);
+	tm->nplayers++;
 	SRV_GENV.maxingame_players++;
-	ft_enqueue(&(team->eggqueue), eg->deathcontainer, 0);
+	printf("  Ready to enqueue egg on team\n");
+	ft_enqueue(&(tm->eggqueue), eg->container, 0);
 	egg.death.soon(eg);
 	return (EXIT_SUCCESS);
 }

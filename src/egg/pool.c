@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 23:31:20 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/13 18:01:39 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/15 12:56:19 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ static int32_t		new(void)
 		if (!(temp = (t_egg *)calloc(1, sizeof(t_egg)))
 			|| (!(temp->deathcontainer = (t_dblist *)calloc(1, sizeof(t_dblist)))))
 			return (EXIT_FAILURE); // memory error
-		temp->deathcontainer->data = temp;
 		if (!(ft_enqueue(egg.pool.data, temp, sizeof(t_egg))))
 			return (EXIT_FAILURE); // memory error
 		i++;
@@ -61,5 +60,13 @@ static void			add(t_egg *eg)
 
 static t_dblist		*pop(void)
 {
-	return (ft_popfirst(egg.pool.data));
+	t_dblist	*temp;
+	t_egg		*eg;
+
+	if ((temp = ft_popfirst(egg.pool.data)))
+	{
+		eg = (t_egg *)(temp->data);
+		eg->deathcontainer->data = eg;
+	}
+	return (temp);
 }

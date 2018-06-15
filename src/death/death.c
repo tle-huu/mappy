@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/13 17:22:31 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/14 17:18:26 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/15 12:55:57 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,12 +62,13 @@ static int32_t		killegg(void)
 	t_dblist	*temp;
 
 	gettimeofday(&(SRV_RIPT), NULL);
+	printf("[DEATH]\n  Egg check\n");
 	if (death.track.eggs)
 	{
 		temp = (death.track.eggs->first);
 		while (temp)
 		{
-			if (time.compare(&SRV_RIPT, &TEMP_EGGS->alarm))
+			if (time.compare(&(SRV_RIPT), &(TEMP_EGGS->alarm)))
 				egg.death.now();
 			else
 				break ;

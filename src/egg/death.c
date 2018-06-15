@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 23:38:14 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/14 15:51:00 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/15 13:31:15 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ static void		now(void)
 	eg = (t_egg *)(temp->data);
 	deathtemp = eg->deathcontainer;
 	((g_servenv->teams)[eg->teamindex]).nplayers--;
+	ft_popfirst(&((SRV_TEAM[eg->teamindex]).eggqueue));
 	bzero(eg, sizeof(t_egg));
 	eg->container = temp;
 	eg->deathcontainer = deathtemp;

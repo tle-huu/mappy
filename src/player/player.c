@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 13:20:08 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/14 15:51:48 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/15 14:59:55 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,13 @@
 
 static int32_t	new(int32_t cl);
 static void		eats(t_player *pl);
+static void		clear(t_player *pl);
 
 __attribute__((constructor))void	construct_player(void)
 {
 	player.new = &new;
 	player.eats = &eats;
+	player.clear = &clear;
 }
 
 static int32_t	new(int32_t cl)
@@ -47,6 +49,15 @@ static int32_t	new(int32_t cl)
 	if (player.parse.teamname(pl) == EXIT_SUCCESS)
 		player.eats(pl);
 	return (EXIT_SUCCESS);
+}
+
+static void		clear(t_player *pl)
+{
+	t_dblist	*temp;
+
+	temp = pl->container;
+	bzero(pl, sizeof(t_player));
+	pl->container = temp;
 }
 
 static void		eats(t_player *pl)

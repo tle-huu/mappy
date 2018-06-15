@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/13 11:16:44 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/14 17:44:19 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/15 11:12:59 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ static int32_t		ft_serverinit(void)
 		death.track.check();
 		time.settimer(&timeout);
 		FD_COPY(SRV_SOCK.copy, SRV_SOCK.input);
+		printf("\nEnd of cycle\n");
 	}
 	printf("EXIT\n");
 	return (EXIT_SUCCESS);
