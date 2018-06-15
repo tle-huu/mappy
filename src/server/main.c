@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/13 11:16:44 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/14 17:37:24 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/14 17:44:19 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ static int32_t		ft_serverinit(void)
 		return (EXIT_FAILURE);
 	while ((select(SRV_SOCK.nfds, SRV_SOCK.input, NULL, NULL, timeout)) >= 0)
 	{
-		printf("\n\nBody of Select\n\n");
+		printf("\nBody of Select\n");
 		event.queue.check();
 		if ((ret = game_io()) == EXIT_FAILURE)
 		{

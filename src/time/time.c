@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 10:53:55 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/14 16:55:37 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/14 18:44:47 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,39 +38,18 @@ static int32_t	compare(t_timeval *relative, t_timeval *time2)
 	return (0);
 }
 
-
-static t_timeval	*deathcompare(void)
-{
-	if (!(death.track.players->first)
-		&& !(death.track.eggs->first))
-		return (NULL);
-	if (!(death.track.players->first))
-		return (&(((t_egg *)(death.track.eggs->first->data))->alarm));
-	if (!(death.track.eggs->first))
-		return (&((t_player *)(death.track.players->first->data))->alarm);
-	if (time.compare(&(((t_egg *)(death.track.eggs->first->data))->alarm),
-					&(((t_player *)(death.track.players->first->data))->alarm)))
-		return (&((t_player *)(death.track.players->first->data))->alarm);
-	else
-		return (&(((t_egg *)(death.track.eggs->first->data))->alarm));
-	return (NULL);
-}
-
 static t_timeval	*nearestalarm(void)
 {
-	t_timeval	*nearestdeath;
-
-	nearestdeath = deathcompare();
 	if (!(event.queue.data->first)
-		&& !(nearestdeath))
+		&& !(death.track.eggs->first))
 		return (NULL);
 	if (!(event.queue.data->first))
-		return (nearestdeath);
-	if (!(nearestdeath))
+		return (&(((t_egg *)(death.track.eggs->first->data))->alarm));
+	if (!(death.track.eggs->first))
 		return (&(((t_event *)(event.queue.data->first->data))->alarm));
 	if (time.compare(&(((t_event *)(event.queue.data->first->data))->alarm),
-					nearestdeath))
-		return (nearestdeath);
+					&(((t_egg *)(death.track.eggs->first->data))->alarm)))
+		return (&(((t_egg *)(death.track.eggs->first->data))->alarm));
 	else
 		return (&(((t_event *)(event.queue.data->first->data))->alarm));
 	return (NULL);
@@ -82,7 +61,8 @@ static void		settimer(t_timeval **timer)
 	t_timeval	*alarm;
 
 	gettimeofday(&temp, NULL);
-	printf("[TIME]\n  It is <%ld> seconds & <%d> microseconds\n", temp.tv_sec, temp.tv_usec);
+	printf("[TIME]\n  It is <%ld> seconds & <%d> microseconds\n",
+		temp.tv_sec, temp.tv_usec);
 	if (!(alarm = nearestalarm()))
 	{
 		if (*timer)
@@ -93,13 +73,17 @@ static void		settimer(t_timeval **timer)
 	{
 		if (!(*timer))
 			(*timer) = (t_timeval *)calloc(1, sizeof(t_timeval));
-	printf("  Alarm pulled : <%ld> seconds & <%d> microseconds\n", alarm->tv_sec, alarm->tv_usec);
+		printf("  Alarm pulled : <%ld> seconds & <%d> microseconds\n",
+			alarm->tv_sec, alarm->tv_usec);
 		(*timer)->tv_sec = alarm->tv_sec - temp.tv_sec;
-		if (alarm->tv_usec > temp.tv_usec)
-			(*timer)->tv_usec = alarm->tv_usec - temp.tv_usec;
+		if ((*timer)->tv_sec < 0)
+			(*timer)->tv_sec = 0;
+		if (alarm->tv_usec > (100000 - temp.tv_usec))
+			(*timer)->tv_usec = (100000 + alarm->tv_usec) - temp.tv_usec;
 		else
-			(*timer)->tv_usec = alarm->tv_usec;
-		printf("  Timer set for <%ld> seconds & <%d> microseconds\n", (*timer)->tv_sec, (*timer)->tv_usec);
+			(*timer)->tv_usec = temp.tv_usec - alarm->tv_usec;
+		printf("  Timer set for <%ld> seconds & <%d> microseconds\n",
+		(*timer)->tv_sec, (*timer)->tv_usec);
 	}
 }
 
@@ -114,18 +98,17 @@ static void		setalarm(t_timeval *alarm, float factor)
 	gettimeofday(&temp, NULL);
 	printf("[TIME]\n  -- Set Alarm --\n  It is <%ld> seconds & <%d> microseconds\n", temp.tv_sec, temp.tv_usec);
 	interval = factor/SRV_GENV.timeinterval;
+	printf("  This is the interval : %f\n", interval);
 	integer = 0;
 	if (interval > 1)
 		interval = modf(interval, &integer);
 	interval = (interval * 1000000);
-	i_interval = (int64_t)interval;
 	i_integer = (int64_t)integer;
-	if (i_interval >= (1000000 - temp.tv_usec))
-	{
-		i_integer++;
-		i_interval = i_interval - (1000000 - temp.tv_usec);
-	}
+	i_interval = (int64_t)interval;
+	printf("  This is the interval now : %lld\n  This is the integer : %lld\n",
+			i_interval, i_integer);
 	alarm->tv_sec = temp.tv_sec + i_integer;
 	alarm->tv_usec = temp.tv_usec + i_interval;
-	printf("  Alarm at <%ld> seconds & <%d> microseconds\n", alarm->tv_sec, alarm->tv_usec);
+	printf("  Alarm at <%ld> seconds & <%d> microseconds\n",
+			alarm->tv_sec, alarm->tv_usec);
 }
