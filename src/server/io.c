@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/04 14:14:23 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/13 22:39:35 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/14 17:26:10 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ int32_t	game_io(void)
 		}
 		i++;
 	}
-	FD_COPY(SRV_SOCK.copy, SRV_SOCK.input);
 	printf("Incoming processing done\n");
 	return (EXIT_SUCCESS);
 }

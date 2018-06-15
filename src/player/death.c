@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 23:16:32 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/13 22:55:42 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/14 15:51:21 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ __attribute__((constructor))void	construct_playerdeath(void)
 
 static void		soon(t_player *pl)
 {
-	time.setalarm(&(pl->expiration.alarm), 0);
+	time.setalarm(&(pl->alarm), 0);
 	SRV_ALLP.status[pl->c_fd] = DOOMED;
 	ft_enqueue(death.track.players, pl->container, 0);
 }

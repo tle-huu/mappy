@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 20:48:31 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/13 18:14:57 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/14 15:48:20 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ static int32_t	new(void)
 {
 	if (!(event.queue.data = (t_queue *)calloc(1, sizeof(t_queue))))
 		return (EXIT_FAILURE);	//error.memory
-	return (EXIT_FAILURE);
+	printf("Event queue created\n");
+	return (EXIT_SUCCESS);
 }
 
 static int32_t	sort(t_dblist *one, t_dblist *two)
@@ -58,7 +59,7 @@ static int32_t	sort(t_dblist *one, t_dblist *two)
 
 static int32_t	add(t_event *ev)
 {
-	if (!(ft_penqueue(event.pool.data, ev->container, 0, event.queue.sort)))
+	if (!(ft_penqueue(event.queue.data, ev->container, 0, event.queue.sort)))
 		return (EXIT_FAILURE); //?? error.memory() ??
 	return (EXIT_SUCCESS);
 }
@@ -72,23 +73,25 @@ static int32_t	check(void)
 {
 	t_dblist	*temp;
 
-	printf("Check time against event queue\n");
+	printf("[EVENT]\n  Check queue\n");
 	gettimeofday(&(SRV_TIME), NULL);
-	if (event.pool.data->first)
+	if (event.queue.data->first)
 	{
-		temp = (event.pool.data->first);
+		temp = (event.queue.data->first);
 		while (temp)
 		{
-			if (time.compare(&CQU_OBJ->alarm))
+			if (time.compare(&SRV_TIME, &CQU_OBJ->alarm))
 			{
+				printf("  Action\n");
 				CQU_OBJ->action(CQU_OBJ->entity);
 				temp = event.queue.pop();
 				event.pool.add(CQU_OBJ);
 			}
 			else
 				break ;
-			temp = (event.pool.data->first);
+			temp = (event.queue.data->first);
 		}
 	}
+	printf("  No more events ready\n");
 	return (EXIT_SUCCESS);
 }

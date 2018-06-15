@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 15:58:08 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/13 18:12:11 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/14 15:01:28 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 # define EVENTS_H
 
 # define NCOMMANDS 2
-# define EATCOMMAND 1
-# define EGGCOMMAND 2
+# define EAT 2
+# define EGGCOMMAND 3
 
 typedef struct		s_eventhold
 {

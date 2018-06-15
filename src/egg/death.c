@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 23:38:14 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/13 17:36:44 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/14 15:51:00 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ __attribute__((constructor))void	construct_eggdeath(void)
 
 static void		soon(t_egg *eg)
 {
-	time.setalarm(&(eg->expiration.alarm), 1260);
+	time.setalarm(&(eg->alarm), 1260);
 	ft_enqueue(death.track.eggs, eg->deathcontainer, 0);
 }
 

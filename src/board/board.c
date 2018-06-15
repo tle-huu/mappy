@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/05 10:45:14 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/13 17:10:37 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/14 10:41:06 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ static int32_t	new(void)
 {
 	int32_t	x;
 
+	printf("Creating the board\n");
 	x = 0;
 	if (!(SRV_BORD.tiles =
 				(t_tile *)(calloc(1, sizeof(t_tile) * SRV_BORD.x))))
@@ -100,6 +101,7 @@ static void		resource_gen(void)
 	uint32_t	x;
 	uint32_t	y;
 
+	printf("Populating with resources\n");
 	x = 0;
 	y = 0;
 	ntiles = ((SRV_BORD.x * SRV_BORD.y) >> 4);

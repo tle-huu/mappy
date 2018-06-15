@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 16:52:08 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/13 18:09:44 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/14 15:09:56 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ static int32_t	new(void)
 	reps = (MAX_CLIENTS * 10);
 	if (!(event.pool.data = (t_queue *)calloc(1, sizeof(t_queue))))
 		return (EXIT_FAILURE);		//error.memory
+	printf("[EVENT]\n  -- Creating event pool --\n");
 	while (i < reps)
 	{
 		if (!(temp = (t_event *)calloc(1, sizeof(t_event)))
@@ -41,6 +42,7 @@ static int32_t	new(void)
 			return (EXIT_FAILURE);		//error.memory
 		i++;
 	}
+	printf("  Event pool created\n");
 	return (EXIT_SUCCESS);
 }
 

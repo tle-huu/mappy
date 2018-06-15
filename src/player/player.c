@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 13:20:08 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/13 22:56:43 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/14 15:51:48 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static int32_t	new(int32_t cl)
 	int32_t		ret;
 	int32_t		i;
 	
-	printf("Creating new player <%d>\n", cl);
+	printf("[PLAYER]\n  Creating new player @ : <%d>\n", cl);
 	ret  = 0;
 	i = 0;
 	if (!(temp = player.pool.pop()))
@@ -42,8 +42,8 @@ static int32_t	new(int32_t cl)
 	pl->player_id = (SRV_GENV.track_playerid)++;
 	(SRV_ALLP.lookup)[cl] = pl;
 	while (i++ < 10)
-		inventory.ad_food(pl->inventory.items);
-	pl->expiration.entity = pl;
+		pl->inventory.items = inventory.ad_food(pl->inventory.items);
+	printf("  Player is on : <%p>\n", pl);
 	if (player.parse.teamname(pl) == EXIT_SUCCESS)
 		player.eats(pl);
 	return (EXIT_SUCCESS);
@@ -51,5 +51,6 @@ static int32_t	new(int32_t cl)
 
 static void		eats(t_player *pl)
 {
-	event.add(&(eventlookup[EATCOMMAND]), pl, 0);
+	printf("[PLAYER]\n  Player on : <%p> eats\n", pl);
+	event.add(&(eventlookup[EAT]), (void *)pl, 0);
 }

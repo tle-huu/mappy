@@ -5,12 +5,11 @@
 !_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
 !_TAG_PROGRAM_URL	https://ctags.io/	/official site/
 !_TAG_PROGRAM_VERSION	0.0.0	/1aef85b/
-CQU_OBJ	src/commandqueue/commandqueue.c	/^#define CQU_OBJ /;"	d	file:
-EXP_EGGS	src/deathqueue/deathqueue.c	/^#define EXP_EGGS /;"	d	file:
-EXP_OBJ	src/deathqueue/deathqueue.c	/^#define EXP_OBJ /;"	d	file:
-EXP_PLYS	src/deathqueue/deathqueue.c	/^#define EXP_PLYS /;"	d	file:
-PBUF	src/player/player.c	/^#define PBUF /;"	d	file:
+CQU_OBJ	src/events/queue.c	/^#define CQU_OBJ /;"	d	file:
+PLAYER_ENT	src/events/logic.c	/^# define PLAYER_ENT /;"	d	file:
 TEAM	src/server/srv_sets1.c	/^#define TEAM /;"	d	file:
+TEMP_EGGS	src/death/death.c	/^#define TEMP_EGGS /;"	d	file:
+TEMP_PLYS	src/death/death.c	/^#define TEMP_PLYS /;"	d	file:
 ad_dera	src/inventory/inventory.c	/^uint64_t	ad_dera(uint64_t inv)$/;"	f	typeref:typename:uint64_t
 ad_food	src/inventory/inventory.c	/^uint64_t	ad_food(uint64_t inv)$/;"	f	typeref:typename:uint64_t
 ad_line	src/inventory/inventory.c	/^uint64_t	ad_line(uint64_t inv)$/;"	f	typeref:typename:uint64_t
@@ -18,63 +17,81 @@ ad_mend	src/inventory/inventory.c	/^uint64_t	ad_mend(uint64_t inv)$/;"	f	typeref
 ad_phir	src/inventory/inventory.c	/^uint64_t	ad_phir(uint64_t inv)$/;"	f	typeref:typename:uint64_t
 ad_sibu	src/inventory/inventory.c	/^uint64_t	ad_sibu(uint64_t inv)$/;"	f	typeref:typename:uint64_t
 ad_thys	src/inventory/inventory.c	/^uint64_t	ad_thys(uint64_t inv)$/;"	f	typeref:typename:uint64_t
-add	src/commands/commands.c	/^static int32_t	add(t_commhold *comm, int32_t cl, void *entity)$/;"	f	typeref:typename:int32_t	file:
+add	src/egg/pool.c	/^static void			add(t_egg *eg)$/;"	f	typeref:typename:void	file:
+add	src/events/logic.c	/^static int32_t	add(t_eventhold *eventhold, void *entity, int32_t preprocess)$/;"	f	typeref:typename:int32_t	file:
+add	src/events/pool.c	/^static void		add(t_event *ev)$/;"	f	typeref:typename:void	file:
+add	src/events/queue.c	/^static int32_t	add(t_event *ev)$/;"	f	typeref:typename:int32_t	file:
+add	src/player/pool.c	/^static void			add(t_player *pl)$/;"	f	typeref:typename:void	file:
 add_fd_select	src/client/client.c	/^static inline __attribute__((always_inline))void	add_fd_select(int32_t sock)$/;"	f	typeref:typename:void	file:
-add_player	src/team/team.c	/^static int32_t	add_player(int32_t cl, int32_t tm)$/;"	f	typeref:typename:int32_t	file:
-add_toteam	src/player/player.c	/^static int32_t	add_toteam(int32_t cl)$/;"	f	typeref:typename:int32_t	file:
-addtopool	src/commandqueue/commandqueue.c	/^static int32_t	addtopool(void)$/;"	f	typeref:typename:int32_t	file:
-addtopool	src/egg/egg.c	/^static void		addtopool(t_egg *add)$/;"	f	typeref:typename:void	file:
-addtopool	src/player/player.c	/^static void		addtopool(t_player *add)$/;"	f	typeref:typename:void	file:
-addtoqueue	src/commandqueue/commandqueue.c	/^static int32_t	addtoqueue(t_dblist *command)$/;"	f	typeref:typename:int32_t	file:
-advance	src/commands/commands.c	/^static int32_t	advance(__attribute__((unused))int32_t cl)$/;"	f	typeref:typename:int32_t	file:
-arr_opts	src/server/smain.c	/^t_opts	arr_opts[] = {$/;"	v	typeref:typename:t_opts[]
-board	src/board/board.c	/^t_board_methods	board = {$/;"	v	typeref:typename:t_board_methods
-check	src/commandqueue/commandqueue.c	/^static int32_t	check(void)$/;"	f	typeref:typename:int32_t	file:
-check	src/deathqueue/deathqueue.c	/^static int32_t		check(void)$/;"	f	typeref:typename:int32_t	file:
-cleartime	src/time/time.c	/^static void		cleartime(t_timeval *comtime)$/;"	f	typeref:typename:void	file:
-client	src/client/client.c	/^t_client_methods	client = {$/;"	v	typeref:typename:t_client_methods
-commandlookup	src/commands/commands.c	/^t_commhold		commandlookup[] = {$/;"	v	typeref:typename:t_commhold[]
-commandqueue	src/commandqueue/commandqueue.c	/^t_commandqueue_methods commandqueue = {$/;"	v	typeref:typename:t_commandqueue_methods
-commands	src/commands/commands.c	/^t_command_methods commands = {$/;"	v	typeref:typename:t_command_methods
-communicate	src/communication/comms.c	/^t_communicate communicate = {$/;"	v	typeref:typename:t_communicate
-comparetime	src/time/time.c	/^static int32_t	comparetime(t_timeval *time)$/;"	f	typeref:typename:int32_t	file:
-createpool	src/commandqueue/commandqueue.c	/^static int32_t	createpool(void)$/;"	f	typeref:typename:int32_t	file:
-createpool	src/player/player.c	/^static int32_t	createpool(void)$/;"	f	typeref:typename:int32_t	file:
-death	src/egg/egg.c	/^static void		death(void)$/;"	f	typeref:typename:void	file:
-death	src/player/player.c	/^static void		death(void)$/;"	f	typeref:typename:void	file:
-del	src/client/client.c	/^static void			del(int32_t cl)$/;"	f	typeref:typename:void	file:
-eat	src/commands/commands.c	/^static int32_t	eat(int32_t cl)$/;"	f	typeref:typename:int32_t	file:
-eating	src/player/player.c	/^static void		eating(t_player *pl)$/;"	f	typeref:typename:void	file:
-egg	src/deathqueue/deathqueue.c	/^static int32_t		egg(void)$/;"	f	typeref:typename:int32_t	file:
-fail	src/commands/commands.c	/^static void		fail(int32_t cl)$/;"	f	typeref:typename:void	file:
-frompool	src/player/player.c	/^static t_player		*frompool(void)$/;"	f	typeref:typename:t_player *	file:
-ft_serverinit	src/server/smain.c	/^static int32_t		ft_serverinit(void)$/;"	f	typeref:typename:int32_t	file:
+add_player	src/team/team.c	/^static int32_t	add_player(t_player *pl, int32_t teamindex)$/;"	f	typeref:typename:int32_t	file:
+advance	src/events/player/commandset_1.c	/^static int32_t	advance(__attribute__((unused))void *entity)$/;"	f	typeref:typename:int32_t	file:
+arr_opts	src/server/main.c	/^t_opts	arr_opts[] = {$/;"	v	typeref:typename:t_opts[]
+check	src/death/death.c	/^static int32_t		check(void)$/;"	f	typeref:typename:int32_t	file:
+check	src/events/queue.c	/^static int32_t	check(void)$/;"	f	typeref:typename:int32_t	file:
+command	src/player/parse.c	/^static int32_t		command(t_player *pl)$/;"	f	typeref:typename:int32_t	file:
+compare	src/time/time.c	/^static int32_t	compare(t_timeval *timer)$/;"	f	typeref:typename:int32_t	file:
+construct_board	src/board/board.c	/^__attribute__((constructor))void	construct_board(void)$/;"	f	typeref:typename:void
+construct_client	src/client/client.c	/^__attribute__((constructor))void	construct_client(void)$/;"	f	typeref:typename:void
+construct_communication	src/communication/communication.c	/^__attribute__((constructor))void	construct_communication(void)$/;"	f	typeref:typename:void
+construct_death	src/death/death.c	/^__attribute__((constructor))void	construct_death(void)$/;"	f	typeref:typename:void
+construct_egg	src/egg/egg.c	/^__attribute__((constructor))void	construct_egg(void)$/;"	f	typeref:typename:void
+construct_eggdeath	src/egg/death.c	/^__attribute__((constructor))void	construct_eggdeath(void)$/;"	f	typeref:typename:void
+construct_eggplace	src/egg/place.c	/^__attribute__((constructor))void	construct_eggplace(void)$/;"	f	typeref:typename:void
+construct_eggpool	src/egg/pool.c	/^__attribute__((constructor))void	construct_eggpool(void)$/;"	f	typeref:typename:void
+construct_eventlogic	src/events/logic.c	/^__attribute__((constructor))void	construct_eventlogic(void)$/;"	f	typeref:typename:void
+construct_eventpool	src/events/pool.c	/^__attribute__((constructor))void	construct_eventpool(void)$/;"	f	typeref:typename:void
+construct_eventqueue	src/events/queue.c	/^__attribute__((constructor))void	construct_eventqueue(void)$/;"	f	typeref:typename:void
+construct_player	src/player/player.c	/^__attribute__((constructor))void	construct_player(void)$/;"	f	typeref:typename:void
+construct_playercommands_set1	src/events/player/commandset_1.c	/^__attribute__((constructor))void	construct_playercommands_set1(void)$/;"	f	typeref:typename:void
+construct_playerdeath	src/player/death.c	/^__attribute__((constructor))void	construct_playerdeath(void)$/;"	f	typeref:typename:void
+construct_playerparse	src/player/parse.c	/^__attribute__((constructor))void	construct_playerparse(void)$/;"	f	typeref:typename:void
+construct_playerplace	src/player/place.c	/^__attribute__((constructor))void	construct_playerplace(void)$/;"	f	typeref:typename:void
+construct_playerpool	src/player/pool.c	/^__attribute__((constructor))void	construct_playerpool(void)$/;"	f	typeref:typename:void
+construct_serverevents	src/events/server/actions.c	/^__attribute__((constructor))void	construct_serverevents(void)$/;"	f	typeref:typename:void
+construct_team	src/team/team.c	/^__attribute__((constructor))void	construct_team(void)$/;"	f	typeref:typename:void
+construct_time	src/time/time.c	/^__attribute__((constructor))void	construct_time(void)$/;"	f	typeref:typename:void
+disconnect	src/client/client.c	/^static void			disconnect(int32_t cl)$/;"	f	typeref:typename:void	file:
+eat	src/events/server/actions.c	/^static int32_t	eat(void *entity)$/;"	f	typeref:typename:int32_t	file:
+eats	src/player/player.c	/^static void		eats(t_player *pl)$/;"	f	typeref:typename:void	file:
+fail	src/events/logic.c	/^static void		fail(int32_t cl)$/;"	f	typeref:typename:void	file:
+from_graphic	src/communication/communication.c	/^static int32_t	from_graphic(__attribute__((unused))t_graphic *gr)$/;"	f	typeref:typename:int32_t	file:
+from_player	src/communication/communication.c	/^static int32_t	from_player(t_player *pl)$/;"	f	typeref:typename:int32_t	file:
+ft_fork	src/events/player/commandset_1.c	/^static int32_t	ft_fork(void *entity)$/;"	f	typeref:typename:int32_t	file:
+ft_serverinit	src/server/main.c	/^static int32_t		ft_serverinit(void)$/;"	f	typeref:typename:int32_t	file:
 game_io	src/server/io.c	/^int32_t	game_io(void)$/;"	f	typeref:typename:int32_t
 get_nteams	src/server/srv_sets1.c	/^static inline __attribute__((always_inline))int32_t	get_nteams(char *str)$/;"	f	typeref:typename:int32_t	file:
-i	src/egg/egg.c	/^	int32_t	i;$/;"	v	typeref:typename:int32_t
-impendingdeath	src/player/player.c	/^static void		impendingdeath(t_player *pl)$/;"	f	typeref:typename:void	file:
-incoming	src/communication/comms.c	/^static int32_t	incoming(t_player *pl)$/;"	f	typeref:typename:int32_t	file:
+hatch	src/egg/egg.c	/^static int32_t	hatch(void	*entity)$/;"	f	typeref:typename:int32_t	file:
+incoming	src/communication/communication.c	/^static int32_t	incoming(int32_t cl)$/;"	f	typeref:typename:int32_t	file:
 incubate	src/egg/egg.c	/^static int32_t	incubate(t_player *pl)$/;"	f	typeref:typename:int32_t	file:
-init_fd_select	src/server/smain.c	/^static inline __attribute__((always_inline))int32_t	init_fd_select(void)$/;"	f	typeref:typename:int32_t	file:
+init_fd_select	src/server/main.c	/^static inline __attribute__((always_inline))int32_t	init_fd_select(void)$/;"	f	typeref:typename:int32_t	file:
 inventory	src/inventory/inventory.c	/^t_inventory_methods	inventory = {$/;"	v	typeref:typename:t_inventory_methods
-isplayer	src/client/client.c	/^static int32_t		isplayer(int32_t cl)$/;"	f	typeref:typename:int32_t	file:
+killegg	src/death/death.c	/^static int32_t		killegg(void)$/;"	f	typeref:typename:int32_t	file:
+killplayer	src/death/death.c	/^static int32_t		killplayer(void)$/;"	f	typeref:typename:int32_t	file:
 known_socket	src/server/io.c	/^static inline __attribute__((always_inline))int32_t	known_socket(int32_t cl)$/;"	f	typeref:typename:int32_t	file:
-lookup	src/commands/commands.c	/^static int32_t	lookup(int32_t cl)$/;"	f	typeref:typename:int32_t	file:
-main	src/server/smain.c	/^int32_t		main(int argc, char **argv)$/;"	f	typeref:typename:int32_t
+lookup	src/events/logic.c	/^static int32_t	lookup(int32_t cl)$/;"	f	typeref:typename:int32_t	file:
+main	src/server/main.c	/^int32_t		main(int argc, char **argv)$/;"	f	typeref:typename:int32_t
 name_exists	src/team/team.c	/^static int32_t	name_exists(int32_t cl)$/;"	f	typeref:typename:int32_t	file:
 new	src/board/board.c	/^static int32_t	new(void)$/;"	f	typeref:typename:int32_t	file:
 new	src/client/client.c	/^static int32_t		new(void)$/;"	f	typeref:typename:int32_t	file:
+new	src/death/death.c	/^static int32_t		new(void)$/;"	f	typeref:typename:int32_t	file:
+new	src/egg/pool.c	/^static int32_t		new(void)$/;"	f	typeref:typename:int32_t	file:
+new	src/events/pool.c	/^static int32_t	new(void)$/;"	f	typeref:typename:int32_t	file:
+new	src/events/queue.c	/^static int32_t	new(void)$/;"	f	typeref:typename:int32_t	file:
 new	src/player/player.c	/^static int32_t	new(int32_t cl)$/;"	f	typeref:typename:int32_t	file:
-outgoing	src/communication/comms.c	/^static int32_t	outgoing(int32_t cl, char *str)$/;"	f	typeref:typename:int32_t	file:
-parse_command	src/player/player.c	/^static int32_t	parse_command(int32_t cl)$/;"	f	typeref:typename:int32_t	file:
-placeonboard	src/player/player.c	/^static void		placeonboard(int32_t cl)$/;"	f	typeref:typename:void	file:
-player	src/deathqueue/deathqueue.c	/^static int32_t		player(void)$/;"	f	typeref:typename:int32_t	file:
-player	src/player/player.c	/^t_player_methods	player = {$/;"	v	typeref:typename:t_player_methods
-popfrompool	src/commandqueue/commandqueue.c	/^static t_dblist	*popfrompool(void)$/;"	f	typeref:typename:t_dblist *	file:
-popfrompool	src/egg/egg.c	/^static t_dblist		*popfrompool(void)$/;"	f	typeref:typename:t_dblist *	file:
-printraw	src/communication/comms.c	/^static int32_t	printraw(int32_t cl)$/;"	f	typeref:typename:int32_t	file:
+new	src/player/pool.c	/^static int32_t		new(void)$/;"	f	typeref:typename:int32_t	file:
+now	src/egg/death.c	/^static void		now(void)$/;"	f	typeref:typename:void	file:
+now	src/player/death.c	/^static void		now(void)$/;"	f	typeref:typename:void	file:
+onboard	src/egg/place.c	/^static int32_t		onboard(t_egg *eg)$/;"	f	typeref:typename:int32_t	file:
+onboard	src/player/place.c	/^static void		onboard(t_player *pl)$/;"	f	typeref:typename:void	file:
+onegg	src/player/place.c	/^static void		onegg(t_player *pl)$/;"	f	typeref:typename:void	file:
+outgoing	src/communication/communication.c	/^static int32_t	outgoing(int32_t cl, char *str)$/;"	f	typeref:typename:int32_t	file:
+pop	src/egg/death.c	/^static void		pop(t_egg *eg)$/;"	f	typeref:typename:void	file:
+pop	src/egg/pool.c	/^static t_dblist		*pop(void)$/;"	f	typeref:typename:t_dblist *	file:
+pop	src/events/pool.c	/^static t_dblist	*pop(void)$/;"	f	typeref:typename:t_dblist *	file:
+pop	src/events/queue.c	/^static t_dblist	*pop(void)$/;"	f	typeref:typename:t_dblist *	file:
+pop	src/player/pool.c	/^static t_dblist		*pop(void)$/;"	f	typeref:typename:t_dblist *	file:
+printraw	src/communication/communication.c	/^static int32_t	printraw(void)$/;"	f	typeref:typename:int32_t	file:
 rand_resc	src/board/board.c	/^static inline __attribute__((always_inline))void	rand_resc(uint32_t x,$/;"	f	typeref:typename:void	file:
-reps	src/egg/egg.c	/^	int32_t	reps;$/;"	v	typeref:typename:int32_t
 resource_gen	src/board/board.c	/^static void		resource_gen(void)$/;"	f	typeref:typename:void	file:
 rm_dera	src/inventory/inventory.c	/^uint64_t	rm_dera(uint64_t inv)$/;"	f	typeref:typename:uint64_t
 rm_food	src/inventory/inventory.c	/^uint64_t	rm_food(uint64_t inv)$/;"	f	typeref:typename:uint64_t
@@ -84,19 +101,19 @@ rm_phir	src/inventory/inventory.c	/^uint64_t	rm_phir(uint64_t inv)$/;"	f	typeref
 rm_sibu	src/inventory/inventory.c	/^uint64_t	rm_sibu(uint64_t inv)$/;"	f	typeref:typename:uint64_t
 rm_thys	src/inventory/inventory.c	/^uint64_t	rm_thys(uint64_t inv)$/;"	f	typeref:typename:uint64_t
 send_dimensions	src/board/board.c	/^static int32_t	send_dimensions(int32_t cl)$/;"	f	typeref:typename:int32_t	file:
-send_freespots	src/team/team.c	/^static int32_t	send_freespots(int32_t cl, int32_t tm)$/;"	f	typeref:typename:int32_t	file:
-server	src/time/time.c	/^t_server_methods server = {$/;"	v	typeref:typename:t_server_methods
-set_sock	src/server/smain.c	/^static inline __attribute__((always_inline))int32_t	set_sock(void)$/;"	f	typeref:typename:int32_t	file:
+send_freespots	src/team/team.c	/^static int32_t	send_freespots(int32_t cl, t_team *tm)$/;"	f	typeref:typename:int32_t	file:
+set_sock	src/server/main.c	/^static inline __attribute__((always_inline))int32_t	set_sock(void)$/;"	f	typeref:typename:int32_t	file:
 setalarm	src/time/time.c	/^static void		setalarm(t_timeval *alarm, float factor)$/;"	f	typeref:typename:void	file:
-setplayer	src/board/board.c	/^static void		setplayer(cl)$/;"	f	typeref:typename:void	file:
-settimer	src/time/time.c	/^static void		settimer(t_timeval **time)$/;"	f	typeref:typename:void	file:
+setplayer	src/board/board.c	/^static void		setplayer(t_player *pl)$/;"	f	typeref:typename:void	file:
+settimer	src/time/time.c	/^static void		settimer(t_timeval **timer)$/;"	f	typeref:typename:void	file:
+soon	src/egg/death.c	/^static void		soon(t_egg *eg)$/;"	f	typeref:typename:void	file:
+soon	src/player/death.c	/^static void		soon(t_player *pl)$/;"	f	typeref:typename:void	file:
+sort	src/events/queue.c	/^static int32_t	sort(t_dblist *one, t_dblist *two)$/;"	f	typeref:typename:int32_t	file:
 srv_setboardx	src/server/srv_sets1.c	/^int32_t		srv_setboardx(char **argv, __attribute__((unused))t_opts *opt)$/;"	f	typeref:typename:int32_t
 srv_setboardy	src/server/srv_sets1.c	/^int32_t		srv_setboardy(char **argv, __attribute__((unused))t_opts *opt)$/;"	f	typeref:typename:int32_t
 srv_setmaxclients	src/server/srv_sets2.c	/^int32_t		srv_setmaxclients(char **argv, __attribute__((unused))t_opts *opt)$/;"	f	typeref:typename:int32_t
 srv_setport	src/server/srv_sets2.c	/^int32_t		srv_setport(char **argv, __attribute__((unused))t_opts *opt)$/;"	f	typeref:typename:int32_t
 srv_setteams	src/server/srv_sets1.c	/^int32_t		srv_setteams(char **argv, t_opts *opt)$/;"	f	typeref:typename:int32_t
 srv_settimeint	src/server/srv_sets2.c	/^int32_t		srv_settimeint(char **argv, __attribute__((unused))t_opts *opt)$/;"	f	typeref:typename:int32_t
-team	src/team/team.c	/^t_team_methods	team = {$/;"	v	typeref:typename:t_team_methods
-temp	src/egg/egg.c	/^	t_egg	*temp;$/;"	v	typeref:typename:t_egg *
-timeoutsort	src/commandqueue/commandqueue.c	/^static int32_t	timeoutsort(t_dblist *one, t_dblist *two)$/;"	f	typeref:typename:int32_t	file:
-usage_warning	src/server/error.c	/^void		usage_warning(char *str)$/;"	f	typeref:typename:void
+teamname	src/player/parse.c	/^static int32_t		teamname(t_player *pl)$/;"	f	typeref:typename:int32_t	file:
+usage_warning	src/error/error.c	/^void		usage_warning(char *str)$/;"	f	typeref:typename:void

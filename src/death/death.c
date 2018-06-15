@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/13 17:22:31 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/13 17:29:11 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/14 17:18:26 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ static int32_t		killplayer(void)
 		temp = (death.track.players->first);
 		while (temp)
 		{
-			if (time.compare(&(TEMP_PLYS->expiration.alarm)))
+			if (time.compare(&SRV_RIPT, &(TEMP_PLYS->alarm)))
 				player.death.now();
 			else
 				break ;
@@ -67,7 +67,7 @@ static int32_t		killegg(void)
 		temp = (death.track.eggs->first);
 		while (temp)
 		{
-			if (time.compare(&TEMP_EGGS->expiration.alarm))
+			if (time.compare(&SRV_RIPT, &TEMP_EGGS->alarm))
 				egg.death.now();
 			else
 				break ;

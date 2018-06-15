@@ -6,13 +6,14 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 13:40:27 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/13 17:13:14 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/14 17:34:04 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "universal.h"
 #include "client.h"
 #include "communication.h"
+#include "player.h"
 
 static int32_t	new(void);
 static void		disconnect(int32_t cl);
@@ -60,16 +61,16 @@ static void			disconnect(int32_t cl)
 	printf("Remove client <%d> from fdset and lookup\n", cl);
 	if (SRV_ALLP.lookup[cl])
 	{
-		// call player removal to add player back to pool
 		if ((((SRV_ALLP.lookup)[cl])->team))
 		{
 			printf("Deleting reference to player in team\n");
 			((((SRV_ALLP.lookup)[cl])->team)->players)[cl] = NULL;
 		}
+		if (SRV_ALLP.status[cl] != GRAPHIC)
+			player.pool.add(SRV_ALLP.lookup[cl]);
 	}
-//	if ((SRV_ALLP.status)[cl] != DEAD)
-//		SRV_GENV.max++;
 	(SRV_ALLP.status)[cl] = 0;
 	close(cl);
 	FD_CLR(cl, SRV_SOCK.copy);
+	printf("  Client removed\n");
 }

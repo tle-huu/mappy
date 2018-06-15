@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 21:31:19 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/13 22:30:48 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/14 14:58:49 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,12 @@ static int32_t	add(t_eventhold *eventhold, void *entity, int32_t preprocess)
 	t_dblist	*temp;
 	t_event		*ev;
 
+	printf("[EVENT]\n  Adding <%s> to queue\n", eventhold->str);
 	temp = event.pool.pop();
 	ev = (t_event *)(temp->data);
 	ev->action = eventhold->action;
 	time.setalarm(&(ev->alarm), eventhold->factor);
+	printf("[EVENT]\n  Entity to add : <%p>\n", entity);
 	ev->entity = entity;
 	ev->container = temp;
 	if (preprocess)
@@ -68,7 +70,7 @@ static int32_t	add(t_eventhold *eventhold, void *entity, int32_t preprocess)
 			if (PLAYER_ENT->pending.qlen < 9)
 				ft_enqueue(&(PLAYER_ENT->pending), ev->container, 0);
 			else
-				event.queue.add(ev);
+				event.pool.add(ev);
 		}
 	}
 	event.queue.add(ev);

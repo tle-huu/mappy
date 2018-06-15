@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/13 11:16:44 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/13 22:44:20 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/14 17:37:24 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,19 +83,14 @@ static int32_t		ft_serverinit(void)
 	{
 		printf("\n\nBody of Select\n\n");
 		event.queue.check();
-		// because we can't assume that select unblocked due to a timeout
-		// or a fd being ready to read, function will use gettimeofday to
-		// compare the top of the command pqueue and execute and respond to 
-		// commands that have timestamps greater than or equal to the time
 		if ((ret = game_io()) == EXIT_FAILURE)
 		{
 			printf("gameio failure\n");
 			return (EXIT_FAILURE);
 		}
-		// use gettimeofday to set a timeout val that corresponds to the
-		// next time that select would need to unblock
 		death.track.check();
 		time.settimer(&timeout);
+		FD_COPY(SRV_SOCK.copy, SRV_SOCK.input);
 	}
 	printf("EXIT\n");
 	return (EXIT_SUCCESS);

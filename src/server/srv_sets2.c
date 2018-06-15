@@ -6,12 +6,14 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/31 17:15:59 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/13 22:53:17 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/14 11:19:52 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "universal.h"
 #include "server.h"
+
+#define TEAM ((g_servenv->teams)[i])
 
 int32_t		srv_settimeint(char **argv, __attribute__((unused))t_opts *opt)
 {
@@ -50,6 +52,12 @@ int32_t		srv_setmaxclients(char **argv, __attribute__((unused))t_opts *opt)
 		}
 	}
 	SRV_GENV.maxinitial_clients = maxc * SRV_GENV.nteams;
+	i = 0;
+	while (i < SRV_GENV.nteams)
+	{
+		TEAM.nplayers = maxc;
+		i++;
+	}
 	return (EXIT_SUCCESS);
 }
 

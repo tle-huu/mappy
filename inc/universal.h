@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/11 12:46:41 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/13 22:26:50 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/14 15:50:45 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,18 +70,12 @@ typedef	struct			s_location
 	int8_t				orientation;
 }						t_location;
 
-typedef struct		s_expiration
-{
-	t_timeval		alarm;
-	void			*entity;
-}					t_expiration;
-
 typedef struct		s_egg
 {
 	int32_t			teamindex;
 	uint64_t		egg_id;
 	t_location		location;
-	t_expiration	expiration;
+	t_timeval		alarm;
 	t_dblist		*container;
 	t_dblist		*deathcontainer;
 }					t_egg;
@@ -97,7 +91,7 @@ typedef struct		s_player
 	char			buf[513];
 	t_inventory		inventory;
 	t_location		location;
-	t_expiration	expiration;
+	t_timeval		alarm;
 	t_queue			pending;
 	t_team			*team;
 	t_dblist		*container;
@@ -164,6 +158,7 @@ typedef struct			s_servenv
 	t_gamenv			gamenv;
 	t_timeval			time;
 	t_timeval			deathtime;
+	t_timeval			*keeptimer;
 	t_team				*teams;
 	char				sendbuf[513];
 	char				recvbuf[513];
