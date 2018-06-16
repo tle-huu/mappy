@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/11 12:46:41 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/15 13:45:56 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/15 20:28:02 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,13 +88,13 @@ typedef struct		s_player
 	int32_t			teamindex;
 	int8_t			conn_attempts;
 	int8_t			level;
-	char			buf[513];
 	t_inventory		inventory;
 	t_location		location;
 	t_timeval		alarm;
 	t_queue			pending;
 	t_team			*team;
 	t_dblist		*container;
+	t_dblist		*tilecontainer;
 }					t_player;
 
 typedef struct			s_tile

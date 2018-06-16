@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 23:38:14 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/15 13:31:15 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/15 17:48:41 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,19 +38,31 @@ static void		now(void)
 	t_dblist	*deathtemp;
 	t_egg		*eg;
 
-	temp = ft_popfirst(death.track.eggs);
-	eg = (t_egg *)(temp->data);
+	deathtemp = ft_popfirst(death.track.eggs);
+	eg = (t_egg *)(deathtemp->data);
 	deathtemp = eg->deathcontainer;
-	((g_servenv->teams)[eg->teamindex]).nplayers--;
-	ft_popfirst(&((SRV_TEAM[eg->teamindex]).eggqueue));
+	temp = eg->container;
+	if ((SRV_TEAM[eg->teamindex]).eggqueue.first->data == (void *)eg)
+	{
+		(SRV_TEAM[eg->teamindex]).nplayers--;
+		ft_popfirst(&((SRV_TEAM[eg->teamindex]).eggqueue));
+	}
 	bzero(eg, sizeof(t_egg));
 	eg->container = temp;
 	eg->deathcontainer = deathtemp;
+	deathtemp->data = eg;
 	egg.pool.add(eg);
 	// generate death message to send to graphical client
 }
 
 static void		pop(t_egg *eg)
 {
-	ft_dblistpop(eg->deathcontainer);
+	if (death.track.eggs->first
+		&& ((void *)eg == death.track.eggs->first->data))
+		ft_popfirst(death.track.eggs);
+	else if (death.track.eggs->last
+			&& ((void *)eg == death.track.eggs->last->data))
+		ft_poplast(death.track.eggs);
+	else
+		ft_dblistpop(eg->deathcontainer);
 }

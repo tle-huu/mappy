@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 22:58:22 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/13 22:55:54 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/15 17:48:43 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,5 @@ static void		onegg(t_player *pl)
 	pl->location.x = eg->location.x;
 	pl->location.y = eg->location.y;
 	pl->location.orientation = eg->location.orientation;
-	egg.death.pop(eg);
 	egg.pool.add(eg);
 }

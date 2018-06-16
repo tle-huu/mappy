@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/10 14:25:49 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/15 12:48:58 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/15 17:48:42 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,6 @@ static int32_t	hatch(void	*entity)
 
 	printf("[ACTION]\n  Hatching!\n");
 	eg = (t_egg *)(entity);
-	// add to the queue of eggs available on a team (basically only there
-	// for reference as a tile the newly connected client will go to
 	tm = &(SRV_TEAM[eg->teamindex]);
 	tm->nplayers++;
 	SRV_GENV.maxingame_players++;

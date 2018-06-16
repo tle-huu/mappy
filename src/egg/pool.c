@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 23:31:20 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/15 12:56:19 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/15 17:48:46 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,16 @@ static int32_t		new(void)
 static void			add(t_egg *eg)
 {
 	t_dblist	*temp;
+	t_dblist	*deathtemp;
 
 	temp = eg->container;
+	eg = (t_egg *)temp->data;
+	deathtemp = eg->deathcontainer;
+	egg.death.pop(eg);
 	bzero(eg, sizeof(t_egg));
+	deathtemp->data = eg;
 	eg->container = temp;
-	// pop egg from death queue as well!
+	eg->deathcontainer = deathtemp;
 	ft_enqueue(egg.pool.data, eg->container, 0);
 	printf("Egg added back to egg pool\n");
 }
