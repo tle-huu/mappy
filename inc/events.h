@@ -6,16 +6,16 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 15:58:08 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/15 15:36:13 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/16 12:19:26 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EVENTS_H
 # define EVENTS_H
 
-# define NCOMMANDS 2
-# define EAT 2
-# define EGGCOMMAND 3
+# define NCOMMANDS 4
+# define EAT 13
+# define EGGCOMMAND 14
 
 typedef struct		s_eventhold
 {
@@ -29,6 +29,7 @@ typedef struct		s_event
 	t_timeval 		alarm;
 	int32_t	  		(*action)(void *);
 	void	  		*entity;
+	t_eventhold		*eventhold;
 	t_dblist  		*container;
 }					t_event;
 
@@ -58,10 +59,11 @@ typedef struct		s_event_methods
 	int32_t			(*add)(t_eventhold *, void *, int32_t);
 	void			(*remove)(void *);
 	void			(*fail)(int32_t);
+	void			(*is_waiting)(t_player *);
 }					t_event_methods;
 
 t_event_methods		event;
-t_eventhold			eventlookup[4];
+t_eventhold			eventlookup[15];
 
 /* FOR REFERENCE
  *

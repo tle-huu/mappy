@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 22:08:10 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/14 15:08:45 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/15 21:06:48 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@ static int32_t		eat(void *entity);
 
 __attribute__((constructor))void	construct_serverevents(void)
 {
-	struct s_eventhold	ev2 = {"-- eat --", &eat, 126};
-	struct s_eventhold	ev3 = {"-- hatch --", egg.hatch, 600};
+	struct s_eventhold	ev_eat = {"-- eat --", &eat, 126};
+	struct s_eventhold	ev_egg = {"-- hatch --", egg.hatch, 600};
 
-	eventlookup[2] = ev2;
-	eventlookup[3] = ev3;
+	eventlookup[EAT] = ev_eat;
+	eventlookup[EGGCOMMAND] = ev_egg;
 }
 
 static int32_t	eat(void *entity)

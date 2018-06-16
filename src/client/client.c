@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 13:40:27 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/15 15:49:44 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/15 20:49:38 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,10 @@ static void			disconnect(int32_t cl)
 	printf("Remove client <%d> from fdset and lookup\n", cl);
 	if (SRV_ALLP.lookup[cl])
 	{
-		if ((((SRV_ALLP.lookup)[cl])->team))
+		if (((t_player *)(SRV_ALLP.lookup[cl]))->team)
 		{
 			printf("Deleting reference to player in team\n");
-			((((SRV_ALLP.lookup)[cl])->team)->players)[cl] = NULL;
+			((((t_player *)(SRV_ALLP.lookup[cl]))->team)->players)[cl] = NULL;
 		}
 	}
 	(SRV_ALLP.status)[cl] = 0;

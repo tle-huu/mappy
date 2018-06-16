@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/13 14:11:03 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/13 22:31:20 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/15 21:07:58 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static int32_t	from_player(t_player *pl)
 		client.disconnect(pl->c_fd);
 		return (-1);
 	}
-	RECVBUF[(ret - 1)] = '\0';
+	RECVBUF[(ret)] = '\0';
 	return (EXIT_SUCCESS);
 }
 
@@ -56,7 +56,7 @@ static int32_t	incoming(int32_t cl)
 
 	if (SRV_ALLP.status[cl] == GRAPHIC)
 	{
-		gr = (t_graphic *)(SRV_ALLP.lookup[cl]);
+		gr = SRV_ALLP.lookup[cl];
 		ret = from_graphic(gr);
 	}
 	else

@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/04 14:14:23 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/15 15:27:58 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/15 20:35:10 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static inline __attribute__((always_inline))int32_t	known_socket(int32_t cl)
 	}
 	else if (SRV_ALLP.status[cl] == GRAPHIC)
 		;
-	else if (player.parse.command(SRV_ALLP.lookup[cl]) == EXIT_FAILURE)
+	else if (player.parse.command((t_player *)SRV_ALLP.lookup[cl]) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

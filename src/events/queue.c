@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 20:48:31 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/15 11:03:21 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/16 12:07:56 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static int32_t	add(t_event *ev)
 
 static t_dblist	*pop(void)
 {
-	printf("[EVENT]  First queue node, pop\n");
+	printf("[EVENT]\n  First queue node, pop\n");
 	return (ft_popfirst(event.queue.data));
 }
 

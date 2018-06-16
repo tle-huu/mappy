@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 13:20:08 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/15 14:59:55 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/15 20:47:56 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static int32_t	new(int32_t cl)
 	pl->container = temp;
 	pl->c_fd = cl;
 	pl->player_id = (SRV_GENV.track_playerid)++;
-	(SRV_ALLP.lookup)[cl] = pl;
+	(SRV_ALLP.lookup)[cl] = (void *)pl;
 	while (i++ < 10)
 		pl->inventory.items = inventory.ad_food(pl->inventory.items);
 	printf("  Player is on : <%p>\n", pl);

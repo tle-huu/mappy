@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 10:53:55 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/15 13:23:18 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/16 11:34:47 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,7 @@ static int32_t	compare(t_timeval *relative, t_timeval *time2)
 	printf("[TIME]\n  -- Compare --\n  time2 <%ld> seconds & <%d> microseconds\n  vs\n to relative-><%ld> seconds & <%d> microseconds\n", time2->tv_sec, time2->tv_usec, relative->tv_sec, relative->tv_usec);
 	if ((relative->tv_sec > time2->tv_sec)
 		|| (time2->tv_sec == relative->tv_sec && (relative->tv_usec >= time2->tv_usec)))
-	{
-		printf("  Too much time has passed relative->n");
 		return (1);
-	}
 	return (0);
 }
 
@@ -61,8 +58,8 @@ static void		settimer(t_timeval **timer)
 	t_timeval	*alarm;
 
 	gettimeofday(&temp, NULL);
-	printf("[TIME]\n  It is <%ld> seconds & <%d> microseconds\n",
-		temp.tv_sec, temp.tv_usec);
+//	printf("[TIME]\n  It is <%ld> seconds & <%d> microseconds\n",
+//		temp.tv_sec, temp.tv_usec);
 	if (!(alarm = nearestalarm()))
 	{
 		if (*timer)
@@ -98,7 +95,7 @@ static void		setalarm(t_timeval *alarm, float factor)
 	gettimeofday(&temp, NULL);
 	printf("[TIME]\n  -- Set Alarm --\n  It is <%ld> seconds & <%d> microseconds\n", temp.tv_sec, temp.tv_usec);
 	interval = factor/SRV_GENV.timeinterval;
-	printf("  This is the interval : %f\n", interval);
+//	printf("  This is the interval : %f\n", interval);
 	integer = 0;
 	if (interval > 1)
 		interval = modf(interval, &integer);

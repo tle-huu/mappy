@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 14:55:19 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/13 23:06:33 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/15 21:14:11 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,15 @@ __attribute__((constructor))void	construct_team(void)
 
 static int32_t	name_exists(int32_t cl)
 {
-	t_player	*p;
+	t_player	*pl;
 	int32_t		i;
+	char		*temp;
 
 	i = 0;
-	p = (SRV_ALLP.lookup)[cl];
-	printf("Player <%d> requesting to be on team |%s|\n", p->c_fd, RECVBUF);
+	pl = SRV_ALLP.lookup[cl];
+	printf("Player <%d> requesting to be on team |%s|\n", pl->c_fd, RECVBUF);
+	if ((temp = strchr(RECVBUF, '\n')))
+		*temp = '\0';
 	while ((i < SRV_GENV.nteams))
 	{
 		printf("team |%s|\n", (g_servenv->teams[i]).name);

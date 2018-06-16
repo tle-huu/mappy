@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/11 12:46:41 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/15 20:28:02 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/15 20:39:32 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,7 +148,7 @@ typedef struct			s_socket
 typedef struct			s_allplayers
 {
 	int8_t				status[FD_SETSIZE];
-	t_player			*lookup[FD_SETSIZE];
+	void				*lookup[FD_SETSIZE];
 }						t_allplayers;
 
 typedef struct			s_servenv

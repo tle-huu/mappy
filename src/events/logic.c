@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 21:31:19 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/15 15:45:18 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/16 12:21:25 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static int32_t		lookup(int32_t cl);
 static int32_t		add(t_eventhold *eventhold, void *entity, int32_t preprocess);
 static void			ft_remove(void *entity);
 static void			fail(int32_t cl);
+static void			is_waiting(t_player *pl);
 
 __attribute__((constructor))void	construct_eventlogic(void)
 {
@@ -29,6 +30,7 @@ __attribute__((constructor))void	construct_eventlogic(void)
 	event.add = &add;
 	event.remove = &ft_remove;
 	event.fail = &fail;
+	event.is_waiting = &is_waiting;
 }
 
 static int32_t	lookup(int32_t cl)
@@ -36,7 +38,7 @@ static int32_t	lookup(int32_t cl)
 	t_player	*pl;
 	int32_t		i;
 
-	pl = SRV_ALLP.lookup[cl];
+	pl = (t_player *)SRV_ALLP.lookup[cl];
 	i = 0;
 	printf("Looking up event |%s|\n", RECVBUF);
 	while (i < NCOMMANDS)
@@ -62,20 +64,27 @@ static int32_t	add(t_eventhold *eventhold, void *entity, int32_t preprocess)
 	temp = event.pool.pop();
 	ev = (t_event *)(temp->data);
 	ev->action = eventhold->action;
+	ev->eventhold = eventhold;
 	time.setalarm(&(ev->alarm), eventhold->factor);
-	printf("[EVENT]\n  Entity to add : <%p>\n", entity);
+//	printf("[EVENT]\n  Entity to add : <%p>\n", entity);
 	ev->entity = entity;
 	ev->container = temp;
 	if (preprocess)
 	{
+		printf("  Preprocess player command\n  Commands in players queue : %d\n",
+				PLAYER_ENT->pending.qlen);
 		if (SRV_ALLP.status[PLAYER_ENT->c_fd] == WORKING)
 		{
+			printf("  Player is working already\n");
 			if (PLAYER_ENT->pending.qlen < 9)
 				ft_enqueue(&(PLAYER_ENT->pending), ev->container, 0);
 			else
 				event.pool.add(ev);
+			return (EXIT_SUCCESS);
 		}
+		SRV_ALLP.status[PLAYER_ENT->c_fd] = WORKING;
 	}
+	printf("  Adding event to main queue\n");
 	event.queue.add(ev);
 	return (EXIT_SUCCESS);
 }
@@ -107,6 +116,17 @@ static void		ft_remove(void *entity)
 		}
 		if (temp)
 			event.pool.add(temp->data);
+	}
+}
+
+static void		is_waiting(t_player *pl)
+{
+	t_dblist	*temp;
+
+	if ((temp = ft_popfirst(&(pl->pending))))
+	{
+		printf("[EVENT]\n  Pullling from player's command queue\n");
+		event.add(((t_event *)(temp->data))->eventhold, pl, 1);
 	}
 }
 
