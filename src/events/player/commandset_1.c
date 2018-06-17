@@ -6,13 +6,14 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 22:14:04 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/16 17:00:18 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/16 18:46:08 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "universal.h"
 #include "events.h"
 #include "communication.h"
+#include "player.h"
 #include "inventory.h"
 #include "egg.h"
 
@@ -40,7 +41,8 @@ static int32_t	advance(__attribute__((unused))void *object)
 	t_player	*pl;
 
 	pl = (t_player *)((t_event *)object)->entity;
-	printf("[COMMAND]\n  player advanced\n");
+	printf("[COMMAND]\n  player <%d> advanced\n", pl->c_fd);
+	player.place.advance(pl);
 	communication.outgoing(pl->c_fd, "ok\n");
 	SRV_ALLP.status[pl->c_fd] = ACCEPTED;
 	event.is_waiting(pl);

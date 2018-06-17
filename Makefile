@@ -128,7 +128,8 @@ SRC_EVS = \
 ##SRC_EVS_GFX = \	
 SRC_EVS_PLR = \
 	commandset_1 \
-	commandset_2
+	commandset_2 \
+	commandset_3
 
 SRC_EVS_SRV = \
 	actions

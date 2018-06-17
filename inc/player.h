@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 15:30:42 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/15 14:59:44 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/16 18:44:56 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ typedef struct		s_playerplace
 {
 	void			(*onboard)(t_player *);
 	void			(*onegg)(t_player *);
+	void			(*advance)(t_player *);
 }					t_playerplace;
 
 typedef struct		s_playerdeath

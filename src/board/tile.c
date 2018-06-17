@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/16 15:30:48 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/16 17:23:37 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/17 11:10:31 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ t_resources resources[] = {
 	{"deraumere"},
 	{"mendiane"},
 	{"phiras"},
-	{"thystame"}
+	{"thystame"},
 };
 
 __attribute__((constructor))void		construct_boardtile(void)

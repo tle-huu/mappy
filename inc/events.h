@@ -6,14 +6,14 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 15:58:08 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/16 17:12:03 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/17 13:39:55 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EVENTS_H
 # define EVENTS_H
 
-# define NCOMMANDS 5
+# define NCOMMANDS 9
 # define EAT 13
 # define EGGCOMMAND 14
 

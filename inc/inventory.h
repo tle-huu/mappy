@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/05 18:30:25 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/16 16:46:59 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/16 19:08:20 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,32 +30,32 @@
 
 typedef struct		s_inventory_plus
 {
-	void		(*food)(uint64_t *);
-	void		(*line)(uint64_t *);
-	void		(*sibu)(uint64_t *);
-	void		(*dera)(uint64_t *);
-	void		(*mend)(uint64_t *);
-	void		(*phir)(uint64_t *);
-	void		(*thys)(uint64_t *);
+	int32_t		(*food)(uint64_t *);
+	int32_t		(*line)(uint64_t *);
+	int32_t		(*sibu)(uint64_t *);
+	int32_t		(*dera)(uint64_t *);
+	int32_t		(*mend)(uint64_t *);
+	int32_t		(*phir)(uint64_t *);
+	int32_t		(*thys)(uint64_t *);
 }					t_inventory_plus;
 
 typedef struct			s_inventory_minus
 {
-	void			(*food)(uint64_t *);
-	void			(*line)(uint64_t *);
-	void			(*sibu)(uint64_t *);
-	void			(*dera)(uint64_t *);
-	void			(*mend)(uint64_t *);
-	void			(*phir)(uint64_t *);
-	void			(*thys)(uint64_t *);
+	int32_t			(*food)(uint64_t *);
+	int32_t			(*line)(uint64_t *);
+	int32_t			(*sibu)(uint64_t *);
+	int32_t			(*dera)(uint64_t *);
+	int32_t			(*mend)(uint64_t *);
+	int32_t			(*phir)(uint64_t *);
+	int32_t			(*thys)(uint64_t *);
 }						t_inventory_minus;
 
 typedef struct			s_inventory_methods
 {
 	t_inventory_plus	plus;
 	t_inventory_minus	minus;
-	void				(*add)(uint64_t *, int32_t);
-	void				(*remove)(uint64_t *, int32_t);
+	int32_t				(*add)(uint64_t *, int32_t);
+	int32_t				(*remove)(uint64_t *, int32_t);
 }						t_inventory_methods;
 
 t_inventory_methods		inventory;

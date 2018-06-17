@@ -6,17 +6,17 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/16 16:19:11 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/16 16:46:02 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/16 20:24:28 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "universal.h"
 #include "inventory.h"
 
-static void		food(uint64_t *items);
-static void		line(uint64_t *items);
-static void		sibu(uint64_t *items);
-static void		dera(uint64_t *items);
+static int32_t		food(uint64_t *items);
+static int32_t		line(uint64_t *items);
+static int32_t		sibu(uint64_t *items);
+static int32_t		dera(uint64_t *items);
 
 __attribute__((constructor))void		construct_invplusone(void)
 {
@@ -26,7 +26,7 @@ __attribute__((constructor))void		construct_invplusone(void)
 	inventory.plus.dera = &dera;
 }
 
-static void		food(uint64_t *items)
+static int32_t		food(uint64_t *items)
 {
 	uint64_t	item;
 
@@ -35,10 +35,12 @@ static void		food(uint64_t *items)
 	{
 		item++;
 		*items = FOOD_INS(*items, item);
+		return (EXIT_SUCCESS);
 	}
+	return (EXIT_FAILURE);
 }
 
-static void		line(uint64_t *items)
+static int32_t		line(uint64_t *items)
 {
 	uint64_t	item;
 
@@ -47,10 +49,12 @@ static void		line(uint64_t *items)
 	{
 		item++;
 		*items = LINEMATE_INS(*items, item);
+		return (EXIT_SUCCESS);
 	}
+	return (EXIT_FAILURE);
 }
 
-static void		sibu(uint64_t *items)
+static int32_t		sibu(uint64_t *items)
 {
 	uint64_t	item;
 
@@ -59,10 +63,12 @@ static void		sibu(uint64_t *items)
 	{
 		item++;
 		*items = SIBUR_INS(*items, item);
+		return (EXIT_SUCCESS);
 	}
+	return (EXIT_FAILURE);
 }
 
-static void		dera(uint64_t *items)
+static int32_t		dera(uint64_t *items)
 {
 	uint64_t	item;
 
@@ -71,5 +77,7 @@ static void		dera(uint64_t *items)
 	{
 		item++;
 		*items = DERAUMERE_INS(*items, item);
+		return (EXIT_SUCCESS);
 	}
+	return (EXIT_FAILURE);
 }

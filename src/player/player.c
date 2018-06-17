@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 13:20:08 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/16 16:48:17 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/17 14:27:25 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ static int32_t	new(int32_t cl)
 	pl->container = temp;
 	pl->c_fd = cl;
 	pl->player_id = (SRV_GENV.track_playerid)++;
+	pl->tilecontainer.data = pl;
+	pl->level = 1;
 	(SRV_ALLP.lookup)[cl] = (void *)pl;
 	while (i++ < 10)
 		inventory.add(&(pl->inventory.items), 0);

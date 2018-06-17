@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/11 12:46:41 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/16 15:00:30 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/17 13:42:06 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,10 @@
 # define DEAD 66
 # define MAX_CLIENTS (FD_SETSIZE - 10)
 
-# define NORTH 0
-# define SOUTH 1
+# define NORTH 1
 # define EAST 2
-# define WEST 4
+# define SOUTH 4
+# define WEST 8
 
 # define WELCOME "WELCOME\n"
 
@@ -80,7 +80,6 @@ typedef struct		s_egg
 	t_dblist		*deathcontainer;
 }					t_egg;
 
-
 typedef struct		s_player
 {
 	int32_t			c_fd;
@@ -92,16 +91,17 @@ typedef struct		s_player
 	t_location		location;
 	t_timeval		alarm;
 	t_queue			pending;
+	t_dblist		tilecontainer;
 	char			message[513];
 	t_team			*team;
 	t_dblist		*container;
-	t_dblist		*tilecontainer;
 }					t_player;
 
 typedef struct			s_tile
 {
 	t_inventory			resources;
 	t_player			*players[FD_SETSIZE];
+	t_queue				playerslist;
 	struct s_tile		*column;
 }						t_tile;
 
@@ -162,7 +162,8 @@ typedef struct			s_servenv
 	t_timeval			deathtime;
 	t_timeval			*keeptimer;
 	t_team				*teams;
-	char				sendbuf[513];
+	char				*sendbuf;
+	int32_t				nsend;
 	char				recvbuf[513];
 }						t_servenv;
 
