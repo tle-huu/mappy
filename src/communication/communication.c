@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/13 14:11:03 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/15 21:07:58 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/16 17:39:33 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ static int32_t	from_player(t_player *pl)
 		return (-1);
 	}
 	RECVBUF[(ret)] = '\0';
+	printf("  This is the buffer recieved |%s|\n", RECVBUF);
 	return (EXIT_SUCCESS);
 }
 

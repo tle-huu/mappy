@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/05 10:45:14 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/14 10:41:06 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/16 16:42:16 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,20 +78,7 @@ static inline __attribute__((always_inline))void	rand_resc(uint32_t x,
 	uint32_t	resc;
 
 	resc = arc4random_uniform((uint32_t)7);
-	if (resc == 0)
-		RAND_RESOURCE = inventory.ad_food(RAND_RESOURCE);
-	else if (resc == 1)
-		RAND_RESOURCE = inventory.ad_line(RAND_RESOURCE);
-	else if (resc == 2)
-		RAND_RESOURCE = inventory.ad_sibu(RAND_RESOURCE);
-	else if (resc == 3)
-		RAND_RESOURCE = inventory.ad_dera(RAND_RESOURCE);
-	else if (resc == 4)
-		RAND_RESOURCE = inventory.ad_mend(RAND_RESOURCE);
-	else if (resc == 5)
-		RAND_RESOURCE = inventory.ad_phir(RAND_RESOURCE);
-	else if (resc == 6)
-		RAND_RESOURCE = inventory.ad_thys(RAND_RESOURCE);
+	inventory.add(&(RESOURCE), resc);
 }
 
 static void		resource_gen(void)

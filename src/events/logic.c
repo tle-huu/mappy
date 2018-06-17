@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 21:31:19 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/16 12:21:25 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/16 17:44:31 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,21 @@ __attribute__((constructor))void	construct_eventlogic(void)
 static int32_t	lookup(int32_t cl)
 {
 	t_player	*pl;
+	char		*temp;
 	int32_t		i;
 
 	pl = (t_player *)SRV_ALLP.lookup[cl];
 	i = 0;
-	printf("Looking up event |%s|\n", RECVBUF);
+	printf("  Looking up event |%s|\n", RECVBUF);
+	if ((temp = strchr(RECVBUF, ' ')))
+	{
+		bzero(pl->message, 513);
+		ft_strcpy(pl->message, (temp + 1));
+		*temp = '\0';
+	}
 	while (i < NCOMMANDS)
 	{
+		printf("  compare to : %s\n", eventlookup[i].str);
 		if (ft_strequ(RECVBUF, eventlookup[i].str))
 		{
 			printf("event found\n");
@@ -53,6 +61,30 @@ static int32_t	lookup(int32_t cl)
 	}
 	event.fail(cl);
 	return (EXIT_SUCCESS);
+}
+
+static int32_t	pl_preprocess(void *entity, t_event *ev)
+{
+	printf("  Preprocess player command\n  Commands in players queue : %d\n",
+			PLAYER_ENT->pending.qlen);
+	printf("  Copying this message : |%s|\n", PLAYER_ENT->message);
+	if (PLAYER_ENT->message[0])
+	{
+		strcpy(ev->message, PLAYER_ENT->message);
+	}
+	if (SRV_ALLP.status[PLAYER_ENT->c_fd] == WORKING)
+	{
+		printf("  Player is working already\n");
+		if (PLAYER_ENT->pending.qlen < 9)
+			ft_enqueue(&(PLAYER_ENT->pending), ev->container, 0);
+		else
+		{
+			printf("  Player has too many commands queued\n"); 
+			event.pool.add(ev);
+		}
+		return (1);
+	}
+	return (0);
 }
 
 static int32_t	add(t_eventhold *eventhold, void *entity, int32_t preprocess)
@@ -71,17 +103,8 @@ static int32_t	add(t_eventhold *eventhold, void *entity, int32_t preprocess)
 	ev->container = temp;
 	if (preprocess)
 	{
-		printf("  Preprocess player command\n  Commands in players queue : %d\n",
-				PLAYER_ENT->pending.qlen);
-		if (SRV_ALLP.status[PLAYER_ENT->c_fd] == WORKING)
-		{
-			printf("  Player is working already\n");
-			if (PLAYER_ENT->pending.qlen < 9)
-				ft_enqueue(&(PLAYER_ENT->pending), ev->container, 0);
-			else
-				event.pool.add(ev);
+		if (pl_preprocess(entity, ev))
 			return (EXIT_SUCCESS);
-		}
 		SRV_ALLP.status[PLAYER_ENT->c_fd] = WORKING;
 	}
 	printf("  Adding event to main queue\n");

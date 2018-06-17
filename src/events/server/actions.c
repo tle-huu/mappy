@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 22:08:10 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/15 21:06:48 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/16 16:57:16 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 #include "player.h"
 #include "egg.h"
 
-static int32_t		eat(void *entity);
+static int32_t		eat(void *object);
 
 __attribute__((constructor))void	construct_serverevents(void)
 {
@@ -27,14 +27,14 @@ __attribute__((constructor))void	construct_serverevents(void)
 	eventlookup[EGGCOMMAND] = ev_egg;
 }
 
-static int32_t	eat(void *entity)
+static int32_t	eat(void *object)
 {
 	t_player	*pl;
 
-	pl = (t_player *)entity;
+	pl = (t_player *)(((t_event *)object)->entity);
 	printf("[ACTION]\n  -- Eating --\n  Player @ : <%d>\n", pl->c_fd);
-	pl->inventory.items = inventory.rm_food(pl->inventory.items);
-	printf("  Food left : <%llu>\n", pl->inventory.items);
+	inventory.remove(&(pl->inventory.items), 0);
+	printf("  Food left : <%llu>\n", FOOD(pl->inventory.items));
 	if (!(FOOD(pl->inventory.items)))
 		player.death.soon(pl);
 	else

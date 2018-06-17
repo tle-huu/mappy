@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 22:14:04 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/16 12:27:11 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/16 17:00:18 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,10 @@
 #include "inventory.h"
 #include "egg.h"
 
-static int32_t		advance(void *entity);
-static int32_t		ft_fork(void *entity);
-static int32_t		connect_nbr(void *entity);
-static int32_t		send_inventory(void *entity);
+static int32_t		advance(void *object);
+static int32_t		ft_fork(void *object);
+static int32_t		connect_nbr(void *object);
+static int32_t		send_inventory(void *object);
 
 __attribute__((constructor))void	construct_playercommands_set1(void)
 {
@@ -35,11 +35,11 @@ __attribute__((constructor))void	construct_playercommands_set1(void)
 	eventlookup[3] = ev3;
 }
 
-static int32_t	advance(__attribute__((unused))void *entity)
+static int32_t	advance(__attribute__((unused))void *object)
 {
 	t_player	*pl;
 
-	pl = (t_player *)entity;
+	pl = (t_player *)((t_event *)object)->entity;
 	printf("[COMMAND]\n  player advanced\n");
 	communication.outgoing(pl->c_fd, "ok\n");
 	SRV_ALLP.status[pl->c_fd] = ACCEPTED;
@@ -47,11 +47,11 @@ static int32_t	advance(__attribute__((unused))void *entity)
 	return (EXIT_SUCCESS);
 }
 
-static int32_t	ft_fork(void *entity)
+static int32_t	ft_fork(void *object)
 {
 	t_player	*pl;
 
-	pl = (t_player *)entity;
+	pl = (t_player *)((t_event *)object)->entity;
 	if (egg.incubate(pl) == -1)
 		communication.outgoing(pl->c_fd, "ko\n");
 	else
@@ -61,14 +61,14 @@ static int32_t	ft_fork(void *entity)
 	return (EXIT_SUCCESS);
 }
 
-static int32_t	connect_nbr(void *entity)
+static int32_t	connect_nbr(void *object)
 {
 	t_player	*pl;
 	char		*num;
 	char		*str;
 	int32_t		nlen;
 
-	pl = (t_player *)entity;
+	pl = (t_player *)((t_event *)object)->entity;
 	nlen = ft_numlen(pl->team->nplayers);
 	if (!(num = ft_itoa(pl->team->nplayers))
 		|| !(str = calloc(1, nlen + 2))
@@ -81,14 +81,38 @@ static int32_t	connect_nbr(void *entity)
 	return (EXIT_SUCCESS);
 }
 
-static int32_t	send_inventory(void *entity)
+static int32_t	build_inventory(char **str, t_player *pl)
+{
+	char	*num;
+
+	if (!(num = ft_itoa(DERAUMERE(pl->inventory.items)))
+		|| !(*str = strcat(*str, " deraumere "))
+		|| !(*str = ft_strfreecat(*str, num)))
+		return (EXIT_FAILURE);
+	if (!(num = ft_itoa(MENDIANE(pl->inventory.items)))
+		|| !(*str = strcat(*str, " mendiane "))
+		|| !(*str = ft_strfreecat(*str, num)))
+		return (EXIT_FAILURE);
+	if (!(num = ft_itoa(PHIRAS(pl->inventory.items)))
+		|| !(*str = strcat(*str, " phiras "))
+		|| !(*str = ft_strfreecat(*str, num)))
+		return (EXIT_FAILURE);
+	if (!(num = ft_itoa(THYSTAME(pl->inventory.items)))
+		|| !(*str = strcat(*str, " thystame "))
+		|| !(*str = ft_strfreecat(*str, num))
+		|| !(*str = strcat(*str, " \n")))
+		return (EXIT_FAILURE);
+	return (EXIT_SUCCESS);
+}
+
+static int32_t	send_inventory(void *object)
 {
 	t_player	*pl;
 	char		*num;
 	char		*str;
 	int32_t		reslens;
 
-	pl = (t_player *)entity;
+	pl = (t_player *)((t_event *)object)->entity;
 	reslens = (sizeof("food") + sizeof("linemate") + sizeof("sibur")
 				+ sizeof("deraumere") + sizeof("mendiane")
 				+ sizeof("phiras") + sizeof("thystame") - 7);
@@ -105,23 +129,9 @@ static int32_t	send_inventory(void *entity)
 		|| !(str = strcat(str, " sibur "))
 		|| !(str = ft_strfreecat(str, num)))
 		return (EXIT_FAILURE);
-	if (!(num = ft_itoa(DERAUMERE(pl->inventory.items)))
-		|| !(str = strcat(str, " deraumere "))
-		|| !(str = ft_strfreecat(str, num)))
+	if (build_inventory(&str, pl) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
-	if (!(num = ft_itoa(MENDIANE(pl->inventory.items)))
-		|| !(str = strcat(str, " mendiane "))
-		|| !(str = ft_strfreecat(str, num)))
-		return (EXIT_FAILURE);
-	if (!(num = ft_itoa(PHIRAS(pl->inventory.items)))
-		|| !(str = strcat(str, " phiras "))
-		|| !(str = ft_strfreecat(str, num)))
-		return (EXIT_FAILURE);
-	if (!(num = ft_itoa(THYSTAME(pl->inventory.items)))
-		|| !(str = strcat(str, " thystame "))
-		|| !(str = ft_strfreecat(str, num))
-		|| !(str = strcat(str, " \n"))
-		|| (communication.outgoing(pl->c_fd, str) == EXIT_FAILURE))
+	if ((communication.outgoing(pl->c_fd, str) == EXIT_FAILURE))
 		return (EXIT_FAILURE);
 	free(str);
 	SRV_ALLP.status[pl->c_fd] = ACCEPTED;

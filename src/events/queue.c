@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 20:48:31 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/16 12:07:56 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/16 15:23:50 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ static int32_t	check(void)
 			if (time.compare(&SRV_TIME, &CQU_OBJ->alarm))
 			{
 				printf("  Action\n");
-				CQU_OBJ->action(CQU_OBJ->entity);
+				CQU_OBJ->action(temp->data);
 				temp = event.queue.pop();
 				event.pool.add(CQU_OBJ);
 			}

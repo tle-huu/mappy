@@ -99,7 +99,8 @@ RES = \033[0m
 ################################################################################
 
 SRC_BRD = \
-	board
+	board \
+	tile
 
 SRC_CLN = \
 	client
@@ -126,13 +127,18 @@ SRC_EVS = \
 
 ##SRC_EVS_GFX = \	
 SRC_EVS_PLR = \
-	commandset_1
+	commandset_1 \
+	commandset_2
 
 SRC_EVS_SRV = \
 	actions
 
 SRC_INV = \
-	inventory
+	inventory \
+	minus1 \
+	minus2 \
+	plus1 \
+	plus2
 
 SRC_PLR = \
 	death \

@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 22:44:32 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/13 22:31:56 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/16 17:44:37 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ static int32_t		teamname(t_player *pl)
 
 	ret = 0;
 	i = 0;
-	// add client removal on too many attempts
 	if ((ret = communication.incoming(pl->c_fd)) == -1)
 		return (EXIT_SUCCESS);
 	else if (ret == EXIT_FAILURE)
@@ -54,16 +53,8 @@ static int32_t		teamname(t_player *pl)
 
 static int32_t		command(t_player *pl)
 {
-	char	*firstword_delim;
-	char	hold;
-
 	if (communication.incoming(pl->c_fd) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
-	if ((firstword_delim = strchr(RECVBUF, ' ')))
-	{
-		hold = *firstword_delim;
-		*firstword_delim = '\0';
-	}
 	event.lookup(pl->c_fd);
 	return (EXIT_SUCCESS);
 }

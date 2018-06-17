@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/11 12:46:41 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/15 20:39:32 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/16 15:00:30 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ typedef struct		s_player
 	t_location		location;
 	t_timeval		alarm;
 	t_queue			pending;
+	char			message[513];
 	t_team			*team;
 	t_dblist		*container;
 	t_dblist		*tilecontainer;

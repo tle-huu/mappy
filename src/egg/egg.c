@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/10 14:25:49 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/15 17:48:42 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/16 17:06:05 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,13 @@ static int32_t	incubate(t_player *pl)
 	return (EXIT_SUCCESS);
 }
 
-static int32_t	hatch(void	*entity)
+static int32_t	hatch(void *object)
 {
 	t_team	*tm;
 	t_egg	*eg;
 
 	printf("[ACTION]\n  Hatching!\n");
-	eg = (t_egg *)(entity);
+	eg = (t_egg *)(((t_event *)object)->entity);
 	tm = &(SRV_TEAM[eg->teamindex]);
 	tm->nplayers++;
 	SRV_GENV.maxingame_players++;
