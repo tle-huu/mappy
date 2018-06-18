@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/05 10:45:14 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/17 13:44:09 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/17 16:55:59 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,8 +123,5 @@ static void		removeplayer(t_player *pl)
 	x = pl->location.x;
 	y = pl->location.y;
 	(((((SRV_BORD.tiles)[x]).column)[y]).players)[pl->c_fd] = NULL;
-	if (PLAYERLIST.first->data == pl)
-		ft_popfirst(&(PLAYERLIST));
-	else
-		ft_dblistpop(&(pl->tilecontainer));
+	ft_middel(&(PLAYERLIST), &(pl->tilecontainer));
 }

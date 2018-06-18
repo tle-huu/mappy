@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/04 14:14:23 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/15 20:35:10 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/17 22:35:53 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,26 @@
 #include "server.h"
 #include "client.h"
 #include "player.h"
+#include "graphics.h"
+#include "communication.h"
 
 static inline __attribute__((always_inline))int32_t	known_socket(int32_t cl)
 {
-	//add handling for graphical client
 	char	buf[PEEK];
 
 	if (recv(cl, &buf, PEEK, MSG_PEEK | MSG_DONTWAIT) == 0)
-		client.crash(cl);
-	else if ((SRV_ALLP.status)[cl] == NOT_ACCEPTED)
 	{
-		printf("client <%d> is in status, and trying to join a team\n", cl);
-		player.new(cl);
+		client.crash(cl);
+		return (EXIT_SUCCESS);
 	}
-	else if (SRV_ALLP.status[cl] == GRAPHIC)
-		;
+	if (SRV_ALLP.status[cl] == NOT_ACCEPTED)
+		communication.newclient(cl);
+	if (SRV_ALLP.status[cl] == JOINTEAM)
+		player.new(cl);
+	else if (SRV_ALLP.status[cl] == JOINGRAPHIC)
+		graphic.new(cl);
+//	else if (SRV_ALLP.status[cl] == GRAPHIC)
+//		graphic.parse.request((t_graphic *)SRV_ALLP.lookup[cl])
 	else if (player.parse.command((t_player *)SRV_ALLP.lookup[cl]) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);

@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 13:20:08 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/17 14:27:25 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/17 22:13:06 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "player.h"
 #include "inventory.h"
 #include "events.h"
+#include "board.h"
 
 static int32_t	new(int32_t cl);
 static void		eats(t_player *pl);
@@ -57,6 +58,9 @@ static void		clear(t_player *pl)
 {
 	t_dblist	*temp;
 
+	(SRV_ALLP.status)[pl->c_fd] = 0;
+	pl->team ? pl->team->players[pl->c_fd] = NULL : 0;
+	board.removeplayer(pl);
 	temp = pl->container;
 	bzero(pl, sizeof(t_player));
 	pl->container = temp;

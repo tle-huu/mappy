@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 22:44:32 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/16 17:44:37 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/17 22:34:26 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,14 +34,12 @@ static int32_t		teamname(t_player *pl)
 
 	ret = 0;
 	i = 0;
-	if ((ret = communication.incoming(pl->c_fd)) == -1)
-		return (EXIT_SUCCESS);
-	else if (ret == EXIT_FAILURE)
-		return (EXIT_FAILURE);
 	if ((i = team.name_exists(pl->c_fd)) == -1)
 	{
 		client.disconnect(pl->c_fd);
-		return (-1);
+		player.clear(pl);
+		player.pool.add(pl);
+		return (EXIT_FAILURE);
 	}
 	else
 	{

@@ -18,9 +18,11 @@ SRCDIR_DTH = death/
 SRCDIR_EGG = egg/
 SRCDIR_ERR = error/
 SRCDIR_EVS = events/
-SRCDIR_EVS_GFX = gfx/
+SRCDIR_EVS_GFX = graphic/
 SRCDIR_EVS_PLR = player/
 SRCDIR_EVS_SRV = server/
+SRCDIR_GFX = graphic/
+SRCDIR_GFX_TRS = transmit/
 SRCDIR_INV = inventory/
 SRCDIR_PLR = player/
 SRCDIR_SRV = server/
@@ -60,6 +62,13 @@ OBJSRC += $(patsubst %, %.o, $(addprefix \
 		  $(addprefix $(SRCDIR), \
 		  $(addprefix $(SRCDIR_EVS), $(SRCDIR_EVS_SRV))), \
 		  $(SRC_EVS_SRV)))
+OBJSRC += $(patsubst %, %.o, $(addprefix \
+		  $(addprefix $(SRCDIR), $(SRCDIR_GFX)), \
+		  $(SRC_GFX)))
+OBJSRC += $(patsubst %, %.o, $(addprefix \
+		  $(addprefix $(SRCDIR), \
+		  $(addprefix $(SRCDIR_GFX), $(SRCDIR_GFX_TRS))), \
+		  $(SRC_GFX_TRS)))
 OBJSRC += $(patsubst %, %.o, $(addprefix \
 		  $(addprefix $(SRCDIR), $(SRCDIR_INV)), \
 		  $(SRC_INV)))
@@ -133,6 +142,15 @@ SRC_EVS_PLR = \
 
 SRC_EVS_SRV = \
 	actions
+
+SRC_GFX = \
+	graphic
+
+SRC_GFX_TRS = \
+	transmit \
+	tiles \
+	teams \
+	players
 
 SRC_INV = \
 	inventory \

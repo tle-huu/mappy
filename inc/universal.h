@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/11 12:46:41 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/17 13:42:06 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/17 22:35:39 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,11 +34,13 @@
 # define SENDBUF g_servenv->sendbuf
 # define RECVBUF g_servenv->recvbuf
 # define PEEK 42
-# define NOT_ACCEPTED 21
-# define ACCEPTED 42
+# define NOT_ACCEPTED 1
+# define JOINTEAM 2
+# define JOINGRAPHIC 3
+# define ACCEPTED 10
+# define GRAPHIC 11
 # define WORKING 100
-# define RESTING 50
-# define GRAPHIC 101
+# define RESTING 101
 # define DOOMED 33
 # define DEAD 66
 # define MAX_CLIENTS (FD_SETSIZE - 10)
@@ -55,7 +57,8 @@ typedef struct	s_team		t_team;
 
 typedef struct			s_graphic
 {
-	int32_t				nothing;
+	int32_t				c_fd;
+	t_dblist			container;
 }						t_graphic;
 
 typedef struct			s_inventory
@@ -160,6 +163,7 @@ typedef struct			s_servenv
 	t_gamenv			gamenv;
 	t_timeval			time;
 	t_timeval			deathtime;
+	t_queue				graphical;
 	t_timeval			*keeptimer;
 	t_team				*teams;
 	char				*sendbuf;

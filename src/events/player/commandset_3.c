@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/16 22:00:49 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/17 15:27:36 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/17 22:58:05 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ east = +x total & -y+y total
 static int32_t		see_sendstr(t_player *pl)
 {
 	printf("  I see: |%s|\n", SENDBUF);
+	SENDBUF = strcat(SENDBUF, "\n");
 	communication.outgoing(pl->c_fd, SENDBUF);
 	SRV_ALLP.status[pl->c_fd] = ACCEPTED;
 	event.is_waiting(pl);
@@ -164,6 +165,10 @@ static int32_t		see(void *object)
 			(perpaxis = pl->location.y + (perptrans * i));
 		(mainline == Y_AXIS) ? (y = pl->location.y + (maintrans * i)) :
 			(x = pl->location.x + (maintrans * i));
+		if ((mainline == Y_AXIS) && (y > SRV_BORD.y))
+			y = y -SRV_BORD.y;
+		else if ((mainline == X_AXIS) && (x > SRV_BORD.x))
+			x = x - SRV_BORD.x;
 		j = 0;
 		while (j < (1 + (i * 2)))
 		{
@@ -183,19 +188,10 @@ static int32_t		see(void *object)
 			see_buildplayerstr(x, y, pl);
 			see_buildresourcestr(x, y);
 			if (i != pl->level || j != ((1 + (i * 2)) - 1))
-			{
-				if (g_servenv->nsend < 15)
-				{
-					g_servenv->nsend += 3;
-					if (!(SENDBUF = (char *)realloc(SENDBUF, g_servenv->nsend)))
-						return (EXIT_FAILURE);
-				}
-				printf("  Adding comma\n");
 				SENDBUF = strcat(SENDBUF, ", ");
-			}
 			j++;
 		}
-	i++;
+		i++;
 	}
 	see_sendstr(pl);
 	return (EXIT_SUCCESS);

@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/13 11:16:44 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/15 16:05:23 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/17 19:22:27 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,13 +60,8 @@ static inline __attribute__((always_inline))int32_t	set_sock(void)
 	return (EXIT_SUCCESS);
 }
 
-static int32_t		ft_serverinit(void)
+static int32_t		ft_initializers(void)
 {
-	int32_t			ret;
-	t_timeval		*timeout;
-
-	ret = 0;
-	timeout = NULL;
 	if ((set_sock() == EXIT_FAILURE)
 		|| (bind(SRV_SOCK.sockfd, ((struct sockaddr *)&(SRV_SOCK.address)),
 			sizeof(struct sockaddr_in)) < 0)
@@ -77,7 +72,21 @@ static int32_t		ft_serverinit(void)
 		|| (event.pool.new() == EXIT_FAILURE)
 		|| (player.pool.new() == EXIT_FAILURE)
 		|| (egg.pool.new() == EXIT_FAILURE)
-		|| (death.track.new() == EXIT_FAILURE))
+		|| (death.track.new() == EXIT_FAILURE)
+		|| !(SENDBUF = calloc(1, 1024)))
+		return (EXIT_FAILURE);
+	g_servenv->nsend = 1024;
+	return (EXIT_SUCCESS);
+}
+
+static int32_t		ft_serverinit(void)
+{
+	int32_t			ret;
+	t_timeval		*timeout;
+
+	ret = 0;
+	timeout = NULL;
+	if (ft_initializers() == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	while ((select(SRV_SOCK.nfds, SRV_SOCK.input, NULL, NULL, timeout)) >= 0)
 	{

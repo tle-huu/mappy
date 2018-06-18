@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 22:14:04 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/16 18:46:08 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/17 22:51:19 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,18 +67,14 @@ static int32_t	connect_nbr(void *object)
 {
 	t_player	*pl;
 	char		*num;
-	char		*str;
-	int32_t		nlen;
 
+	bzero(SENDBUF, 1024);
 	pl = (t_player *)((t_event *)object)->entity;
-	nlen = ft_numlen(pl->team->nplayers);
 	if (!(num = ft_itoa(pl->team->nplayers))
-		|| !(str = calloc(1, nlen + 2))
-		|| !(str = ft_strfreecat(str, num))
-		|| !(str = strcat(str, "\n"))
-		|| (communication.outgoing(pl->c_fd, str) == EXIT_FAILURE))
+		|| !(SENDBUF = ft_strfreecat(SENDBUF, num))
+		|| !(SENDBUF = strcat(SENDBUF, "\n"))
+		|| (communication.outgoing(pl->c_fd, SENDBUF) == EXIT_FAILURE))
 		return (EXIT_FAILURE);
-	free(str);
 	SRV_ALLP.status[pl->c_fd] = ACCEPTED;
 	return (EXIT_SUCCESS);
 }

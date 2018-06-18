@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 13:40:27 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/15 20:49:38 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/17 21:59:44 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "communication.h"
 #include "events.h"
 #include "player.h"
+#include "graphics.h"
 
 static int32_t	new(void);
 static void		disconnect(int32_t cl);
@@ -61,28 +62,21 @@ static int32_t		new(void)
 
 static void			crash(int32_t cl)
 {
+	client.disconnect(cl);
 	if (SRV_ALLP.lookup[cl])
 		event.remove(SRV_ALLP.lookup[cl]);
-	if (SRV_ALLP.status[cl] != GRAPHIC || SRV_ALLP.status[cl] != DEAD)
+	if (SRV_ALLP.status[cl] != GRAPHIC)
 	{
 		player.clear(SRV_ALLP.lookup[cl]);
 		player.pool.add(SRV_ALLP.lookup[cl]);
 	}
-	client.disconnect(cl);
+	if (SRV_ALLP.status[cl] == GRAPHIC)
+		graphic.clear(SRV_ALLP.lookup[cl]);
 }
 
 static void			disconnect(int32_t cl)
 {
 	printf("Remove client <%d> from fdset and lookup\n", cl);
-	if (SRV_ALLP.lookup[cl])
-	{
-		if (((t_player *)(SRV_ALLP.lookup[cl]))->team)
-		{
-			printf("Deleting reference to player in team\n");
-			((((t_player *)(SRV_ALLP.lookup[cl]))->team)->players)[cl] = NULL;
-		}
-	}
-	(SRV_ALLP.status)[cl] = 0;
 	close(cl);
 	FD_CLR(cl, SRV_SOCK.copy);
 	printf("  Client removed\n");
