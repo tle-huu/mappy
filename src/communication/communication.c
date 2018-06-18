@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/13 14:11:03 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/17 22:36:37 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/18 01:03:23 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static int32_t	incoming(int32_t cl)
 	int32_t		ret;
 
 	printf("Recieving message from client <%d>\n", cl);
-	bzero(RECVBUF, 513);
+	bzero(RECVBUF, 512);
 	if ((ret = recv(cl, RECVBUF, 512, 0)) < 0)
 		return (EXIT_FAILURE);
 	else if (!ret)

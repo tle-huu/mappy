@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/10 14:25:49 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/16 17:06:05 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/18 02:08:53 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "egg.h"
 #include "time.h"
 #include "events.h"
+#include "graphics.h"
 
 static int32_t	incubate(t_player *pl);
 static int32_t	hatch(void *entity);
@@ -46,6 +47,7 @@ static int32_t	hatch(void *object)
 	t_egg	*eg;
 
 	printf("[ACTION]\n  Hatching!\n");
+	//graphic.transmit.egg.hatch(eg);
 	eg = (t_egg *)(((t_event *)object)->entity);
 	tm = &(SRV_TEAM[eg->teamindex]);
 	tm->nplayers++;

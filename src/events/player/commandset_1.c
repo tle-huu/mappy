@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 22:14:04 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/17 22:51:19 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/18 02:10:11 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ static int32_t		send_inventory(void *object);
 
 __attribute__((constructor))void	construct_playercommands_set1(void)
 {
-	struct s_eventhold ev0 = {"advance\n", &advance, 7};
-	struct s_eventhold ev1 = {"fork\n", &ft_fork, 42};
-	struct s_eventhold ev2 = {"connect_nbr\n", &connect_nbr, 0};
-	struct s_eventhold ev3 = {"inventory\n", &send_inventory, 1};
+	struct s_eventhold ev0 = {"advance", &advance, 7};
+	struct s_eventhold ev1 = {"fork", &ft_fork, 42};
+	struct s_eventhold ev2 = {"connect_nbr", &connect_nbr, 0};
+	struct s_eventhold ev3 = {"inventory", &send_inventory, 1};
 
 	
 	eventlookup[0] = ev0;
@@ -46,6 +46,7 @@ static int32_t	advance(__attribute__((unused))void *object)
 	communication.outgoing(pl->c_fd, "ok\n");
 	SRV_ALLP.status[pl->c_fd] = ACCEPTED;
 	event.is_waiting(pl);
+	//graphic.transmit.player.position(pl);
 	return (EXIT_SUCCESS);
 }
 

@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/05 10:45:14 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/17 16:55:59 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/18 00:22:11 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,12 @@ static int32_t	new(void)
 	printf("Creating the board\n");
 	x = 0;
 	if (!(SRV_BORD.tiles =
-				(t_tile *)(calloc(1, sizeof(t_tile) * SRV_BORD.x))))
+				(t_tile *)(calloc(1, sizeof(t_tile) * (SRV_BORD.x + 1)))))
 		return (EXIT_FAILURE);
-	while (x < SRV_BORD.x)
+	while (x < SRV_BORD.x + 1)
 	{
 		if (!(((SRV_BORD.tiles)[x]).column =
-					(t_tile *)(calloc(1, sizeof(t_tile) * SRV_BORD.y))))
+					(t_tile *)(calloc(1, sizeof(t_tile) * (SRV_BORD.y + 1)))))
 			return (EXIT_FAILURE);
 		x++;
 	}
@@ -57,15 +57,15 @@ static int32_t	send_dimensions(int32_t cl)
 	char	*str;
 	int32_t	nlen;
 
-	nlen = ft_numlen(SRV_BORD.x);
-	nlen += ft_numlen(SRV_BORD.y);
+	nlen = ft_numlen(SRV_BORD.x + 1);
+	nlen += ft_numlen(SRV_BORD.y + 1);
 	nlen += 2;
-	if (!(num = ft_itoa(SRV_BORD.x))
+	if (!(num = ft_itoa(SRV_BORD.x + 1))
 		|| !(str = (char *)calloc(1, (nlen + 1)))
 		|| !(str = ft_strfreecat(str, num)))
 		return (EXIT_FAILURE);
 	if (!(str = strcat(str, " "))
-		|| !(num = ft_itoa(SRV_BORD.y))
+		|| !(num = ft_itoa(SRV_BORD.y + 1))
 		|| !(str = ft_strfreecat(str, num))
 		|| !(str = strcat(str, "\n"))
 		|| (communication.outgoing(cl, str) == EXIT_FAILURE))
@@ -93,12 +93,12 @@ static void		resource_gen(void)
 	printf("Populating with resources\n");
 	x = 0;
 	y = 0;
-	ntiles = ((SRV_BORD.x * SRV_BORD.y) >> 4);
+	ntiles = ((SRV_BORD.x * SRV_BORD.y) >> 2);
 	while (ntiles-- > 0)
 	{
-		gen = arc4random_uniform((uint32_t)11);
-		x = arc4random_uniform((uint32_t)SRV_BORD.x);
-		y = arc4random_uniform((uint32_t)SRV_BORD.y);
+		gen = arc4random_uniform((uint32_t)40);
+		x = arc4random_uniform((uint32_t)SRV_BORD.x + 1);
+		y = arc4random_uniform((uint32_t)SRV_BORD.y + 1);
 		while (gen-- > 0)
 			rand_resc(x, y);
 	}

@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/31 17:13:36 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/15 21:12:59 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/18 00:16:49 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int32_t		srv_setboardx(char **argv, __attribute__((unused))t_opts *opt)
 			return (EXIT_FAILURE);
 		}
 	}
-	g_servenv->board.x = width;
+	g_servenv->board.x = width - 1;
 	return (EXIT_SUCCESS);
 }
 
@@ -100,6 +100,6 @@ int32_t		srv_setboardy(char **argv, __attribute__((unused))t_opts *opt)
 			return (EXIT_FAILURE);
 		}
 	}
-	g_servenv->board.y = height;
+	g_servenv->board.y = height - 1;
 	return (EXIT_SUCCESS);
 }

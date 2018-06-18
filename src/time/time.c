@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 10:53:55 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/16 11:34:47 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/18 01:08:37 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,6 @@ static void		settimer(t_timeval **timer)
 	t_timeval	*alarm;
 
 	gettimeofday(&temp, NULL);
-//	printf("[TIME]\n  It is <%ld> seconds & <%d> microseconds\n",
-//		temp.tv_sec, temp.tv_usec);
 	if (!(alarm = nearestalarm()))
 	{
 		if (*timer)
@@ -105,8 +103,11 @@ static void		setalarm(t_timeval *alarm, float factor)
 	printf("  This is the interval now : %lld\n  This is the integer : %lld\n",
 			i_interval, i_integer);
 	alarm->tv_sec = temp.tv_sec + i_integer;
-	if ((alarm->tv_usec = temp.tv_usec + i_interval) >= 1000000)
-		alarm->tv_usec -= 1000000;
+	if ((i_interval = temp.tv_usec + i_interval) >= 1000000)
+	{
+		alarm->tv_usec = i_interval - 1000000;
+		alarm->tv_sec++;
+	}
 	printf("  Alarm at <%ld> seconds & <%d> microseconds\n",
 			alarm->tv_sec, alarm->tv_usec);
 }

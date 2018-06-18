@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/16 14:58:19 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/16 20:34:02 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/18 02:22:50 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "events.h"
 #include "communication.h"
 #include "inventory.h"
+#include "graphics.h"
 #include "egg.h"
 
 #define PLX (pl->location.x)
@@ -29,8 +30,8 @@ static int32_t		put(void *object);
 __attribute__((constructor))void	construct_playercommands_set2(void)
 {
 	struct s_eventhold ev4 = {"take", &take, 7};
-	struct s_eventhold ev5 = {"right\n", &right, 7};
-	struct s_eventhold ev6 = {"left\n", &left, 7};
+	struct s_eventhold ev5 = {"right", &right, 7};
+	struct s_eventhold ev6 = {"left", &left, 7};
 	struct s_eventhold ev7 = {"put", &put, 7};
 
 	eventlookup[4] = ev4;
@@ -72,6 +73,7 @@ static int32_t		take(void *object)
 		communication.outgoing(pl->c_fd, "ko\n");
 	SRV_ALLP.status[pl->c_fd] = ACCEPTED;
 	event.is_waiting(pl);
+	graphic.transmit.players.items(pl);
 	return (EXIT_SUCCESS);
 }
 
@@ -87,6 +89,7 @@ static int32_t		right(void *object)
 	communication.outgoing(pl->c_fd, "ok\n");
 	SRV_ALLP.status[pl->c_fd] = ACCEPTED;
 	event.is_waiting(pl);
+//	graphic.transmit.player.position(pl);
 	return (EXIT_SUCCESS);
 }
 
@@ -102,6 +105,7 @@ static int32_t		left(void *object)
 	communication.outgoing(pl->c_fd, "ok\n");
 	SRV_ALLP.status[pl->c_fd] = ACCEPTED;
 	event.is_waiting(pl);
+//	graphic.transmit.player.position(pl);
 	return (EXIT_SUCCESS);
 }
 
@@ -136,5 +140,6 @@ static int32_t		put(void *object)
 		communication.outgoing(pl->c_fd, "ko\n");
 	SRV_ALLP.status[pl->c_fd] = ACCEPTED;
 	event.is_waiting(pl);
+	graphic.transmit.players.items(pl);
 	return (EXIT_SUCCESS);
 }

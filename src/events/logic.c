@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 21:31:19 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/16 17:44:31 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/18 00:51:50 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,30 +36,40 @@ __attribute__((constructor))void	construct_eventlogic(void)
 static int32_t	lookup(int32_t cl)
 {
 	t_player	*pl;
+	char		**split;
 	char		*temp;
 	int32_t		i;
 
 	pl = (t_player *)SRV_ALLP.lookup[cl];
-	i = 0;
 	printf("  Looking up event |%s|\n", RECVBUF);
-	if ((temp = strchr(RECVBUF, ' ')))
+	split = ft_strsplit(RECVBUF, '\n');
+	while (*split)
 	{
-		bzero(pl->message, 513);
-		ft_strcpy(pl->message, (temp + 1));
-		*temp = '\0';
-	}
-	while (i < NCOMMANDS)
-	{
-		printf("  compare to : %s\n", eventlookup[i].str);
-		if (ft_strequ(RECVBUF, eventlookup[i].str))
+		i = 0;
+		printf("  the split : |%s|\n", *split);
+		if ((temp = ft_strchr(*split, ' ')))
 		{
-			printf("event found\n");
-			event.add(&(eventlookup[i]), pl, 1);
-			return (EXIT_SUCCESS);
+			bzero(pl->message, 513);
+			ft_strcpy(pl->message, (temp + 1));
+			*temp = '\0';
 		}
-		i++;
+		while (i < NCOMMANDS)
+		{
+			printf("  compare to : |%s|\n", eventlookup[i].str);
+			if (ft_strequ(*split, eventlookup[i].str))
+			{
+				printf("event found\n");
+				event.add(&(eventlookup[i]), pl, 1);
+				break ;
+			}
+			i++;
+		}
+		if (i == NCOMMANDS)
+			event.fail(cl);
+		(split)++;
 	}
-	event.fail(cl);
+	// NEEDS FREEING
+	printf("  [EVENT]\n  OVER\n");
 	return (EXIT_SUCCESS);
 }
 
@@ -92,13 +102,12 @@ static int32_t	add(t_eventhold *eventhold, void *entity, int32_t preprocess)
 	t_dblist	*temp;
 	t_event		*ev;
 
-	printf("[EVENT]\n  Adding <%s> to queue\n", eventhold->str);
+	printf("[EVENT]\n  Adding <%s>\n", eventhold->str);
 	temp = event.pool.pop();
 	ev = (t_event *)(temp->data);
 	ev->action = eventhold->action;
 	ev->eventhold = eventhold;
 	time.setalarm(&(ev->alarm), eventhold->factor);
-//	printf("[EVENT]\n  Entity to add : <%p>\n", entity);
 	ev->entity = entity;
 	ev->container = temp;
 	if (preprocess)

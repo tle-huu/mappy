@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 13:20:08 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/17 22:13:06 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/18 00:47:59 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static void		clear(t_player *pl)
 	t_dblist	*temp;
 
 	(SRV_ALLP.status)[pl->c_fd] = 0;
-	pl->team ? pl->team->players[pl->c_fd] = NULL : 0;
+	(pl->team) ? (pl->team->players[pl->c_fd] = NULL) : 0;
 	board.removeplayer(pl);
 	temp = pl->container;
 	bzero(pl, sizeof(t_player));

@@ -6,20 +6,23 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/17 19:09:02 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/17 21:52:34 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/18 02:21:54 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "universal.h"
+#include "inventory.h"
 #include "graphics.h"
 #include "board.h"
 #include "communication.h"
 
 static int32_t		all(t_graphic *gr);
+static int32_t		items(t_player *pl);
 
 __attribute__((constructor))void		construct_transmit_players(void)
 {
 	graphic.transmit.players.all = &all;
+	graphic.transmit.players.items = &items;
 }
 
 static int32_t		_internal_tileloc(t_player *pl)
@@ -66,6 +69,57 @@ static int32_t		_internal_level(t_player *pl)
 static int32_t		_internal_teamname(t_player *pl)
 {
 	SENDBUF = strcat(SENDBUF, pl->team->name);
+	return (EXIT_SUCCESS);
+}
+
+static int32_t		_internal_inventory(t_player *pl)
+{
+	char	*num;
+
+	num = ft_itoa(FOOD(pl->inventory.items));
+	SENDBUF = ft_strfreecat(SENDBUF, num);
+	SENDBUF = strcat(SENDBUF, " ");
+	num = ft_itoa(LINEMATE(pl->inventory.items));
+	SENDBUF = ft_strfreecat(SENDBUF, num);
+	SENDBUF = strcat(SENDBUF, " ");
+	num = ft_itoa(SIBUR(pl->inventory.items));
+	SENDBUF = ft_strfreecat(SENDBUF, num);
+	SENDBUF = strcat(SENDBUF, " ");
+	num = ft_itoa(DERAUMERE(pl->inventory.items));
+	SENDBUF = ft_strfreecat(SENDBUF, num);
+	SENDBUF = strcat(SENDBUF, " ");
+	num = ft_itoa(MENDIANE(pl->inventory.items));
+	SENDBUF = ft_strfreecat(SENDBUF, num);
+	SENDBUF = strcat(SENDBUF, " ");
+	num = ft_itoa(PHIRAS(pl->inventory.items));
+	SENDBUF = ft_strfreecat(SENDBUF, num);
+	SENDBUF = strcat(SENDBUF, " ");
+	num = ft_itoa(THYSTAME(pl->inventory.items));
+	SENDBUF = ft_strfreecat(SENDBUF, num);
+	return (EXIT_SUCCESS);
+}
+
+static int32_t		items(t_player *pl)
+{
+	t_graphic	*gr;
+	t_dblist	*temp;
+	char		*num;
+
+	gr = NULL;
+	SENDBUF = strcat(SENDBUF, "pin ");
+	num = ft_itoa((int32_t )pl->player_id);
+	SENDBUF = ft_strfreecat(SENDBUF, num);
+	SENDBUF = strcat(SENDBUF, " ");
+	_internal_tileloc(pl);
+	_internal_inventory(pl);
+	SENDBUF = strcat(SENDBUF, "\n");
+	temp = g_servenv->graphical.first;
+	while (temp)
+	{
+		gr = (t_graphic *)(temp->data);
+		communication.outgoing(gr->c_fd, SENDBUF);
+		temp = temp->next;
+	}
 	return (EXIT_SUCCESS);
 }
 

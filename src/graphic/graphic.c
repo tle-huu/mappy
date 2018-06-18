@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/17 17:07:12 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/17 21:57:03 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/18 02:27:35 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ static int32_t		new(int32_t cl)
 	gr->c_fd = cl;
 	SRV_ALLP.lookup[cl] = gr;
 	SRV_ALLP.status[cl] = GRAPHIC;
+	gr->container.data = gr;
 	ft_enqueue(&(g_servenv->graphical), &(gr->container), 0);
 	graphic.greeting(gr);
 	return (EXIT_SUCCESS);

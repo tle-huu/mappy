@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/13 14:07:15 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/17 21:29:01 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/18 02:18:39 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ typedef struct	s_graphic_eggs
 typedef struct	s_graphic_players
 {
 	int32_t		(*all)(t_graphic *);
+	int32_t		(*items)(t_player *);
 }				t_graphic_players;
 
 typedef struct	s_graphic_teams
