@@ -94,8 +94,8 @@ static int32_t		ft_serverinit(void)
 		event.queue.check();
 		if ((ret = game_io()) == EXIT_FAILURE)
 		{
-			printf("gameio failure\n");
-			return (EXIT_FAILURE);
+			ft_printf("gameio failure\n");
+			// return (EXIT_FAILURE);
 		}
 		death.track.check();
 		time.settimer(&timeout);

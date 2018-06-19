@@ -16,18 +16,24 @@
 #include "board.h"
 #include "communication.h"
 
-static int32_t		all(t_graphic *gr);
-static int32_t		items(t_player *pl);
+static int32_t all(t_graphic *gr);
+static int32_t items(t_player *pl);
+static int32_t player_position(t_player *pl);
+static int32_t player_connected(t_player *pl);
+static int32_t player_disconnected(t_player *pl);
 
-__attribute__((constructor))void		construct_transmit_players(void)
+__attribute__((constructor)) void construct_transmit_players(void)
 {
 	graphic.transmit.players.all = &all;
 	graphic.transmit.players.items = &items;
+	graphic.transmit.players.player_position = &player_position;
+	graphic.transmit.players.player_connected = &player_connected;
+	graphic.transmit.players.player_disconnected = &player_disconnected;
 }
 
-static int32_t		_internal_tileloc(t_player *pl)
+static int32_t _internal_tileloc(t_player *pl)
 {
-	char	*num;
+	char *num;
 
 	num = ft_itoa(pl->location.x);
 	SENDBUF = ft_strfreecat(SENDBUF, num);
@@ -38,16 +44,16 @@ static int32_t		_internal_tileloc(t_player *pl)
 	return (EXIT_SUCCESS);
 }
 
-static int32_t		_internal_orientation(t_player *pl)
+static int32_t _internal_orientation(t_player *pl)
 {
-	char	*num;
+	char *num;
 
 	num = NULL;
-	if (pl->location.orientation & NORTH)
+	if (pl->location.orientation & SOUTH)
 		num = ft_itoa(1);
 	else if (pl->location.orientation & EAST)
 		num = ft_itoa(2);
-	else if (pl->location.orientation & SOUTH)
+	else if (pl->location.orientation & NORTH)
 		num = ft_itoa(3);
 	else if (pl->location.orientation & WEST)
 		num = ft_itoa(4);
@@ -56,9 +62,9 @@ static int32_t		_internal_orientation(t_player *pl)
 	return (EXIT_SUCCESS);
 }
 
-static int32_t		_internal_level(t_player *pl)
+static int32_t _internal_level(t_player *pl)
 {
-	char	*num;
+	char *num;
 
 	num = ft_itoa(pl->level);
 	SENDBUF = ft_strfreecat(SENDBUF, num);
@@ -66,15 +72,15 @@ static int32_t		_internal_level(t_player *pl)
 	return (EXIT_SUCCESS);
 }
 
-static int32_t		_internal_teamname(t_player *pl)
+static int32_t _internal_teamname(t_player *pl)
 {
 	SENDBUF = strcat(SENDBUF, pl->team->name);
 	return (EXIT_SUCCESS);
 }
 
-static int32_t		_internal_inventory(t_player *pl)
+static int32_t _internal_inventory(t_player *pl)
 {
-	char	*num;
+	char *num;
 
 	num = ft_itoa(FOOD(pl->inventory.items));
 	SENDBUF = ft_strfreecat(SENDBUF, num);
@@ -98,16 +104,98 @@ static int32_t		_internal_inventory(t_player *pl)
 	SENDBUF = ft_strfreecat(SENDBUF, num);
 	return (EXIT_SUCCESS);
 }
-
-static int32_t		items(t_player *pl)
+/* :> player_position
+	- Send the players individual position to the graphic clients.
+*/
+static int32_t player_position(t_player *pl)
 {
-	t_graphic	*gr;
-	t_dblist	*temp;
-	char		*num;
+	t_graphic *gr;
+	t_dblist *temp;
+	char *num;
+
+	gr = NULL;
+	SENDBUF = strcat(SENDBUF, "ppo ");
+	num = ft_itoa((int32_t)pl->player_id);
+	SENDBUF = ft_strfreecat(SENDBUF, num);
+	SENDBUF = strcat(SENDBUF, " ");
+	_internal_tileloc(pl);
+	_internal_orientation(pl);
+	SENDBUF = strcat(SENDBUF, "\n");
+	temp = g_servenv->graphical.first;
+	while (temp)
+	{
+		gr = (t_graphic *)(temp->data);
+		communication.outgoing(gr->c_fd, SENDBUF);
+		bzero(SENDBUF, g_servenv->nsend);
+		temp = temp->next;
+	}
+	return (EXIT_SUCCESS);
+}
+
+/* :> player_connected
+	- Send the new players init message to the graphics client.
+*/
+static int32_t player_connected(t_player *pl)
+{
+	t_graphic *gr;
+	t_dblist *temp;
+	char *num;
+
+	gr = NULL;
+	SENDBUF = strcat(SENDBUF, "pnw ");
+	num = ft_itoa((int32_t)(pl->player_id));
+	SENDBUF = ft_strfreecat(SENDBUF, num);
+	SENDBUF = strcat(SENDBUF, " ");
+	_internal_tileloc(pl);
+	_internal_orientation(pl);
+	_internal_level(pl);
+	_internal_teamname(pl);
+	SENDBUF = strcat(SENDBUF, "\n");
+	temp = g_servenv->graphical.first;
+	while (temp)
+	{
+		gr = (t_graphic *)(temp->data);
+		communication.outgoing(gr->c_fd, SENDBUF);
+		temp = temp->next;
+	}
+	bzero(SENDBUF, g_servenv->nsend);
+	return (EXIT_SUCCESS);
+}
+
+/* :> player_disconnected
+	- Send the player's remove message to the graphics client.
+*/
+static int32_t player_disconnected(t_player *pl)
+{
+	t_graphic *gr;
+	t_dblist *temp;
+	char *num;
+
+	gr = NULL;
+	SENDBUF = strcat(SENDBUF, "pdi ");
+	num = ft_itoa((int32_t)(pl->player_id));
+	SENDBUF = ft_strfreecat(SENDBUF, num);
+	SENDBUF = strcat(SENDBUF, "\n");
+	temp = g_servenv->graphical.first;
+	while (temp)
+	{
+		gr = (t_graphic *)(temp->data);
+		communication.outgoing(gr->c_fd, SENDBUF);
+		temp = temp->next;
+	}
+	bzero(SENDBUF, g_servenv->nsend);
+	return (EXIT_SUCCESS);
+}
+
+static int32_t items(t_player *pl)
+{
+	t_graphic *gr;
+	t_dblist *temp;
+	char *num;
 
 	gr = NULL;
 	SENDBUF = strcat(SENDBUF, "pin ");
-	num = ft_itoa((int32_t )pl->player_id);
+	num = ft_itoa((int32_t)pl->player_id);
 	SENDBUF = ft_strfreecat(SENDBUF, num);
 	SENDBUF = strcat(SENDBUF, " ");
 	_internal_tileloc(pl);
@@ -118,16 +206,18 @@ static int32_t		items(t_player *pl)
 	{
 		gr = (t_graphic *)(temp->data);
 		communication.outgoing(gr->c_fd, SENDBUF);
+		bzero(SENDBUF, g_servenv->nsend);
+		graphic.transmit.tiles.one(gr, pl->location.x, pl->location.y);
 		temp = temp->next;
 	}
 	return (EXIT_SUCCESS);
 }
 
-static int32_t		all(t_graphic *gr)
+static int32_t all(t_graphic *gr)
 {
-	t_player	*pl;
-	char		*num;
-	int32_t		i;
+	t_player *pl;
+	char *num;
+	int32_t i;
 
 	i = 0;
 	while (i < SRV_SOCK.nfds)
@@ -140,7 +230,7 @@ static int32_t		all(t_graphic *gr)
 			if (!pl)
 			{
 				i++;
-				continue ;
+				continue;
 			}
 			SENDBUF = strcat(SENDBUF, "pnw ");
 			num = ft_itoa((int32_t)(pl->player_id));
@@ -152,6 +242,7 @@ static int32_t		all(t_graphic *gr)
 			_internal_teamname(pl);
 			SENDBUF = strcat(SENDBUF, "\n");
 			communication.outgoing(gr->c_fd, SENDBUF);
+			bzero(SENDBUF, g_servenv->nsend);
 		}
 		i++;
 	}

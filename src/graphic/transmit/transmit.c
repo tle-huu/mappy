@@ -28,11 +28,11 @@ static int32_t		mapsize(t_graphic *gr)
 	char	*num;
 
 	ft_memset((void *)SENDBUF, 0, 100);
-	num = ft_itoa(SRV_BORD.x);
+	num = ft_itoa(SRV_BORD.x + 1);
 	SENDBUF = strcat(SENDBUF, "msz ");
 	SENDBUF = ft_strfreecat(SENDBUF, num);
 	SENDBUF = strcat(SENDBUF, " ");
-	num = ft_itoa(SRV_BORD.y);
+	num = ft_itoa(SRV_BORD.y + 1);
 	SENDBUF = ft_strfreecat(SENDBUF, num);
 	SENDBUF = strcat(SENDBUF, "\n");
 	communication.outgoing(gr->c_fd, SENDBUF);

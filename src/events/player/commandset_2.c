@@ -87,9 +87,9 @@ static int32_t		right(void *object)
 	else
 		pl->location.orientation = pl->location.orientation << 1;
 	communication.outgoing(pl->c_fd, "ok\n");
+	graphic.transmit.players.player_position(pl);
 	SRV_ALLP.status[pl->c_fd] = ACCEPTED;
 	event.is_waiting(pl);
-//	graphic.transmit.player.position(pl);
 	return (EXIT_SUCCESS);
 }
 
@@ -103,9 +103,9 @@ static int32_t		left(void *object)
 	else
 		pl->location.orientation = pl->location.orientation >> 1;
 	communication.outgoing(pl->c_fd, "ok\n");
+	graphic.transmit.players.player_position(pl);
 	SRV_ALLP.status[pl->c_fd] = ACCEPTED;
 	event.is_waiting(pl);
-//	graphic.transmit.player.position(pl);
 	return (EXIT_SUCCESS);
 }
 

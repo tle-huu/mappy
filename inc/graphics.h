@@ -22,6 +22,10 @@ typedef struct	s_graphic_players
 {
 	int32_t		(*all)(t_graphic *);
 	int32_t		(*items)(t_player *);
+	int32_t		(*player_position)(t_player *);
+	int32_t		(*player_connected)(t_player *);
+	int32_t		(*player_disconnected)(t_player *);
+
 }				t_graphic_players;
 
 typedef struct	s_graphic_teams
@@ -32,6 +36,7 @@ typedef struct	s_graphic_teams
 typedef struct	s_graphic_tiles
 {
 	int32_t		(*all)(t_graphic *);
+	int32_t		(*one)(t_graphic *, int, int);
 }				t_graphic_tiles;
 
 typedef struct			s_graphic_transmit

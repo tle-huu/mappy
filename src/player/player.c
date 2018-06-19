@@ -15,27 +15,28 @@
 #include "inventory.h"
 #include "events.h"
 #include "board.h"
+#include "graphics.h"
 
-static int32_t	new(int32_t cl);
-static void		eats(t_player *pl);
-static void		clear(t_player *pl);
+static int32_t new (int32_t cl);
+static void eats(t_player *pl);
+static void clear(t_player *pl);
 
-__attribute__((constructor))void	construct_player(void)
+__attribute__((constructor)) void construct_player(void)
 {
 	player.new = &new;
 	player.eats = &eats;
 	player.clear = &clear;
 }
 
-static int32_t	new(int32_t cl)
+static int32_t new (int32_t cl)
 {
-	t_dblist	*temp;
-	t_player	*pl;
-	int32_t		ret;
-	int32_t		i;
-	
+	t_dblist *temp;
+	t_player *pl;
+	int32_t ret;
+	int32_t i;
+
 	printf("[PLAYER]\n  Creating new player @ : <%d>\n", cl);
-	ret  = 0;
+	ret = 0;
 	i = 0;
 	if (!(temp = player.pool.pop()))
 		return (EXIT_FAILURE);
@@ -51,13 +52,15 @@ static int32_t	new(int32_t cl)
 	printf("  Player is on : <%p>\n", pl);
 	if (player.parse.teamname(pl) == EXIT_SUCCESS)
 		player.eats(pl);
+	graphic.transmit.players.player_connected(pl);
 	return (EXIT_SUCCESS);
 }
 
-static void		clear(t_player *pl)
+static void clear(t_player *pl)
 {
-	t_dblist	*temp;
+	t_dblist *temp;
 
+	graphic.transmit.players.player_disconnected(pl);
 	(SRV_ALLP.status)[pl->c_fd] = 0;
 	(pl->team) ? (pl->team->players[pl->c_fd] = NULL) : 0;
 	board.removeplayer(pl);
@@ -66,7 +69,7 @@ static void		clear(t_player *pl)
 	pl->container = temp;
 }
 
-static void		eats(t_player *pl)
+static void eats(t_player *pl)
 {
 	printf("[PLAYER]\n  Player on : <%p> eats\n", pl);
 	event.add(&(eventlookup[EAT]), (void *)pl, 0);

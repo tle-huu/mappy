@@ -16,6 +16,7 @@
 #include "player.h"
 #include "inventory.h"
 #include "egg.h"
+#include "graphics.h"
 
 static int32_t		advance(void *object);
 static int32_t		ft_fork(void *object);
@@ -44,9 +45,9 @@ static int32_t	advance(__attribute__((unused))void *object)
 	printf("[COMMAND]\n  player <%d> advanced\n", pl->c_fd);
 	player.place.advance(pl);
 	communication.outgoing(pl->c_fd, "ok\n");
+	graphic.transmit.players.player_position(pl);
 	SRV_ALLP.status[pl->c_fd] = ACCEPTED;
 	event.is_waiting(pl);
-	//graphic.transmit.player.position(pl);
 	return (EXIT_SUCCESS);
 }
 

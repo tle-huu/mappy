@@ -44,6 +44,7 @@ static int32_t		see_sendstr(t_player *pl)
 	printf("  I see: |%s|\n", SENDBUF);
 	SENDBUF = strcat(SENDBUF, "}\n");
 	communication.outgoing(pl->c_fd, SENDBUF);
+	bzero(SENDBUF, g_servenv->nsend);
 	SRV_ALLP.status[pl->c_fd] = ACCEPTED;
 	event.is_waiting(pl);
 	return (EXIT_SUCCESS);
