@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/13 14:07:15 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/18 02:18:39 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/19 15:42:28 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,9 @@ typedef struct	s_graphic_players
 {
 	int32_t		(*all)(t_graphic *);
 	int32_t		(*items)(t_player *);
-	int32_t		(*player_position)(t_player *);
-	int32_t		(*player_connected)(t_player *);
-	int32_t		(*player_disconnected)(t_player *);
+	int32_t		(*position)(t_player *);
+	int32_t		(*connected)(t_player *);
+	int32_t		(*death)(t_player *);
 
 }				t_graphic_players;
 

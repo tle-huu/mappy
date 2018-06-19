@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/16 14:58:19 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/18 02:22:50 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/19 15:01:44 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ static int32_t		take(void *object)
 	if (i == NRESOURCES)
 		communication.outgoing(pl->c_fd, "ko\n");
 	SRV_ALLP.status[pl->c_fd] = ACCEPTED;
-	event.is_waiting(pl);
+	event.iswaiting(pl);
 	graphic.transmit.players.items(pl);
 	return (EXIT_SUCCESS);
 }
@@ -87,9 +87,9 @@ static int32_t		right(void *object)
 	else
 		pl->location.orientation = pl->location.orientation << 1;
 	communication.outgoing(pl->c_fd, "ok\n");
-	graphic.transmit.players.player_position(pl);
+	graphic.transmit.players.position(pl);
 	SRV_ALLP.status[pl->c_fd] = ACCEPTED;
-	event.is_waiting(pl);
+	event.iswaiting(pl);
 	return (EXIT_SUCCESS);
 }
 
@@ -99,13 +99,13 @@ static int32_t		left(void *object)
 
 	pl = (t_player *)((t_event *)object)->entity;
 	if (pl->location.orientation == NORTH)
-		pl->location.orientation = EAST;
+		pl->location.orientation = WEST;
 	else
 		pl->location.orientation = pl->location.orientation >> 1;
 	communication.outgoing(pl->c_fd, "ok\n");
-	graphic.transmit.players.player_position(pl);
+	graphic.transmit.players.position(pl);
 	SRV_ALLP.status[pl->c_fd] = ACCEPTED;
-	event.is_waiting(pl);
+	event.iswaiting(pl);
 	return (EXIT_SUCCESS);
 }
 
@@ -139,7 +139,7 @@ static int32_t		put(void *object)
 	if (i == NRESOURCES)
 		communication.outgoing(pl->c_fd, "ko\n");
 	SRV_ALLP.status[pl->c_fd] = ACCEPTED;
-	event.is_waiting(pl);
+	event.iswaiting(pl);
 	graphic.transmit.players.items(pl);
 	return (EXIT_SUCCESS);
 }

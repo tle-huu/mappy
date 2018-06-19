@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 21:31:19 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/18 00:51:50 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/19 13:21:17 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,15 @@ static int32_t		lookup(int32_t cl);
 static int32_t		add(t_eventhold *eventhold, void *entity, int32_t preprocess);
 static void			ft_remove(void *entity);
 static void			fail(int32_t cl);
-static void			is_waiting(t_player *pl);
+static void			iswaiting(t_player *pl);
 
 __attribute__((constructor))void	construct_eventlogic(void)
 {
 	event.lookup = &lookup;
 	event.add = &add;
-	event.remove = &ft_remove;
+	event.removeall = &ft_remove;
 	event.fail = &fail;
-	event.is_waiting = &is_waiting;
+	event.iswaiting = &iswaiting;
 }
 
 static int32_t	lookup(int32_t cl)
@@ -66,9 +66,9 @@ static int32_t	lookup(int32_t cl)
 		}
 		if (i == NCOMMANDS)
 			event.fail(cl);
+		free(*split);
 		(split)++;
 	}
-	// NEEDS FREEING
 	printf("  [EVENT]\n  OVER\n");
 	return (EXIT_SUCCESS);
 }
@@ -79,9 +79,7 @@ static int32_t	pl_preprocess(void *entity, t_event *ev)
 			PLAYER_ENT->pending.qlen);
 	printf("  Copying this message : |%s|\n", PLAYER_ENT->message);
 	if (PLAYER_ENT->message[0])
-	{
 		strcpy(ev->message, PLAYER_ENT->message);
-	}
 	if (SRV_ALLP.status[PLAYER_ENT->c_fd] == WORKING)
 	{
 		printf("  Player is working already\n");
@@ -151,14 +149,19 @@ static void		ft_remove(void *entity)
 	}
 }
 
-static void		is_waiting(t_player *pl)
+static void		iswaiting(t_player *pl)
 {
 	t_dblist	*temp;
+	t_event		*ev;
 
 	if ((temp = ft_popfirst(&(pl->pending))))
 	{
+		ev = (t_event *)(temp->data);
+		if (ev->message[0])
+			strcpy(pl->message, ev->message);
 		printf("[EVENT]\n  Pullling from player's command queue\n");
-		event.add(((t_event *)(temp->data))->eventhold, pl, 1);
+		event.add(ev->eventhold, pl, 1);
+		event.pool.add(ev);
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/10 14:25:49 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/18 02:08:53 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/19 15:49:45 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ static int32_t	hatch(void *object)
 	t_egg	*eg;
 
 	printf("[ACTION]\n  Hatching!\n");
-	//graphic.transmit.egg.hatch(eg);
 	eg = (t_egg *)(((t_event *)object)->entity);
 	tm = &(SRV_TEAM[eg->teamindex]);
 	tm->nplayers++;

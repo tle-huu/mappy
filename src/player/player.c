@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 13:20:08 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/18 00:47:59 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/19 15:41:07 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,13 +46,14 @@ static int32_t new (int32_t cl)
 	pl->player_id = (SRV_GENV.track_playerid)++;
 	pl->tilecontainer.data = pl;
 	pl->level = 1;
-	(SRV_ALLP.lookup)[cl] = (void *)pl;
+	SRV_ALLP.lookup[cl] = pl;
 	while (i++ < 10)
 		inventory.add(&(pl->inventory.items), 0);
-	printf("  Player is on : <%p>\n", pl);
 	if (player.parse.teamname(pl) == EXIT_SUCCESS)
+	{
 		player.eats(pl);
-	graphic.transmit.players.player_connected(pl);
+		graphic.transmit.players.connected(pl);
+	}
 	return (EXIT_SUCCESS);
 }
 
@@ -60,8 +61,7 @@ static void clear(t_player *pl)
 {
 	t_dblist *temp;
 
-	graphic.transmit.players.player_disconnected(pl);
-	(SRV_ALLP.status)[pl->c_fd] = 0;
+	SRV_ALLP.status[pl->c_fd] = 0;
 	(pl->team) ? (pl->team->players[pl->c_fd] = NULL) : 0;
 	board.removeplayer(pl);
 	temp = pl->container;
@@ -72,5 +72,5 @@ static void clear(t_player *pl)
 static void eats(t_player *pl)
 {
 	printf("[PLAYER]\n  Player on : <%p> eats\n", pl);
-	event.add(&(eventlookup[EAT]), (void *)pl, 0);
+	event.add(&(eventlookup[EAT]), pl, 0);
 }

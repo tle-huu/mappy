@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 22:14:04 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/18 02:10:11 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/19 13:33:12 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,9 @@ static int32_t	advance(__attribute__((unused))void *object)
 	printf("[COMMAND]\n  player <%d> advanced\n", pl->c_fd);
 	player.place.advance(pl);
 	communication.outgoing(pl->c_fd, "ok\n");
-	graphic.transmit.players.player_position(pl);
+	graphic.transmit.players.position(pl);
 	SRV_ALLP.status[pl->c_fd] = ACCEPTED;
-	event.is_waiting(pl);
+	event.iswaiting(pl);
 	return (EXIT_SUCCESS);
 }
 
@@ -61,7 +61,7 @@ static int32_t	ft_fork(void *object)
 	else
 		communication.outgoing(pl->c_fd, "ok\n");
 	SRV_ALLP.status[pl->c_fd] = ACCEPTED;
-	event.is_waiting(pl);
+	event.iswaiting(pl);
 	return (EXIT_SUCCESS);
 }
 
@@ -135,6 +135,6 @@ static int32_t	send_inventory(void *object)
 		return (EXIT_FAILURE);
 	free(str);
 	SRV_ALLP.status[pl->c_fd] = ACCEPTED;
-	event.is_waiting(pl);
+	event.iswaiting(pl);
 	return (EXIT_SUCCESS);
 }

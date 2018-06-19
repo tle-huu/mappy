@@ -130,7 +130,7 @@ SRC_ERR = \
 	error
 
 SRC_EVS = \
-	logic \
+	events \
 	pool \
 	queue
 

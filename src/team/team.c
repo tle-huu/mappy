@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 14:55:19 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/15 21:14:11 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/19 15:17:31 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,9 @@ static int32_t	add_player(t_player *pl, int32_t teamindex)
 	{
 		printf("player <%d> tried to join |%s|,no room\n", pl->c_fd, tm->name);
 		client.disconnect(pl->c_fd);
+		player.clear(pl);
+		player.pool.add(pl);
+		return (-1);
 	}
 	return (EXIT_SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/13 14:11:03 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/18 01:03:23 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/19 13:20:14 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,14 @@ static int32_t	outgoing(int32_t cl, char *str);
 static int32_t	incoming(int32_t cl);
 static int32_t	printraw(void);
 static int32_t	newclient(int32_t cl);
+static int32_t	graphical(t_graphic *gr, char *str);
 
 __attribute__((constructor))void	construct_communication(void)
 {
 	communication.outgoing = &outgoing;
 	communication.incoming = &incoming;
 	communication.printraw = &printraw;
+	communication.graphical = &graphical;
 	communication.newclient = &newclient;
 }
 
@@ -54,6 +56,25 @@ static int32_t	incoming(int32_t cl)
 	}
 	RECVBUF[(ret)] = '\0';
 	printf("  This is the buffer recieved |%s|\n", RECVBUF);
+	return (EXIT_SUCCESS);
+}
+
+static int32_t	graphical(t_graphic *gr, char *str)
+{
+	t_dblist	*temp;
+
+	if (!gr)
+	{
+		temp = g_servenv->graphical.first;
+		while (temp)
+		{
+			gr = (t_graphic *)(temp->data);
+			communication.outgoing(gr->c_fd, SENDBUF);
+			temp = temp->next;
+		}
+	}
+	else
+		communication.outgoing(gr->c_fd, str);
 	return (EXIT_SUCCESS);
 }
 

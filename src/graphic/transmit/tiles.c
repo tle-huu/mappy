@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/17 19:09:02 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/17 21:02:59 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/19 14:29:29 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ static int32_t all(t_graphic *gr)
 	while (x <= SRV_BORD.x)
 	{
 		y = 0;
-		ft_memset((void *)SENDBUF, 0, 100);
 		while (y <= SRV_BORD.y)
 		{
 			SENDBUF = strcat(SENDBUF, "bct ");
@@ -58,6 +57,7 @@ static int32_t all(t_graphic *gr)
 			}
 			SENDBUF = strcat(SENDBUF, "\n");
 			communication.outgoing(gr->c_fd, SENDBUF);
+			bzero(SENDBUF, g_servenv->nsend);
 			y++;
 		}
 		x++;
@@ -71,7 +71,6 @@ static int32_t one(t_graphic *gr, int32_t x, int32_t y)
 	int32_t nresource;
 	char *num;
 
-	ft_memset((void *)SENDBUF, 0, 100);
 	SENDBUF = strcat(SENDBUF, "bct ");
 	num = ft_itoa(x);
 	SENDBUF = ft_strfreecat(SENDBUF, num);

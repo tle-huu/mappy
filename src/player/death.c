@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 23:16:32 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/17 17:02:54 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/19 15:42:46 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "death.h"
 #include "events.h"
 #include "client.h"
+#include "graphics.h"
 #include "communication.h"
 #include "time.h"
 
@@ -44,8 +45,9 @@ static void		now(void)
 	if (pl->c_fd)
 	{
 		// generate death message to send client
-		event.remove((void *)pl);
+		event.removeall((void *)pl);
 		communication.outgoing(pl->c_fd, "death\n");
+		graphic.transmit.players.death(pl);
 		SRV_ALLP.status[pl->c_fd] = DEAD;
 		client.disconnect(pl->c_fd);
 		player.clear(pl);

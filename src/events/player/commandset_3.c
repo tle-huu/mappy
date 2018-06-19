@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/16 22:00:49 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/18 01:34:26 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/19 13:22:51 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static int32_t		see_sendstr(t_player *pl)
 	communication.outgoing(pl->c_fd, SENDBUF);
 	bzero(SENDBUF, g_servenv->nsend);
 	SRV_ALLP.status[pl->c_fd] = ACCEPTED;
-	event.is_waiting(pl);
+	event.iswaiting(pl);
 	return (EXIT_SUCCESS);
 }
 

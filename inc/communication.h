@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 16:11:12 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/17 19:52:19 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/19 13:19:55 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ typedef struct			s_communication_methods
 	int32_t				(*outgoing)(int32_t, char *);
 	int32_t				(*incoming)(int32_t);
 	int32_t				(*printraw)(void);
+	int32_t				(*graphical)(t_graphic *, char *);
 	int32_t				(*newclient)(int32_t);
 }						t_communication_methods;
 

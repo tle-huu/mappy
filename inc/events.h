@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 15:58:08 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/17 13:39:55 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/19 13:08:22 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,9 +60,9 @@ typedef struct		s_event_methods
 	t_eventqueue	queue;
 	int32_t			(*lookup)(int32_t);
 	int32_t			(*add)(t_eventhold *, void *, int32_t);
-	void			(*remove)(void *);
+	void			(*removeall)(void *);
 	void			(*fail)(int32_t);
-	void			(*is_waiting)(t_player *);
+	void			(*iswaiting)(t_player *);
 }					t_event_methods;
 
 t_event_methods		event;
