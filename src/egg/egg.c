@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/10 14:25:49 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/19 17:37:17 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/19 23:31:10 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,6 @@ static int32_t	incubate(t_player *pl)
 		return (-1);
 	eg = (t_egg *)temp->data;
 	eg->progenitor = pl->player_id;
-	eg->container = temp;
 	eg->teamindex = pl->teamindex;
 	eg->egg_id = SRV_GENV.track_eggid++;
 	egg.place.onboard(eg);
@@ -53,7 +52,7 @@ static int32_t	hatch(void *object)
 	tm->nplayers++;
 	SRV_GENV.maxingame_players++;
 	printf("  Ready to enqueue egg on team\n");
-	ft_enqueue(&(tm->eggqueue), eg->container, 0);
+	ft_enqueue(&(tm->eggqueue), &(eg->container), 0);
 	egg.death.soon(eg);
 	return (EXIT_SUCCESS);
 }

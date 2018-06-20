@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 15:30:42 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/16 18:44:56 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/19 23:16:02 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,6 @@ typedef struct		s_playerpool
 	t_dblist		*(*pop)(void);
 	void			(*add)(t_player *add);
 }					t_playerpool;
-
-typedef struct		s_playerparse
-{
-	int32_t			(*teamname)(t_player *);
-	int32_t			(*command)(t_player *);
-}					t_playerparse;
 
 typedef struct		s_playerplace
 {
@@ -44,12 +38,11 @@ typedef struct		s_playerdeath
 typedef struct		s_player_methods
 {
 	t_playerpool	pool;
-	t_playerparse	parse;
 	t_playerplace	place;
 	t_playerdeath	death;
 	int32_t			(*new)(int32_t);
 	void			(*eats)(t_player *);
-	void			(*clear)(t_player *);
+	int32_t			(*command)(t_player *);
 }					t_player_methods;
 
 t_player_methods	player;

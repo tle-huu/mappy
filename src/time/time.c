@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 10:53:55 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/19 15:37:10 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/20 00:21:52 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,18 +37,31 @@ static int32_t	compare(t_timeval *relative, t_timeval *time2)
 
 static t_timeval	*nearestalarm(void)
 {
+	printf("  %sFIND THE NEAREST ALARM%s\n", "\033[48;2;50;48;12m", "\033[0m"); 
 	if (!(event.queue.data->first)
 		&& !(death.track.eggs->first))
 		return (NULL);
 	if (!(event.queue.data->first))
+	{
+		printf("%sNOTHING on the queue??%s\n", "\033[48;2;50;48;12m", "\033[0m"); 
 		return (&(((t_egg *)(death.track.eggs->first->data))->alarm));
+	}
 	if (!(death.track.eggs->first))
+	{
+		printf("  Event queue alarm, nothing on deathtrack\n");
 		return (&(((t_event *)(event.queue.data->first->data))->alarm));
+	}
 	if (time.compare(&(((t_event *)(event.queue.data->first->data))->alarm),
 					&(((t_egg *)(death.track.eggs->first->data))->alarm)))
+	{
+		printf("  Egg death event\n");
 		return (&(((t_egg *)(death.track.eggs->first->data))->alarm));
+	}
 	else
+	{
+		printf("  Event queue alarm\n");
 		return (&(((t_event *)(event.queue.data->first->data))->alarm));
+	}
 	return (NULL);
 }
 

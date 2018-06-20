@@ -162,7 +162,6 @@ SRC_INV = \
 
 SRC_PLR = \
 	death \
-	parse \
 	place \
 	player \
 	pool

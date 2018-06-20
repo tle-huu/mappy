@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 13:40:27 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/19 20:09:28 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/20 00:56:39 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ static void			crash(int32_t cl)
 	if ((SRV_ALLP.status[cl] != GRAPHIC)
 		&& (SRV_ALLP.status[cl] != NOT_ACCEPTED))
 	{
-		player.clear(SRV_ALLP.lookup[cl]);
+		graphic.transmit.players.death(SRV_ALLP.lookup[cl]);
 		player.pool.add(SRV_ALLP.lookup[cl]);
 	}
 	if (SRV_ALLP.status[cl] == GRAPHIC)

@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 15:58:08 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/19 13:08:22 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/19 22:18:13 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,12 +28,12 @@ typedef struct		s_eventhold
 
 typedef struct		s_event
 {
+	t_dblist  		container;
 	t_timeval 		alarm;
 	int32_t	  		(*action)(void *);
 	void	  		*entity;
 	char			message[513];
 	t_eventhold		*eventhold;
-	t_dblist  		*container;
 }					t_event;
 
 typedef struct		s_eventqueue

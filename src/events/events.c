@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 21:31:19 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/19 13:21:17 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/19 23:33:18 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ static int32_t	pl_preprocess(void *entity, t_event *ev)
 	{
 		printf("  Player is working already\n");
 		if (PLAYER_ENT->pending.qlen < 9)
-			ft_enqueue(&(PLAYER_ENT->pending), ev->container, 0);
+			ft_enqueue(&(PLAYER_ENT->pending), &(ev->container), 0);
 		else
 		{
 			printf("  Player has too many commands queued\n"); 
@@ -107,7 +107,6 @@ static int32_t	add(t_eventhold *eventhold, void *entity, int32_t preprocess)
 	ev->eventhold = eventhold;
 	time.setalarm(&(ev->alarm), eventhold->factor);
 	ev->entity = entity;
-	ev->container = temp;
 	if (preprocess)
 	{
 		if (pl_preprocess(entity, ev))

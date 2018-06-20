@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/19 15:41:24 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/19 17:31:36 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/20 00:59:12 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,17 +125,20 @@ static int32_t connected(t_player *pl)
 {
 	char *num;
 
-	SENDBUF = strcat(SENDBUF, "pnw ");
-	num = ft_itoa((int32_t)(pl->player_id));
-	SENDBUF = ft_strfreecat(SENDBUF, num);
-	SENDBUF = strcat(SENDBUF, " ");
-	_tileloc(pl);
-	_orientation(pl);
-	_level(pl);
-	_teamname(pl);
-	SENDBUF = strcat(SENDBUF, "\n");
-	communication.graphical(NULL, SENDBUF);
-	bzero(SENDBUF, g_servenv->nsend);
+	if (pl)
+	{
+		SENDBUF = strcat(SENDBUF, "pnw ");
+		num = ft_itoa((int32_t)(pl->player_id));
+		SENDBUF = ft_strfreecat(SENDBUF, num);
+		SENDBUF = strcat(SENDBUF, " ");
+		_tileloc(pl);
+		_orientation(pl);
+		_level(pl);
+		_teamname(pl);
+		SENDBUF = strcat(SENDBUF, "\n");
+		communication.graphical(NULL, SENDBUF);
+		bzero(SENDBUF, g_servenv->nsend);
+	}
 	return (EXIT_SUCCESS);
 }
 

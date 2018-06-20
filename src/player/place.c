@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 22:58:22 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/19 14:59:14 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/19 23:56:21 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,7 @@ static void		onegg(t_player *pl)
 	tm = pl->team;
 	temp = ft_popfirst(&(tm->eggqueue));
 	eg = (t_egg *)temp->data;
-	pl->location.x = eg->location.x;
-	pl->location.y = eg->location.y;
-	pl->location.orientation = eg->location.orientation;
+	memcpy(&(pl->location), &(eg->location), sizeof(t_location));
 	egg.pool.add(eg);
 }
 

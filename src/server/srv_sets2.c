@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/31 17:15:59 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/14 11:19:52 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/19 21:46:04 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ int32_t		srv_setmaxclients(char **argv, __attribute__((unused))t_opts *opt)
 		}
 	}
 	SRV_GENV.maxinitial_clients = maxc * SRV_GENV.nteams;
+	SRV_GENV.maxingame_players = SRV_GENV.maxinitial_clients;
 	i = 0;
 	while (i < SRV_GENV.nteams)
 	{

@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 23:31:20 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/15 17:48:46 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/19 23:31:31 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ __attribute__((constructor))void	construct_eggpool(void)
 
 static int32_t		new(void)
 {
-	t_egg	*temp;
+	t_egg	*eg;
 	int32_t	i;
 	int32_t	reps;
 
@@ -36,11 +36,12 @@ static int32_t		new(void)
 		return (EXIT_FAILURE); // memory error
 	while (i < reps)
 	{
-		if (!(temp = (t_egg *)calloc(1, sizeof(t_egg)))
-			|| (!(temp->deathcontainer = (t_dblist *)calloc(1, sizeof(t_dblist)))))
-			return (EXIT_FAILURE); // memory error
-		if (!(ft_enqueue(egg.pool.data, temp, sizeof(t_egg))))
-			return (EXIT_FAILURE); // memory error
+		if (!(eg = (t_egg *)calloc(1, sizeof(t_egg))))
+			return (EXIT_FAILURE);
+		eg->container.data = eg;
+		eg->deathcontainer.data = eg;
+		if (!(ft_enqueue(egg.pool.data, &(eg->container), 0)))
+			return (EXIT_FAILURE);
 		i++;
 	}
 	return (EXIT_SUCCESS);
@@ -48,30 +49,15 @@ static int32_t		new(void)
 
 static void			add(t_egg *eg)
 {
-	t_dblist	*temp;
-	t_dblist	*deathtemp;
-
-	temp = eg->container;
-	eg = (t_egg *)temp->data;
-	deathtemp = eg->deathcontainer;
 	egg.death.pop(eg);
 	bzero(eg, sizeof(t_egg));
-	deathtemp->data = eg;
-	eg->container = temp;
-	eg->deathcontainer = deathtemp;
-	ft_enqueue(egg.pool.data, eg->container, 0);
+	eg->container.data = eg;
+	eg->deathcontainer.data = eg;
+	ft_enqueue(egg.pool.data, &(eg->container), 0);
 	printf("Egg added back to egg pool\n");
 }
 
 static t_dblist		*pop(void)
 {
-	t_dblist	*temp;
-	t_egg		*eg;
-
-	if ((temp = ft_popfirst(egg.pool.data)))
-	{
-		eg = (t_egg *)(temp->data);
-		eg->deathcontainer->data = eg;
-	}
-	return (temp);
+	return (ft_popfirst(egg.pool.data));
 }

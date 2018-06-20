@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/11 12:46:41 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/19 17:36:42 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/19 22:17:54 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,17 +75,18 @@ typedef	struct			s_location
 
 typedef struct		s_egg
 {
+	t_dblist		container;
+	t_dblist		deathcontainer;
 	int32_t			teamindex;
 	uint64_t		egg_id;
 	uint64_t		progenitor;
 	t_location		location;
 	t_timeval		alarm;
-	t_dblist		*container;
-	t_dblist		*deathcontainer;
 }					t_egg;
 
 typedef struct		s_player
 {
+	t_dblist		container;
 	int32_t			c_fd;
 	uint64_t		player_id;
 	int32_t			teamindex;
@@ -98,7 +99,6 @@ typedef struct		s_player
 	t_dblist		tilecontainer;
 	char			message[513];
 	t_team			*team;
-	t_dblist		*container;
 }					t_player;
 
 typedef struct			s_tile
