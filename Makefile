@@ -150,7 +150,8 @@ SRC_GFX_TRS = \
 	transmit \
 	tiles \
 	teams \
-	players
+	players \
+	eggs
 
 SRC_INV = \
 	inventory \

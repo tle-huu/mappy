@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/13 14:07:15 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/19 15:42:28 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/19 19:40:56 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 typedef struct	s_graphic_eggs
 {
 	int32_t		(*all)(t_graphic *);
+	int32_t		(*one)(t_egg *);
 }				t_graphic_eggs;
 
 typedef struct	s_graphic_players
@@ -44,6 +45,7 @@ typedef struct			s_graphic_transmit
 	t_graphic_tiles		tiles;
 	t_graphic_teams		teams;
 	t_graphic_players	players;
+	t_graphic_eggs		eggs;
 	int32_t				(*mapsize)(t_graphic *);
 	int32_t				(*timeunit)(t_graphic *);
 }						t_graphic_transmit;

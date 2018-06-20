@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/11 12:46:41 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/17 22:35:39 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/19 17:36:42 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ typedef struct		s_egg
 {
 	int32_t			teamindex;
 	uint64_t		egg_id;
+	uint64_t		progenitor;
 	t_location		location;
 	t_timeval		alarm;
 	t_dblist		*container;

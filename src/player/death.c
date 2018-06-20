@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 23:16:32 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/19 15:42:46 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/19 19:54:29 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ static void		now(void)
 		event.removeall((void *)pl);
 		communication.outgoing(pl->c_fd, "death\n");
 		graphic.transmit.players.death(pl);
-		SRV_ALLP.status[pl->c_fd] = DEAD;
+		SRV_ALLP.status[pl->c_fd] = 0;
 		client.disconnect(pl->c_fd);
 		player.clear(pl);
 		player.pool.add(pl);

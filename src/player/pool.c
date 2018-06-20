@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 22:27:23 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/15 14:56:42 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/19 20:10:23 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,5 +51,6 @@ static t_dblist		*pop(void)
 
 static void			add(t_player *pl)
 {
+	SRV_ALLP.lookup[pl->c_fd] = NULL;
 	ft_enqueue(player.pool.data, pl->container, 0);
 }

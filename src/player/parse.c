@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 22:44:32 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/17 22:34:26 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/19 17:16:53 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ static int32_t		teamname(t_player *pl)
 	}
 	else
 	{
-		ret = team.add_player(pl, i);
-		SRV_ALLP.status[pl->c_fd] = ACCEPTED;
+		if ((ret = team.add_player(pl, i)) == EXIT_SUCCESS)
+			SRV_ALLP.status[pl->c_fd] = ACCEPTED;
 	}
 	return (ret);
 }

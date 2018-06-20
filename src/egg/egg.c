@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/10 14:25:49 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/19 15:49:45 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/19 17:37:17 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ static int32_t	incubate(t_player *pl)
 	if (!(temp = egg.pool.pop()))
 		return (-1);
 	eg = (t_egg *)temp->data;
+	eg->progenitor = pl->player_id;
 	eg->container = temp;
 	eg->teamindex = pl->teamindex;
 	eg->egg_id = SRV_GENV.track_eggid++;

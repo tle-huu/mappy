@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/19 15:41:24 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/19 15:41:49 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/19 17:31:36 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ __attribute__((constructor)) void construct_transmit_players(void)
 	graphic.transmit.players.death = &death;
 }
 
-static int32_t _internal_tileloc(t_player *pl)
+static int32_t _tileloc(t_player *pl)
 {
 	char *num;
 
@@ -44,7 +44,7 @@ static int32_t _internal_tileloc(t_player *pl)
 	return (EXIT_SUCCESS);
 }
 
-static int32_t _internal_orientation(t_player *pl)
+static int32_t _orientation(t_player *pl)
 {
 	char *num;
 
@@ -62,7 +62,7 @@ static int32_t _internal_orientation(t_player *pl)
 	return (EXIT_SUCCESS);
 }
 
-static int32_t _internal_level(t_player *pl)
+static int32_t _level(t_player *pl)
 {
 	char *num;
 
@@ -72,13 +72,13 @@ static int32_t _internal_level(t_player *pl)
 	return (EXIT_SUCCESS);
 }
 
-static int32_t _internal_teamname(t_player *pl)
+static int32_t _teamname(t_player *pl)
 {
 	SENDBUF = strcat(SENDBUF, pl->team->name);
 	return (EXIT_SUCCESS);
 }
 
-static int32_t _internal_inventory(t_player *pl)
+static int32_t _inventory(t_player *pl)
 {
 	char *num;
 
@@ -104,9 +104,7 @@ static int32_t _internal_inventory(t_player *pl)
 	SENDBUF = ft_strfreecat(SENDBUF, num);
 	return (EXIT_SUCCESS);
 }
-/* :> player_position
-	- Send the players individual position to the graphic clients.
-*/
+
 static int32_t position(t_player *pl)
 {
 	char *num;
@@ -115,17 +113,14 @@ static int32_t position(t_player *pl)
 	num = ft_itoa((int32_t)pl->player_id);
 	SENDBUF = ft_strfreecat(SENDBUF, num);
 	SENDBUF = strcat(SENDBUF, " ");
-	_internal_tileloc(pl);
-	_internal_orientation(pl);
+	_tileloc(pl);
+	_orientation(pl);
 	SENDBUF = strcat(SENDBUF, "\n");
 	communication.graphical(NULL, SENDBUF);
 	bzero(SENDBUF, g_servenv->nsend);
 	return (EXIT_SUCCESS);
 }
 
-/* :> player_connected
-	- Send the new players init message to the graphics client.
-*/
 static int32_t connected(t_player *pl)
 {
 	char *num;
@@ -134,10 +129,10 @@ static int32_t connected(t_player *pl)
 	num = ft_itoa((int32_t)(pl->player_id));
 	SENDBUF = ft_strfreecat(SENDBUF, num);
 	SENDBUF = strcat(SENDBUF, " ");
-	_internal_tileloc(pl);
-	_internal_orientation(pl);
-	_internal_level(pl);
-	_internal_teamname(pl);
+	_tileloc(pl);
+	_orientation(pl);
+	_level(pl);
+	_teamname(pl);
 	SENDBUF = strcat(SENDBUF, "\n");
 	communication.graphical(NULL, SENDBUF);
 	bzero(SENDBUF, g_servenv->nsend);
@@ -165,8 +160,8 @@ static int32_t items(t_player *pl)
 	num = ft_itoa((int32_t)pl->player_id);
 	SENDBUF = ft_strfreecat(SENDBUF, num);
 	SENDBUF = strcat(SENDBUF, " ");
-	_internal_tileloc(pl);
-	_internal_inventory(pl);
+	_tileloc(pl);
+	_inventory(pl);
 	SENDBUF = strcat(SENDBUF, "\n");
 	communication.graphical(NULL, SENDBUF);
 	bzero(SENDBUF, g_servenv->nsend);
@@ -190,10 +185,10 @@ static int32_t all(t_graphic *gr)
 			num = ft_itoa((int32_t)(pl->player_id));
 			SENDBUF = ft_strfreecat(SENDBUF, num);
 			SENDBUF = strcat(SENDBUF, " ");
-			_internal_tileloc(pl);
-			_internal_orientation(pl);
-			_internal_level(pl);
-			_internal_teamname(pl);
+			_tileloc(pl);
+			_orientation(pl);
+			_level(pl);
+			_teamname(pl);
 			SENDBUF = strcat(SENDBUF, "\n");
 			communication.graphical(gr, SENDBUF);
 			bzero(SENDBUF, g_servenv->nsend);
