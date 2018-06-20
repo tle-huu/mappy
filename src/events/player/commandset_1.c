@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 22:14:04 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/19 13:33:12 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/20 01:18:17 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static int32_t	advance(__attribute__((unused))void *object)
 	player.place.advance(pl);
 	communication.outgoing(pl->c_fd, "ok\n");
 	graphic.transmit.players.position(pl);
-	SRV_ALLP.status[pl->c_fd] = ACCEPTED;
+	SRV_ALLP.status[pl->c_fd] = PLAYER;
 	event.iswaiting(pl);
 	return (EXIT_SUCCESS);
 }
@@ -60,7 +60,7 @@ static int32_t	ft_fork(void *object)
 		communication.outgoing(pl->c_fd, "ko\n");
 	else
 		communication.outgoing(pl->c_fd, "ok\n");
-	SRV_ALLP.status[pl->c_fd] = ACCEPTED;
+	SRV_ALLP.status[pl->c_fd] = PLAYER;
 	event.iswaiting(pl);
 	return (EXIT_SUCCESS);
 }
@@ -77,7 +77,7 @@ static int32_t	connect_nbr(void *object)
 		|| !(SENDBUF = strcat(SENDBUF, "\n"))
 		|| (communication.outgoing(pl->c_fd, SENDBUF) == EXIT_FAILURE))
 		return (EXIT_FAILURE);
-	SRV_ALLP.status[pl->c_fd] = ACCEPTED;
+	SRV_ALLP.status[pl->c_fd] = PLAYER;
 	return (EXIT_SUCCESS);
 }
 
@@ -134,7 +134,7 @@ static int32_t	send_inventory(void *object)
 	if ((communication.outgoing(pl->c_fd, str) == EXIT_FAILURE))
 		return (EXIT_FAILURE);
 	free(str);
-	SRV_ALLP.status[pl->c_fd] = ACCEPTED;
+	SRV_ALLP.status[pl->c_fd] = PLAYER;
 	event.iswaiting(pl);
 	return (EXIT_SUCCESS);
 }

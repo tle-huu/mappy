@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 22:27:23 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/19 23:38:24 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/20 02:12:54 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ static int32_t		new(void)
 		if (!(pl = (t_player *)calloc(1, sizeof(t_player))))
 			return (EXIT_FAILURE);
 		pl->container.data = pl;
+		pl->tilecontainer.data = pl;
 		if (!(ft_enqueue(player.pool.data, &(pl->container), 0)))
 			return (EXIT_FAILURE);
 		i++;
@@ -60,5 +61,6 @@ static void			add(t_player *pl)
 	board.removeplayer(pl);
 	bzero(pl, sizeof(t_player));
 	pl->container.data = pl;
+	pl->tilecontainer.data = pl;
 	ft_enqueue(player.pool.data, &(pl->container), 0);
 }

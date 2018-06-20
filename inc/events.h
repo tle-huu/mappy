@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 15:58:08 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/19 22:18:13 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/20 02:12:55 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,17 @@
 # define EGGCOMMAND 14
 
 typedef struct		s_event	t_event;
+
+typedef struct				s_resource_sacrifice
+{
+	int8_t					req_resources[7];
+}							t_resource_sacrifice;
+
+typedef struct				s_sacrifice_required
+{
+	int8_t					players;
+	t_resource_sacrifice	resources;
+}							t_sacrifice_required;
 
 typedef struct		s_eventhold
 {

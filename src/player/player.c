@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 13:20:08 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/19 23:50:16 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/20 01:17:21 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static void		_initialize(t_player *pl)
 		player.place.onegg(pl);
 	else 
 		player.place.onboard(pl);
-	SRV_ALLP.status[pl->c_fd] = ACCEPTED;
+	SRV_ALLP.status[pl->c_fd] = PLAYER;
 	SRV_ALLP.lookup[pl->c_fd] = pl;
 	player.eats(pl);
 }

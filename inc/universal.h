@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/11 12:46:41 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/19 22:17:54 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/20 02:12:56 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,11 @@
 # define NOT_ACCEPTED 1
 # define JOINTEAM 2
 # define JOINGRAPHIC 3
-# define ACCEPTED 10
+# define PLAYER 10
 # define GRAPHIC 11
 # define WORKING 100
-# define RESTING 101
+# define INCANTING 101
+# define INCANTED 102
 # define DOOMED 33
 # define DEAD 66
 # define MAX_CLIENTS (FD_SETSIZE - 10)
@@ -87,6 +88,7 @@ typedef struct		s_egg
 typedef struct		s_player
 {
 	t_dblist		container;
+	t_dblist		tilecontainer;
 	int32_t			c_fd;
 	uint64_t		player_id;
 	int32_t			teamindex;
@@ -96,7 +98,6 @@ typedef struct		s_player
 	t_location		location;
 	t_timeval		alarm;
 	t_queue			pending;
-	t_dblist		tilecontainer;
 	char			message[513];
 	t_team			*team;
 }					t_player;
