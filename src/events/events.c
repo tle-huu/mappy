@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/21 10:48:06 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/21 10:48:07 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/21 13:55:49 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,6 @@ static int32_t	add(t_eventhold *eventhold, void *entity, int32_t preprocess)
 
 static void		ft_remove(void *entity, int32_t	starve)
 {
-	t_dblist	*pop;
 	t_dblist	*temp;
 	t_dblist	*temp1;
 
@@ -135,12 +134,12 @@ static void		ft_remove(void *entity, int32_t	starve)
 		{
 			printf("\nmatching events\n");
 			temp1 = temp->next;
-			pop = ft_middel(event.queue.data, temp);
+			ft_middel(event.queue.data, temp);
 			if (starve
-				&& (((t_event *)(pop->data))->eventhold == &(eventlookup[EAT])))
-				event.queue.add(pop->data);
+				&& (((t_event *)(temp->data))->eventhold == &(eventlookup[EAT])))
+				event.queue.add(temp->data);
 			else
-				event.pool.add(pop->data);
+				event.pool.add(temp->data);
 			temp = temp1;
 		}
 		else

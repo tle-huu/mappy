@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/19 17:41:29 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/19 19:43:27 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/21 12:57:52 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ static void			_eggid(t_egg *eg)
 {
 	char	*num;
 
-	num = ft_itoa(eg->egg_id);
+	num = ft_itoa((int32_t)eg->egg_id);
 	SENDBUF = ft_strfreecat(SENDBUF, num);
 	SENDBUF = strcat(SENDBUF, " ");
 	num = ft_itoa(eg->progenitor);

@@ -6,13 +6,14 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/20 01:09:46 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/21 11:57:40 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/21 13:19:11 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "universal.h"
 #include "events.h"
 #include "communication.h"
+#include "graphics.h"
 #include "inventory.h"
 #include "board.h"
 
@@ -89,7 +90,9 @@ static int32_t	_sendlevel(int8_t level, t_player *pl)
 	char	*num;
 
 	if (level)
+	{
 		(pl->level == 8) ? pl->level : pl->level++;
+	}
 	SRV_ALLP.status[pl->c_fd] = LEVELING;
 	num = ft_itoa(pl->level);
 	SENDBUF = strcat(SENDBUF, "current level : ");
@@ -97,6 +100,7 @@ static int32_t	_sendlevel(int8_t level, t_player *pl)
 	SENDBUF = strcat(SENDBUF, "\n");
 	communication.outgoing(pl->c_fd, SENDBUF);
 	bzero(SENDBUF, g_servenv->nsend);
+	graphic.transmit.incantation.result(pl);
 	return (EXIT_SUCCESS);
 }
 
@@ -150,6 +154,23 @@ static int32_t	levelup(void *object)
 	return (EXIT_SUCCESS);
 }
 
+static int32_t	_checkog(t_player *og)
+{
+	if (!_checkresources(og)
+		|| !_checkplayers(og, og->location.x, og->location.y))
+	{
+		communication.outgoing(og->c_fd, "ko\n");
+		event.iswaiting(og);
+		SRV_ALLP.status[og->c_fd] = PLAYER;
+		return (0);
+	}
+	communication.outgoing(og->c_fd, "elevation in progress\n");
+	SRV_ALLP.status[og->c_fd] = INCANTING;
+	og->priest = og->c_fd;
+	graphic.transmit.incantation.start(og);
+	return (1);
+}
+
 static int32_t	incantation(void *object)
 {
 	t_dblist	*temp;
@@ -161,18 +182,10 @@ static int32_t	incantation(void *object)
 	og = (t_player *)((t_event *)object)->entity;
 	x = og->location.x;
 	y = og->location.y;
-	if (!_checkresources(og)
-		|| !_checkplayers(og, x, y))
-	{
-		communication.outgoing(og->c_fd, "ko\n");
-		event.iswaiting(og);
-		SRV_ALLP.status[og->c_fd] = PLAYER;
+	if (!_checkog(og))
 		return (EXIT_SUCCESS);
-	}
-	communication.outgoing(og->c_fd, "elevation in progress\n");
-	SRV_ALLP.status[og->c_fd] = INCANTING;
-	og->priest = og->c_fd;
-	temp = PLAYERLIST.first;
+	else
+		temp = PLAYERLIST.first;
 	while (temp)
 	{
 		pl = (t_player *)temp->data;
@@ -184,11 +197,13 @@ static int32_t	incantation(void *object)
 				communication.outgoing(pl->c_fd, "elevation in progress\n");
 				SRV_ALLP.status[pl->c_fd] = INCANTED;
 				pl->priest = og->c_fd;
+				graphic.transmit.incantation.start(pl);
 				event.removeall(pl, 1);
 			}
 		}
 		temp = temp->next;
 	}
+	graphic.transmit.incantation.start(NULL);
 	event.add(&(eventlookup[LVLUP]), pl, 0); 
 	return (EXIT_SUCCESS);
 }

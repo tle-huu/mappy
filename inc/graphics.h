@@ -6,12 +6,18 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/13 14:07:15 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/20 13:02:18 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/21 13:18:22 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GRAPHICS_H
 # define GRAPHICS_H
+
+typedef struct	s_graphic_incant
+{
+	void		(*start)(t_player *);
+	void		(*result)(t_player *);
+}				t_graphic_incant;
 
 typedef struct	s_graphic_eggs
 {
@@ -46,6 +52,7 @@ typedef struct			s_graphic_transmit
 	t_graphic_teams		teams;
 	t_graphic_players	players;
 	t_graphic_eggs		eggs;
+	t_graphic_incant	incantation;
 	int32_t				(*mapsize)(t_graphic *);
 	int32_t				(*timeunit)(t_graphic *);
 }						t_graphic_transmit;

@@ -154,7 +154,8 @@ SRC_GFX_TRS = \
 	tiles \
 	teams \
 	players \
-	eggs
+	eggs \
+	incantation
 
 SRC_INV = \
 	inventory \

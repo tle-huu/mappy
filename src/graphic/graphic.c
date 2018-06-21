@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/17 17:07:12 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/20 13:02:05 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/21 12:53:33 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,8 @@ static int32_t		greeting(t_graphic *gr)
 		|| (graphic.transmit.timeunit(gr) == EXIT_FAILURE)
 		|| (graphic.transmit.tiles.all(gr) == EXIT_FAILURE)
 		|| (graphic.transmit.teams.all(gr) == EXIT_FAILURE)
-		|| (graphic.transmit.players.all(gr) == EXIT_FAILURE))
-	//	|| (graphic.transmit.eggs.all(gr) == EXIT_FAILURE))
+		|| (graphic.transmit.players.all(gr) == EXIT_FAILURE)
+		|| (graphic.transmit.eggs.all(gr) == EXIT_FAILURE))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

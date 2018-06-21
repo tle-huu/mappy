@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/10 14:25:49 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/19 23:31:10 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/21 12:53:15 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ static int32_t	hatch(void *object)
 	SRV_GENV.maxingame_players++;
 	printf("  Ready to enqueue egg on team\n");
 	ft_enqueue(&(tm->eggqueue), &(eg->container), 0);
+	graphic.transmit.eggs.one(eg);
 	egg.death.soon(eg);
 	return (EXIT_SUCCESS);
 }
