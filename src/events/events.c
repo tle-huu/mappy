@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 21:31:19 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/19 23:33:18 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/20 16:39:42 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 
 static int32_t		lookup(int32_t cl);
 static int32_t		add(t_eventhold *eventhold, void *entity, int32_t preprocess);
-static void			ft_remove(void *entity);
+static void			ft_remove(void *entity, int32_t starve);
 static void			fail(int32_t cl);
 static void			iswaiting(t_player *pl);
 
@@ -80,9 +80,11 @@ static int32_t	pl_preprocess(void *entity, t_event *ev)
 	printf("  Copying this message : |%s|\n", PLAYER_ENT->message);
 	if (PLAYER_ENT->message[0])
 		strcpy(ev->message, PLAYER_ENT->message);
-	if (SRV_ALLP.status[PLAYER_ENT->c_fd] == WORKING)
+	if (SRV_ALLP.status[PLAYER_ENT->c_fd] == WORKING
+		|| SRV_ALLP.status[PLAYER_ENT->c_fd] == INCANTED
+		|| SRV_ALLP.status[PLAYER_ENT->c_fd] == INCANTING)
 	{
-		printf("  Player is working already\n");
+		printf("  Player is doing something already\n");
 		if (PLAYER_ENT->pending.qlen < 9)
 			ft_enqueue(&(PLAYER_ENT->pending), &(ev->container), 0);
 		else
@@ -118,6 +120,7 @@ static int32_t	add(t_eventhold *eventhold, void *entity, int32_t preprocess)
 	return (EXIT_SUCCESS);
 }
 
+/*
 static int32_t		entity_compare(void *temp)
 {
 	t_event	*ev;
@@ -127,24 +130,31 @@ static int32_t		entity_compare(void *temp)
 		return (1);
 	return (0);
 }
+*/
 
-static void		ft_remove(void *entity)
+static void		ft_remove(void *entity, int32_t	starve)
 {
+	t_dblist	*pop;
 	t_dblist	*temp;
+	t_dblist	*temp1;
 
-	SRV_GENV.entitytoremove = entity;
-	temp = ft_dblistcritpop(event.queue.data->first, &entity_compare);
+	temp = event.queue.data->first;
 	while (temp)
 	{
-		if (((temp = ft_dblistcritpop(event.queue.data->first, &entity_compare))
-			== event.queue.data->first))
+		if (((t_event *)(temp->data))->entity == entity)
 		{
-			if (event.queue.data->first == event.queue.data->last)
-				event.queue.data->last = NULL;
-			event.queue.data->first = NULL;
+			printf("\nmatching events\n");
+			temp1 = temp->next;
+			pop = ft_middel(event.queue.data, temp);
+			if (starve
+				&& (((t_event *)(pop->data))->eventhold == &(eventlookup[EAT])))
+				event.queue.add(pop->data);
+			else
+				event.pool.add(pop->data);
+			temp = temp1;
 		}
-		if (temp)
-			event.pool.add(temp->data);
+		else
+			temp = temp->next;
 	}
 }
 

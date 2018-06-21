@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/11 12:46:41 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/20 02:12:56 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/20 15:59:27 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@
 # define WORKING 100
 # define INCANTING 101
 # define INCANTED 102
+# define LEVELING 103
 # define DOOMED 33
 # define DEAD 66
 # define MAX_CLIENTS (FD_SETSIZE - 10)
@@ -94,6 +95,7 @@ typedef struct		s_player
 	int32_t			teamindex;
 	int8_t			conn_attempts;
 	int8_t			level;
+	int32_t			priest;
 	t_inventory		inventory;
 	t_location		location;
 	t_timeval		alarm;

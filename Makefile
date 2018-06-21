@@ -138,7 +138,9 @@ SRC_EVS = \
 SRC_EVS_PLR = \
 	commandset_1 \
 	commandset_2 \
-	commandset_3
+	see \
+	incantation \
+	kick
 
 SRC_EVS_SRV = \
 	actions

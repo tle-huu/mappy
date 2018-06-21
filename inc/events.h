@@ -6,28 +6,24 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 15:58:08 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/20 02:12:55 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/20 16:41:49 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EVENTS_H
 # define EVENTS_H
 
-# define NCOMMANDS 9
+# define NCOMMANDS 11
 # define EAT 13
 # define EGGCOMMAND 14
+# define LVLUP 15
 
 typedef struct		s_event	t_event;
-
-typedef struct				s_resource_sacrifice
-{
-	int8_t					req_resources[7];
-}							t_resource_sacrifice;
 
 typedef struct				s_sacrifice_required
 {
 	int8_t					players;
-	t_resource_sacrifice	resources;
+	int8_t					resources[7];
 }							t_sacrifice_required;
 
 typedef struct		s_eventhold
@@ -71,13 +67,14 @@ typedef struct		s_event_methods
 	t_eventqueue	queue;
 	int32_t			(*lookup)(int32_t);
 	int32_t			(*add)(t_eventhold *, void *, int32_t);
-	void			(*removeall)(void *);
+	void			(*removeall)(void *, int32_t);
 	void			(*fail)(int32_t);
 	void			(*iswaiting)(t_player *);
 }					t_event_methods;
 
-t_event_methods		event;
-t_eventhold			eventlookup[15];
+t_event_methods				event;
+t_eventhold					eventlookup[16];
+extern t_sacrifice_required		sacrifice[9];
 
 /* FOR REFERENCE
  *

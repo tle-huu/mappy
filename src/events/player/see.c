@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   commandset_3.c                                     :+:      :+:    :+:   */
+/*   see.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/06/16 22:00:49 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/20 01:18:43 by nkouris          ###   ########.fr       */
+/*   Created: 2018/06/20 15:12:32 by nkouris           #+#    #+#             */
+/*   Updated: 2018/06/20 22:06:34 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,18 @@ west = -x total & +y-y total
 east = +x total & -y+y total
 */
 
+static void		_boardwrap(int32_t *x, int32_t *y)
+{
+	if (*x > SRV_BORD.x)
+		*x = *x - (SRV_BORD.x + 1);
+	if (*y > SRV_BORD.y)
+		*y = *y - (SRV_BORD.y + 1);
+	if (*x < 0)
+		*x = *x + SRV_BORD.x;
+	if (*y < 0)
+		*y = *y + SRV_BORD.y;
+}
+
 static int32_t		_sendstr(t_player *pl)
 {
 	printf("  I see: |%s|\n", SENDBUF);
@@ -51,24 +63,15 @@ static int32_t		_buildresourcestr(int32_t x, int32_t y)
 	int32_t		nfill;
 	int32_t		i;
 
-	if (SENDBUF)
-		nfill = strlen(SENDBUF);
+	nfill = strlen(SENDBUF);
+	_boardwrap(&x, &y);
 	i = 0;
-	if (x > SRV_BORD.x)
-		x = x - (SRV_BORD.x + 1);
-	if (y > SRV_BORD.y)
-		y = y - (SRV_BORD.y + 1);
-	if (x < 0)
-		x = x + SRV_BORD.x;
-	if (y < 0)
-		y = y + SRV_BORD.y;
 	while (i < NRESOURCES)
 	{
 		nresource = board.tile.check(x, y, i);
-		printf("  At (%d, %d)\n  There is : %d %s\n", x, y, nresource, resources[i].name);
 		if (nresource)
 		{
-			nfill = (nfill + sizeof(", ") + (nresource * sizeof(resources[i].name)));
+			nfill = (nfill + sizeof(", }\n") + (nresource * sizeof(resources[i].name)));
 			if (!(SENDBUF) || (nfill > g_servenv->nsend))
 			{
 				if (!(SENDBUF = (char *)realloc(SENDBUF, nfill)))
@@ -77,7 +80,6 @@ static int32_t		_buildresourcestr(int32_t x, int32_t y)
 			}
 			while (nresource--)
 			{
-				printf("  go resource\n");
 				SENDBUF = strcat(SENDBUF, resources[i].name);
 				SENDBUF = strcat(SENDBUF, " ");
 			}
@@ -94,18 +96,8 @@ static int32_t		_buildplayerstr(int32_t x, int32_t y, t_player *pl)
 	int32_t		nfill;
 
 	nfill = 0;
-	printf("  this is x in seebuildplayer : %d\n  this is y in seebuildplayer : %d\n", x, y);
-	if (x > SRV_BORD.x)
-		x = x - (SRV_BORD.x + 1);
-	if (y > SRV_BORD.y)
-		y = y - (SRV_BORD.y + 1);
-	if (x < 0)
-		x = x + SRV_BORD.x;
-	if (y < 0)
-		y = y + SRV_BORD.y;
-	printf("  this is x in seebuildplayer : %d\n  this is y in seebuildplayer : %d\n", x, y);
+	_boardwrap(&x, &y);
 	temp = PLAYERLIST.first;
-	printf("  go\n");
 	while (temp)
 	{
 		printf("  finding players\n");
@@ -115,14 +107,15 @@ static int32_t		_buildplayerstr(int32_t x, int32_t y, t_player *pl)
 			nfill += sizeof("player");
 			if (!SENDBUF || (nfill > g_servenv->nsend))
 			{
+				printf(" REALLOC CALL\n");
 				if (!(SENDBUF = (char *)realloc(SENDBUF, nfill)))
 					return (EXIT_FAILURE);
+				g_servenv->nsend += nfill;
 			}
 			SENDBUF = strcat(SENDBUF, "player ");
 		}
 		temp = temp->next;
 	}
-	g_servenv->nsend += nfill;
 	printf("  SENDBUF Players : |%s|\n", SENDBUF);
 	return (EXIT_SUCCESS);
 }
@@ -135,17 +128,14 @@ static int32_t		_zeroblock(t_player *pl)
 	x = pl->location.x;
 	y = pl->location.y;
 	bzero(SENDBUF, g_servenv->nsend);
-	SENDBUF = strcat(SENDBUF, "{ ");
-	if (!SENDBUF)
-	{
-		if (!(SENDBUF = (char *)calloc(1, 3)))
-			return (EXIT_FAILURE);
-		g_servenv->nsend = 3;
-	}
-	if (see_buildplayerstr(x, y, pl) == EXIT_FAILURE
-		|| see_buildresourcestr(x, y) == EXIT_FAILURE)
+	SENDBUF = strcat(SENDBUF, "{");
+	if (_buildplayerstr(x, y, pl) == EXIT_FAILURE
+		|| _buildresourcestr(x, y) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
-	SENDBUF = strcat(SENDBUF, ", ");
+	if (SENDBUF[0] == '{')
+		SENDBUF = strcat(SENDBUF, " ,");
+	else
+		SENDBUF = strcat(SENDBUF, ", ");
 	return (EXIT_SUCCESS);
 }
 
@@ -168,7 +158,7 @@ static int32_t		see(void *object)
 		(maintrans = 1);
 	(pl->location.orientation & (NORTH | EAST)) ? (perptrans = -1) :
 		(perptrans = 1);
-	see_zeroblock(pl);
+	_zeroblock(pl);
 	i = 1;
 	while (i <= pl->level)
 	{

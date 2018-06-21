@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 13:40:27 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/20 01:17:51 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/20 16:31:29 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ static void			crash(int32_t cl)
 {
 	client.disconnect(cl);
 	if (SRV_ALLP.lookup[cl])
-		event.removeall(SRV_ALLP.lookup[cl]);
+		event.removeall(SRV_ALLP.lookup[cl], 0);
 	if ((SRV_ALLP.status[cl] != GRAPHIC)
 		&& (SRV_ALLP.status[cl] != NOT_ACCEPTED))
 	{

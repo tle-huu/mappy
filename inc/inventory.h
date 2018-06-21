@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/05 18:30:25 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/16 19:08:20 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/20 16:13:45 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct			s_inventory_methods
 	t_inventory_minus	minus;
 	int32_t				(*add)(uint64_t *, int32_t);
 	int32_t				(*remove)(uint64_t *, int32_t);
+	int32_t				(*check)(uint64_t, int32_t);
 }						t_inventory_methods;
 
 t_inventory_methods		inventory;

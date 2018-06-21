@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 23:16:32 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/19 23:34:47 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/20 16:04:59 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static void		now(void)
 	pl = (t_player *)(temp->data);
 	if (!(FOOD(pl->inventory.items)))
 	{
-		event.removeall((void *)pl);
+		event.removeall((void *)pl, 0);
 		communication.outgoing(pl->c_fd, "death\n");
 		graphic.transmit.players.death(pl);
 		client.disconnect(pl->c_fd);

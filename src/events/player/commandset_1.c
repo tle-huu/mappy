@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 22:14:04 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/20 01:18:17 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/20 19:53:47 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ __attribute__((constructor))void	construct_playercommands_set1(void)
 	eventlookup[3] = ev3;
 }
 
-static int32_t	advance(__attribute__((unused))void *object)
+static int32_t	advance(void *object)
 {
 	t_player	*pl;
 
