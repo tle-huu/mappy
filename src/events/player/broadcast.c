@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/20 19:29:46 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/21 11:57:39 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/21 11:59:19 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static int32_t		_sendmessage(t_player *pl)
 
 	past = destiny;
 	while (destiny == past)
-		destiny = arc4random_uniform(13);
+		destiny = arc4random_uniform(12);
 	SENDBUF = strcat(SENDBUF, "IN THE DISTANCE, YOU HEAR :\n");
 	SENDBUF = strcat(SENDBUF, broadcasts[destiny]);
 	communication.outgoing(pl->c_fd, SENDBUF);

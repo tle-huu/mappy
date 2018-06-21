@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/17 19:09:02 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/19 17:20:40 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/21 12:18:04 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ static int32_t all(t_graphic *gr)
 				i++;
 			}
 			SENDBUF = strcat(SENDBUF, "\n");
-			communication.outgoing(gr->c_fd, SENDBUF);
+			communication.graphical(gr, SENDBUF);
 			bzero(SENDBUF, g_servenv->nsend);
 			y++;
 		}
@@ -89,7 +89,7 @@ static int32_t one(t_graphic *gr, int32_t x, int32_t y)
 		i++;
 	}
 	SENDBUF = strcat(SENDBUF, "\n");
-	communication.outgoing(gr->c_fd, SENDBUF);
+	communication.graphical(gr, SENDBUF);
 	bzero(SENDBUF, g_servenv->nsend);
 	return (EXIT_SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/13 11:16:44 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/17 19:22:27 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/21 12:08:58 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,12 +67,12 @@ static int32_t		ft_initializers(void)
 			sizeof(struct sockaddr_in)) < 0)
 		|| (listen(SRV_SOCK.sockfd, 128) < 0)
 		|| (init_fd_select() == EXIT_FAILURE)
-		|| (board.new() == EXIT_FAILURE)
 		|| (event.queue.new() == EXIT_FAILURE)
 		|| (event.pool.new() == EXIT_FAILURE)
 		|| (player.pool.new() == EXIT_FAILURE)
 		|| (egg.pool.new() == EXIT_FAILURE)
 		|| (death.track.new() == EXIT_FAILURE)
+		|| (board.new() == EXIT_FAILURE)
 		|| !(SENDBUF = calloc(1, 1024)))
 		return (EXIT_FAILURE);
 	g_servenv->nsend = 1024;

@@ -6,12 +6,13 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/05 10:45:14 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/20 01:24:00 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/21 12:11:19 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "universal.h"
 #include "board.h"
+#include "events.h"
 #include "inventory.h"
 #include "communication.h"
 
@@ -102,6 +103,7 @@ static void		resource_gen(void)
 		while (gen-- > 0)
 			rand_resc(x, y);
 	}
+	event.add(&(eventlookup[REC_GEN]), NULL, 0);
 }
 
 static void		setplayer(t_player *pl)

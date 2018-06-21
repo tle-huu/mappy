@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 15:58:08 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/21 11:57:40 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/21 12:10:38 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # define EAT 13
 # define EGGCOMMAND 14
 # define LVLUP 15
+# define REC_GEN 16
 
 typedef struct		s_event	t_event;
 
