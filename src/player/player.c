@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 13:20:08 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/20 01:17:21 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/21 10:34:11 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,8 @@ static int32_t	new(int32_t cl)
 		return (EXIT_FAILURE);
 	pl = (t_player *)temp->data;
 	pl->c_fd = cl;
-	if (!_findteam(pl))
+	if ((!SRV_GENV.maxinitial_clients && !SRV_GENV.maxingame_players)
+		|| !_findteam(pl))
 	{
 		client.disconnect(pl->c_fd);
 		player.pool.add(pl);

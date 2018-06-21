@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   logic.c                                            :+:      :+:    :+:   */
+/*   events.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/06/12 21:31:19 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/20 16:39:42 by nkouris          ###   ########.fr       */
+/*   Created: 2018/06/21 10:48:06 by nkouris           #+#    #+#             */
+/*   Updated: 2018/06/21 10:48:07 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,16 +37,17 @@ static int32_t	lookup(int32_t cl)
 {
 	t_player	*pl;
 	char		**split;
+	char		**ihatestrings;
 	char		*temp;
 	int32_t		i;
 
 	pl = (t_player *)SRV_ALLP.lookup[cl];
 	printf("  Looking up event |%s|\n", RECVBUF);
 	split = ft_strsplit(RECVBUF, '\n');
+	ihatestrings = split;
 	while (*split)
 	{
 		i = 0;
-		printf("  the split : |%s|\n", *split);
 		if ((temp = ft_strchr(*split, ' ')))
 		{
 			bzero(pl->message, 513);
@@ -69,6 +70,7 @@ static int32_t	lookup(int32_t cl)
 		free(*split);
 		(split)++;
 	}
+	free(ihatestrings);
 	printf("  [EVENT]\n  OVER\n");
 	return (EXIT_SUCCESS);
 }
@@ -119,18 +121,6 @@ static int32_t	add(t_eventhold *eventhold, void *entity, int32_t preprocess)
 	event.queue.add(ev);
 	return (EXIT_SUCCESS);
 }
-
-/*
-static int32_t		entity_compare(void *temp)
-{
-	t_event	*ev;
-
-	ev = (t_event *)temp;
-	if (ev->entity == SRV_GENV.entitytoremove)
-		return (1);
-	return (0);
-}
-*/
 
 static void		ft_remove(void *entity, int32_t	starve)
 {

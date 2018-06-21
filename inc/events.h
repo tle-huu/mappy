@@ -6,14 +6,14 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 15:58:08 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/20 16:41:49 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/21 11:57:40 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef EVENTS_H
 # define EVENTS_H
 
-# define NCOMMANDS 11
+# define NCOMMANDS 12
 # define EAT 13
 # define EGGCOMMAND 14
 # define LVLUP 15
@@ -73,25 +73,7 @@ typedef struct		s_event_methods
 }					t_event_methods;
 
 t_event_methods				event;
-t_eventhold					eventlookup[16];
+t_eventhold					eventlookup[17];
 extern t_sacrifice_required		sacrifice[9];
-
-/* FOR REFERENCE
- *
-**	t_eventhold		eventlookup[] = {
-**		{"right", &commands.right, 7},
-**		{"left", &commands.left, 7},
-**		{"see", &commands.see, 7},
-**		{"inventory", &commands.inventory, 1},
-**		{"take", &commands.take, 7},
-**		{"put", &commands.put, 7},
-**		{"kick", &commands.kick, 7},
-**		{"broadcast", &commands.broadcast, 7},
-**		{"incantation", &commands.incantation, 300},
-**		{"fork", &commands.fork, 42},
-**		{"connect_nbr", &commands.connect_nbr, 0},
-**	};
-*/
-
 
 #endif

@@ -140,7 +140,8 @@ SRC_EVS_PLR = \
 	commandset_2 \
 	see \
 	incantation \
-	kick
+	kick \
+	broadcast
 
 SRC_EVS_SRV = \
 	actions

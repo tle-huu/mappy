@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 13:40:27 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/20 16:31:29 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/21 10:31:10 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,21 +42,12 @@ static int32_t		new(void)
 	int32_t	ret;
 
 	ret = EXIT_SUCCESS;
-	printf("<--- NEW CLIENT --->\n");
 	newfd = accept(SRV_SOCK.sockfd,
 				(struct sockaddr *)&(SRV_SOCK.temp), &(SRV_SOCK.socklen));
 	(SRV_ALLP.status)[newfd] = NOT_ACCEPTED;
 	add_fd_select(newfd);
-	if (!SRV_GENV.maxinitial_clients && !SRV_GENV.maxingame_players)
-	{
-		client.disconnect(newfd);
-		printf("Client %d rejected, not allowed\n", newfd);
-	}
-	else
-	{
-		ret = communication.outgoing(newfd, "WELCOME\n");
-		printf("New client %d connected\n", newfd);
-	}
+	ret = communication.outgoing(newfd, "WELCOME\n");
+	printf("New client %d connected\n", newfd);
 	return (ret);
 }
 

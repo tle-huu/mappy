@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/20 01:09:46 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/20 21:25:40 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/21 11:57:40 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ __attribute__((constructor))void		construct_playercommands_incantation(void)
 	eventlookup[LVLUP] = ev_levelup;
 }
 
-// player levels are checked in reference to pl's requirements
 static int32_t	_checkplayers(t_player *og, int32_t x, int32_t y)
 {
 	t_dblist	*temp;
@@ -69,7 +68,6 @@ static int32_t	_checkplayers(t_player *og, int32_t x, int32_t y)
 	return (1);
 }
 
-// resources are checked on a per-player basis
 static int32_t	_checkresources(t_player *pl)
 {
 	int8_t		*req_resources;
@@ -77,7 +75,6 @@ static int32_t	_checkresources(t_player *pl)
 
 	req_resources = (sacrifice[pl->level]).resources;
 	i = 0;
-	// check and set requirements
 	while (i < NRESOURCES)
 	{
 		if (inventory.check(pl->inventory.items, i) < (int32_t)req_resources[i])
@@ -99,7 +96,6 @@ static int32_t	_sendlevel(int8_t level, t_player *pl)
 	SENDBUF = ft_strfreecat(SENDBUF, num);
 	SENDBUF = strcat(SENDBUF, "\n");
 	communication.outgoing(pl->c_fd, SENDBUF);
-	//graphical client notification
 	bzero(SENDBUF, g_servenv->nsend);
 	return (EXIT_SUCCESS);
 }
