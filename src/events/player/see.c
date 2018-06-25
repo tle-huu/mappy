@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/20 15:12:32 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/20 22:06:34 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/06/25 11:51:51 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ static int32_t		_zeroblock(t_player *pl)
 	if (_buildplayerstr(x, y, pl) == EXIT_FAILURE
 		|| _buildresourcestr(x, y) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
-	if (SENDBUF[0] == '{')
+	if (!SENDBUF[1])
 		SENDBUF = strcat(SENDBUF, " ,");
 	else
 		SENDBUF = strcat(SENDBUF, ", ");
@@ -185,7 +185,12 @@ static int32_t		see(void *object)
 			_buildplayerstr(x, y, pl);
 			_buildresourcestr(x, y);
 			if (i != pl->level || j != ((1 + (i * 2)) - 1))
-				SENDBUF = strcat(SENDBUF, ", ");
+			{
+				if (i == 1 && SENDBUF[2] == ',')
+					SENDBUF = strcat(SENDBUF, " , ");
+				else
+					SENDBUF = strcat(SENDBUF, ", ");
+			}
 			j++;
 		}
 		i++;
