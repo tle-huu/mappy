@@ -134,7 +134,6 @@ SRC_EVS = \
 	pool \
 	queue
 
-##SRC_EVS_GFX = \	
 SRC_EVS_PLR = \
 	commandset_1 \
 	commandset_2 \
