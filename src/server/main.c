@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/13 11:16:44 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/21 12:08:58 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/04 13:56:55 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,11 @@
 #include "board.h"
 #include "events.h"
 #include "player.h"
-#include "egg.h"
-#include "death.h"
 
 t_opts	arr_opts[] = {
 	{"p", 1, &srv_setport},
 	{"x", 1, &srv_setboardx},
 	{"y", 1, &srv_setboardy},
-	{"n", 1, &srv_setteams},
 	{"c", 1, &srv_setmaxclients},
 	{"t", 1, &srv_settimeint},
 	{NULL, 0, NULL}
@@ -70,8 +67,6 @@ static int32_t		ft_initializers(void)
 		|| (event.queue.new() == EXIT_FAILURE)
 		|| (event.pool.new() == EXIT_FAILURE)
 		|| (player.pool.new() == EXIT_FAILURE)
-		|| (egg.pool.new() == EXIT_FAILURE)
-		|| (death.track.new() == EXIT_FAILURE)
 		|| (board.new() == EXIT_FAILURE)
 		|| !(SENDBUF = calloc(1, 1024)))
 		return (EXIT_FAILURE);
@@ -93,11 +88,7 @@ static int32_t		ft_serverinit(void)
 		printf("\n[SELECT]\n  Body of Select\n");
 		event.queue.check();
 		if ((ret = game_io()) == EXIT_FAILURE)
-		{
 			ft_printf("gameio failure\n");
-			// return (EXIT_FAILURE);
-		}
-		death.track.check();
 		time.settimer(&timeout);
 		FD_COPY(SRV_SOCK.copy, SRV_SOCK.input);
 		printf("\n[SELECT]\n  End of cycle\n");
@@ -111,7 +102,7 @@ int32_t		main(int argc, char **argv)
 	int32_t	arg;
 
 	arg = 0;
-	if (argc < 13)
+	if (argc < 11)
 	{
 		usage_warning(NULL);
 		return (EXIT_FAILURE);

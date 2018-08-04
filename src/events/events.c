@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/21 10:48:06 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/21 13:55:49 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/04 13:15:51 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,6 @@
 #include "events.h"
 #include "time.h"
 #include "communication.h"
-#include "egg.h"
 
 # define PLAYER_ENT ((t_player *)entity)
 

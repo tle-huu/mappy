@@ -6,20 +6,18 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/05 10:45:14 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/21 12:11:19 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/04 13:13:50 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "universal.h"
 #include "board.h"
 #include "events.h"
-#include "inventory.h"
 #include "communication.h"
 
 /* method function prototypes */
 static int32_t	send_dimensions(int32_t cl);
 static int32_t	new(void);
-static void		resource_gen(void);
 static void		setplayer(t_player *pl);
 static void		removeplayer(t_player *pl);
 
@@ -27,7 +25,6 @@ __attribute__((constructor))void	construct_board(void)
 {
 	board.new = &new;
 	board.send_dimensions = &send_dimensions;
-	board.resource_gen = &resource_gen;
 	board.setplayer = &setplayer;
 	board.removeplayer = &removeplayer;
 }
@@ -48,7 +45,6 @@ static int32_t	new(void)
 			return (EXIT_FAILURE);
 		x++;
 	}
-	board.resource_gen();
 	return (EXIT_SUCCESS);
 }
 
@@ -73,37 +69,6 @@ static int32_t	send_dimensions(int32_t cl)
 		return (EXIT_FAILURE);
 	free(str);
 	return (EXIT_SUCCESS);
-}
-
-static inline __attribute__((always_inline))void	rand_resc(uint32_t x,
-		uint32_t y)
-{
-	uint32_t	resc;
-
-	resc = arc4random_uniform((uint32_t)7);
-	inventory.add(&(RESOURCE), resc);
-}
-
-static void		resource_gen(void)
-{
-	int32_t		ntiles;
-	uint32_t	gen;
-	uint32_t	x;
-	uint32_t	y;
-
-	printf("Populating with resources\n");
-	x = 0;
-	y = 0;
-	ntiles = ((SRV_BORD.x * SRV_BORD.y) >> 2);
-	while (ntiles-- > 0)
-	{
-		gen = arc4random_uniform((uint32_t)40);
-		x = arc4random_uniform((uint32_t)SRV_BORD.x + 1);
-		y = arc4random_uniform((uint32_t)SRV_BORD.y + 1);
-		while (gen-- > 0)
-			rand_resc(x, y);
-	}
-	event.add(&(eventlookup[REC_GEN]), NULL, 0);
 }
 
 static void		setplayer(t_player *pl)

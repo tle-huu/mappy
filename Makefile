@@ -109,7 +109,7 @@ RES = \033[0m
 
 SRC_BRD = \
 	board \
-	tile
+#	tile
 
 SRC_CLN = \
 	client
@@ -117,14 +117,14 @@ SRC_CLN = \
 SRC_COM = \
 	communication
 
-SRC_DTH = \
-	death
+#SRC_DTH = \
+# 	death
 
-SRC_EGG = \
-	death \
-	egg \
-	place \
-	pool
+#SRC_EGG = \
+#	death \
+#	egg \
+#	place \
+#	pool
 
 SRC_ERR = \
 	error
@@ -134,16 +134,16 @@ SRC_EVS = \
 	pool \
 	queue
 
-SRC_EVS_PLR = \
-	commandset_1 \
-	commandset_2 \
-	see \
-	incantation \
-	kick \
-	broadcast
+#SRC_EVS_PLR = \
+#	commandset_1 \
+#	commandset_2 \
+#	see \
+#	incantation \
+#	kick \
+#	broadcast
 
-SRC_EVS_SRV = \
-	actions
+#SRC_EVS_SRV = \
+#	actions
 
 SRC_GFX = \
 	graphic
@@ -151,32 +151,31 @@ SRC_GFX = \
 SRC_GFX_TRS = \
 	transmit \
 	tiles \
-	teams \
 	players \
-	eggs \
-	incantation
+#	eggs \
+#	incantation \
+#	teams \
 
-SRC_INV = \
-	inventory \
-	minus1 \
-	minus2 \
-	plus1 \
-	plus2
+#SRC_INV = \
+#	inventory \
+#	minus1 \
+#	minus2 \
+#	plus1 \
+#	plus2
 
 SRC_PLR = \
-	death \
 	place \
 	player \
-	pool
+	pool \
+#	death
 
 SRC_SRV = \
 	io \
 	main \
-	srv_sets1 \
-	srv_sets2
+	srv_setup
 
-SRC_TEM = \
-	team
+#SRC_TEM = \
+#	team
 
 SRC_TIM = \
 	time
