@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/21 10:48:06 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/04 15:45:17 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/04 16:21:54 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,14 @@ static int32_t	lookup(int32_t cl)
 {
 	t_player	*pl;
 	char		**split;
-	char		**ihatestrings;
+	char		**strings;
 	char		*temp;
 	int32_t		i;
 
 	pl = (t_player *)SRV_ALLP.lookup[cl];
 	printf("  Looking up event |%s|\n", RECVBUF);
 	split = ft_strsplit(RECVBUF, '\n');
-	ihatestrings = split;
+	strings = split;
 	while (*split)
 	{
 		i = 0;
@@ -69,7 +69,7 @@ static int32_t	lookup(int32_t cl)
 		free(*split);
 		(split)++;
 	}
-	free(ihatestrings);
+	free(strings);
 	printf("  [EVENT]\n  OVER\n");
 	return (EXIT_SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/13 14:11:03 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/21 12:18:07 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/04 16:15:52 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int32_t	newclient(int32_t cl)
 	if (ft_strequ(RECVBUF, "GRAPHIC\n"))
 		SRV_ALLP.status[cl] = JOINGRAPHIC;
 	else
-		SRV_ALLP.status[cl] = JOINTEAM;
+		SRV_ALLP.status[cl] = JOINVEHICLE;
 	return (EXIT_SUCCESS);
 }
 

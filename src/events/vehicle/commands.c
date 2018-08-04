@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   commandset_1.c                                     :+:      :+:    :+:   */
+/*   commands.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/06/12 22:14:04 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/04 16:30:09 by nkouris          ###   ########.fr       */
+/*   Created: 2018/08/04 16:32:22 by nkouris           #+#    #+#             */
+/*   Updated: 2018/08/04 16:38:50 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 #include "events.h"
 #include "communication.h"
 #include "player.h"
-#include "inventory.h"
-#include "egg.h"
 #include "graphics.h"
 
 static int32_t		advance(void *object);
@@ -52,7 +50,7 @@ static int32_t	connect_nbr(void *object)
 
 	bzero(SENDBUF, 1024);
 	pl = (t_player *)((t_event *)object)->entity;
-	if (!(num = ft_itoa(pl->team->nplayers))
+	if (!(num = ft_itoa(SRV_GENV.connected_vehicles))
 		|| !(SENDBUF = ft_strfreecat(SENDBUF, num))
 		|| !(SENDBUF = strcat(SENDBUF, "\n"))
 		|| (communication.outgoing(pl->c_fd, SENDBUF) == EXIT_FAILURE))

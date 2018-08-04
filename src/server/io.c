@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/04 14:14:23 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/19 23:16:54 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/04 16:15:10 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,11 @@ static inline __attribute__((always_inline))int32_t	known_socket(int32_t cl)
 	}
 	if (SRV_ALLP.status[cl] == NOT_ACCEPTED)
 		communication.newclient(cl);
-	if (SRV_ALLP.status[cl] == JOINTEAM)
+	if (SRV_ALLP.status[cl] == JOINVEHICLE)
 		player.new(cl);
 	else if (SRV_ALLP.status[cl] == JOINGRAPHIC)
 		graphic.new(cl);
+// if graphical client ever needs to speak to the server
 //	else if (SRV_ALLP.status[cl] == GRAPHIC)
 //		graphic.parse.request((t_graphic *)SRV_ALLP.lookup[cl])
 	else if (player.command((t_player *)SRV_ALLP.lookup[cl]) == EXIT_FAILURE)

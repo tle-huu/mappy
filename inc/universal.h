@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/11 12:46:41 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/04 15:56:09 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/04 16:37:11 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@
 # define RECVBUF g_servenv->recvbuf
 # define PEEK 42
 # define NOT_ACCEPTED 1
-# define JOINTEAM 2
+# define JOINVEHICLE 2
 # define JOINGRAPHIC 3
 # define PLAYER 10
 # define GRAPHIC 11
@@ -99,6 +99,7 @@ typedef	struct			s_board
 typedef struct			s_gamenv
 {
 	int32_t				maxinitial_clients;
+	int32_t				connected_vehicles;
 	uint64_t			track_playerid;
 	void				*entitytoremove;
 	float				timeinterval;

@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 13:20:08 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/04 15:56:41 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/04 16:38:57 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,9 @@ static void		_initialize(t_player *pl)
 
 static int32_t	new(int32_t cl)
 {
-	t_dblist *temp;
-	t_player *pl;
-	int32_t ret;
+	t_dblist	*temp;
+	t_player 	*pl;
+	int32_t		ret;
 
 	printf("[PLAYER]\n  Creating new player @ : <%d>\n", cl);
 	ret = 0;
@@ -59,6 +59,7 @@ static int32_t	new(int32_t cl)
 	else
 	{
 		_initialize(pl);
+		SRV_GENV.connected_vehicles++;
 		graphic.transmit.players.connected(pl);
 	}
 	return (EXIT_SUCCESS);

@@ -19,7 +19,7 @@ SRCDIR_EGG = egg/
 SRCDIR_ERR = error/
 SRCDIR_EVS = events/
 SRCDIR_EVS_GFX = graphic/
-SRCDIR_EVS_PLR = player/
+SRCDIR_EVS_VHC = vehicle/
 SRCDIR_EVS_SRV = server/
 SRCDIR_GFX = graphic/
 SRCDIR_GFX_TRS = transmit/
@@ -56,8 +56,8 @@ OBJSRC += $(patsubst %, %.o, $(addprefix \
 		  $(SRC_EVS_GFX)))
 OBJSRC += $(patsubst %, %.o, $(addprefix \
 		  $(addprefix $(SRCDIR), \
-		  $(addprefix $(SRCDIR_EVS), $(SRCDIR_EVS_PLR))), \
-		  $(SRC_EVS_PLR)))
+		  $(addprefix $(SRCDIR_EVS), $(SRCDIR_EVS_VHC))), \
+		  $(SRC_EVS_VHC)))
 OBJSRC += $(patsubst %, %.o, $(addprefix \
 		  $(addprefix $(SRCDIR), \
 		  $(addprefix $(SRCDIR_EVS), $(SRCDIR_EVS_SRV))), \
@@ -134,8 +134,8 @@ SRC_EVS = \
 	pool \
 	queue
 
-#SRC_EVS_PLR = \
-#	commandset_1 \
+SRC_EVS_VHC = \
+	commands
 #	commandset_2 \
 #	see \
 #	incantation \
