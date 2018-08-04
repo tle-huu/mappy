@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 10:53:55 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/04 13:55:36 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/04 16:02:42 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,51 @@
 
 static int32_t	compare(t_timeval *relative, t_timeval *time2);
 static void		setalarm(t_timeval *alarm, float factor);
+static void		settimer(t_timeval **timer);
 
 __attribute__((constructor))void	construct_time(void)
 {
 	time.compare = &compare;
 	time.setalarm = &setalarm;
+	time.settimer = &settimer;
+}
+
+static t_timeval	*_nearestalarm(void)
+{
+	if (!(event.queue.data->first))
+		return (NULL);
+	return (&(((t_event *)(event.queue.data->first->data))->alarm));
+}
+
+static void		settimer(t_timeval **timer)
+{
+	t_timeval	temp;
+	t_timeval	*alarm;
+
+	gettimeofday(&temp, NULL);
+	if (!(alarm = _nearestalarm()))
+	{
+		if (*timer)
+			ft_memdel((void **)timer);
+		printf("  No events to check\n");
+		return ;
+	}
+	if (!(*timer))
+		(*timer) = (t_timeval *)calloc(1, sizeof(t_timeval));
+	printf("  Alarm pulled : <%ld> seconds & <%d> microseconds\n",
+		alarm->tv_sec, alarm->tv_usec);
+	(*timer)->tv_sec = alarm->tv_sec - temp.tv_sec;
+	if ((*timer)->tv_sec < 0
+		|| ((((*timer)->tv_usec = alarm->tv_usec - temp.tv_usec) < 0)
+		&& !(*timer)->tv_sec))
+		bzero((*timer), sizeof(t_timeval));
+	else if ((*timer)->tv_usec < 0)
+	{
+		(*timer)->tv_usec = 1000000 + (*timer)->tv_usec;
+		(*timer)->tv_sec ? (*timer)->tv_sec-- : 0;
+	}
+	printf("  Timer set for <%ld> seconds & <%d> microseconds\n",
+	(*timer)->tv_sec, (*timer)->tv_usec);
 }
 
 static int32_t	compare(t_timeval *relative, t_timeval *time2)

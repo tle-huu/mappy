@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/31 18:10:48 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/13 22:53:53 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/04 15:35:02 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
 int32_t		srv_setboardx(char **argv, __attribute__((unused))t_opts *opt);
 int32_t		srv_setboardy(char **argv, __attribute__((unused))t_opts *opt);
 int32_t		srv_setport(char **argv, t_opts *opt);
-int32_t		srv_setteams(char **argv, t_opts *opt);
 int32_t		srv_setmaxclients(char **argv, t_opts *opt);
 int32_t		srv_settimeint(char **argv, __attribute__((unused))t_opts *opt);
 

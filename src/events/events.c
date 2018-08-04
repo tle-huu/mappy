@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/21 10:48:06 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/04 13:15:51 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/04 15:45:17 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 
 static int32_t		lookup(int32_t cl);
 static int32_t		add(t_eventhold *eventhold, void *entity, int32_t preprocess);
-static void			ft_remove(void *entity, int32_t starve);
+static void			ft_remove(void *entity);
 static void			fail(int32_t cl);
 static void			iswaiting(t_player *pl);
 
@@ -121,7 +121,7 @@ static int32_t	add(t_eventhold *eventhold, void *entity, int32_t preprocess)
 	return (EXIT_SUCCESS);
 }
 
-static void		ft_remove(void *entity, int32_t	starve)
+static void		ft_remove(void *entity)
 {
 	t_dblist	*temp;
 	t_dblist	*temp1;
@@ -134,11 +134,7 @@ static void		ft_remove(void *entity, int32_t	starve)
 			printf("\nmatching events\n");
 			temp1 = temp->next;
 			ft_middel(event.queue.data, temp);
-			if (starve
-				&& (((t_event *)(temp->data))->eventhold == &(eventlookup[EAT])))
-				event.queue.add(temp->data);
-			else
-				event.pool.add(temp->data);
+			event.pool.add(temp->data);
 			temp = temp1;
 		}
 		else

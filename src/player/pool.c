@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 22:27:23 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/20 20:58:39 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/04 15:57:13 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ static void			add(t_player *pl)
 {
 	SRV_ALLP.status[pl->c_fd] = 0;
 	SRV_ALLP.lookup[pl->c_fd] = NULL;
-	(pl->team) ? (pl->team->players[pl->c_fd] = NULL) : 0;
 	board.removeplayer(pl);
 	bzero(pl, sizeof(t_player));
 	pl->container.data = pl;

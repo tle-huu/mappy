@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/19 15:41:24 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/04 13:20:36 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/04 15:42:12 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,14 @@
 static int32_t all(t_graphic *gr);
 static int32_t position(t_player *pl);
 static int32_t connected(t_player *pl);
+static int32_t death(t_player *pl);
 
 __attribute__((constructor)) void construct_transmit_players(void)
 {
 	graphic.transmit.players.all = &all;
 	graphic.transmit.players.position = &position;
 	graphic.transmit.players.connected = &connected;
+	graphic.transmit.players.death = &death;
 }
 
 static int32_t _tileloc(t_player *pl)
@@ -54,6 +56,19 @@ static int32_t _orientation(t_player *pl)
 		num = ft_itoa(4);
 	SENDBUF = ft_strfreecat(SENDBUF, num);
 	SENDBUF = strcat(SENDBUF, " ");
+	return (EXIT_SUCCESS);
+}
+
+static int32_t	death(t_player *pl)
+{
+	char *num;
+
+	SENDBUF = strcat(SENDBUF, "pdi ");
+	num = ft_itoa((int32_t)(pl->player_id));
+	SENDBUF = ft_strfreecat(SENDBUF, num);
+	SENDBUF = strcat(SENDBUF, "\n");
+	communication.graphical(NULL, SENDBUF);
+	bzero(SENDBUF, g_servenv->nsend);
 	return (EXIT_SUCCESS);
 }
 

@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/17 19:09:02 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/21 12:18:04 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/04 15:54:06 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,6 @@ static int32_t all(t_graphic *gr)
 {
 	int32_t x;
 	int32_t y;
-	int32_t i;
-	int32_t nresource;
 	char *num;
 
 	x = 0;
@@ -44,17 +42,6 @@ static int32_t all(t_graphic *gr)
 			SENDBUF = strcat(SENDBUF, " ");
 			num = ft_itoa(y);
 			SENDBUF = ft_strfreecat(SENDBUF, num);
-			SENDBUF = strcat(SENDBUF, " ");
-			i = 0;
-			while (i < NRESOURCES)
-			{
-				nresource = board.tile.check(x, y, i);
-				num = ft_itoa(nresource);
-				SENDBUF = ft_strfreecat(SENDBUF, num);
-				if (i != (NRESOURCES - 1))
-					SENDBUF = strcat(SENDBUF, " ");
-				i++;
-			}
 			SENDBUF = strcat(SENDBUF, "\n");
 			communication.graphical(gr, SENDBUF);
 			bzero(SENDBUF, g_servenv->nsend);
@@ -67,8 +54,6 @@ static int32_t all(t_graphic *gr)
 
 static int32_t one(t_graphic *gr, int32_t x, int32_t y)
 {
-	int32_t i;
-	int32_t nresource;
 	char *num;
 
 	SENDBUF = strcat(SENDBUF, "bct ");
@@ -77,17 +62,6 @@ static int32_t one(t_graphic *gr, int32_t x, int32_t y)
 	SENDBUF = strcat(SENDBUF, " ");
 	num = ft_itoa(y);
 	SENDBUF = ft_strfreecat(SENDBUF, num);
-	SENDBUF = strcat(SENDBUF, " ");
-	i = 0;
-	while (i < NRESOURCES)
-	{
-		nresource = board.tile.check(x, y, i);
-		num = ft_itoa(nresource);
-		SENDBUF = ft_strfreecat(SENDBUF, num);
-		if (i != (NRESOURCES - 1))
-			SENDBUF = strcat(SENDBUF, " ");
-		i++;
-	}
 	SENDBUF = strcat(SENDBUF, "\n");
 	communication.graphical(gr, SENDBUF);
 	bzero(SENDBUF, g_servenv->nsend);

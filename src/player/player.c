@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 13:20:08 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/04 13:23:44 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/04 15:56:41 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static int32_t	new(int32_t cl)
 		return (EXIT_FAILURE);
 	pl = (t_player *)temp->data;
 	pl->c_fd = cl;
-	if ((!SRV_GENV.maxinitial_clients && !SRV_GENV.maxingame_players))
+	if ((!SRV_GENV.maxinitial_clients))
 	{
 		client.disconnect(pl->c_fd);
 		player.pool.add(pl);
