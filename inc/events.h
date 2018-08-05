@@ -60,7 +60,7 @@ typedef struct		s_event_methods
 	int32_t			(*add)(t_eventhold *, void *, int32_t);
 	void			(*removeall)(void *);
 	void			(*fail)(int32_t);
-	void			(*iswaiting)(t_player *);
+	void			(*iswaiting)(t_vehicle *);
 }					t_event_methods;
 
 t_event_methods				event;

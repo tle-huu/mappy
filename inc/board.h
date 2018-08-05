@@ -13,7 +13,7 @@
 #ifndef BOARD_H
 # define BOARD_H
 
-# define PLAYERLIST (((((SRV_BORD.tiles)[x]).column)[y]).playerslist)
+# define PLAYERLIST (((((SRV_BORD.tiles)[x]).column)[y]).vehicleslist)
 
 typedef struct		s_board_tile
 {
@@ -26,8 +26,8 @@ typedef struct		s_board_methods
 	t_board_tile	tile;
 	int32_t			(*new)(void);
 	int32_t			(*send_dimensions)(int32_t);
-	void			(*setplayer)(t_player *);
-	void			(*removeplayer)(t_player *pl);
+	void			(*setvehicle)(t_vehicle *);
+	void			(*removevehicle)(t_vehicle *pl);
 }					t_board_methods;
 
 t_board_methods		board;

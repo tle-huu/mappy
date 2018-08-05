@@ -13,13 +13,13 @@
 #ifndef GRAPHICS_H
 # define GRAPHICS_H
 
-typedef struct	s_graphic_players
+typedef struct	s_graphic_vehicles
 {
 	int32_t		(*all)(t_graphic *);
-	int32_t		(*position)(t_player *);
-	int32_t		(*connected)(t_player *);
-	int32_t		(*death)(t_player *);
-}				t_graphic_players;
+	int32_t		(*position)(t_vehicle *);
+	int32_t		(*connected)(t_vehicle *);
+	int32_t		(*death)(t_vehicle *);
+}				t_graphic_vehicles;
 
 typedef struct	s_graphic_teams
 {
@@ -35,7 +35,7 @@ typedef struct	s_graphic_tiles
 typedef struct			s_graphic_transmit
 {
 	t_graphic_tiles		tiles;
-	t_graphic_players	players;
+	t_graphic_vehicles	vehicles;
 	int32_t				(*mapsize)(t_graphic *);
 	int32_t				(*timeunit)(t_graphic *);
 }						t_graphic_transmit;

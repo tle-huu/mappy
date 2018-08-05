@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   player.c                                           :+:      :+:    :+:   */
+/*   vehicle.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "universal.h"
-#include "player.h"
+#include "vehicle.h"
 #include "events.h"
 #include "board.h"
 #include "graphics.h"
@@ -19,53 +19,53 @@
 #include "communication.h"
 
 static int32_t	new (int32_t cl);
-static int32_t	command(t_player *pl);
+static int32_t	command(t_vehicle *pl);
 
-__attribute__((constructor)) void construct_player(void)
+__attribute__((constructor)) void construct_vehicle(void)
 {
-	player.new = &new;
-	player.command = &command;
+	vehicle.new = &new;
+	vehicle.command = &command;
 }
 
-static void		_initialize(t_player *pl)
+static void		_initialize(t_vehicle *pl)
 {
 	int32_t i;
 
-	pl->player_id = (SRV_GENV.track_playerid)++;
+	pl->vehicle_id = (SRV_GENV.track_vehicleid)++;
 	pl->tilecontainer.data = pl;
 	i = 0;
-	player.place.onboard(pl);
-	SRV_ALLP.status[pl->c_fd] = PLAYER;
-	SRV_ALLP.lookup[pl->c_fd] = pl;
+	vehicle.place.onboard(pl);
+	SRV_CLNT.status[pl->c_fd] = PLAYER;
+	SRV_CLNT.lookup[pl->c_fd] = pl;
 }
 
 static int32_t	new(int32_t cl)
 {
 	t_dblist	*temp;
-	t_player 	*pl;
+	t_vehicle 	*pl;
 	int32_t		ret;
 
-	printf("[PLAYER]\n  Creating new player @ : <%d>\n", cl);
+	printf("[PLAYER]\n  Creating new vehicle @ : <%d>\n", cl);
 	ret = 0;
-	if (!(temp = player.pool.pop()))
+	if (!(temp = vehicle.pool.pop()))
 		return (EXIT_FAILURE);
-	pl = (t_player *)temp->data;
+	pl = (t_vehicle *)temp->data;
 	pl->c_fd = cl;
 	if ((!SRV_GENV.maxinitial_clients))
 	{
 		client.disconnect(pl->c_fd);
-		player.pool.add(pl);
+		vehicle.pool.add(pl);
 	}
 	else
 	{
 		_initialize(pl);
 		SRV_GENV.connected_vehicles++;
-		graphic.transmit.players.connected(pl);
+		graphic.transmit.vehicles.connected(pl);
 	}
 	return (EXIT_SUCCESS);
 }
 
-static int32_t		command(t_player *pl)
+static int32_t		command(t_vehicle *pl)
 {
 	if (communication.incoming(pl->c_fd) == EXIT_FAILURE)
 		return (EXIT_FAILURE);

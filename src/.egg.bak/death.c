@@ -41,7 +41,7 @@ static void		now(void)
 	eg = (t_egg *)(deathtemp->data);
 	if ((SRV_TEAM[eg->teamindex]).eggqueue.first->data == (void *)eg)
 	{
-		(SRV_TEAM[eg->teamindex]).nplayers--;
+		(SRV_TEAM[eg->teamindex]).nvehicles--;
 		ft_popfirst(&((SRV_TEAM[eg->teamindex]).eggqueue));
 	}
 	egg.pool.add(eg);

@@ -27,7 +27,7 @@ static int32_t		right(void *object);
 static int32_t		left(void *object);
 static int32_t		put(void *object);
 
-__attribute__((constructor))void	construct_playercommands_set2(void)
+__attribute__((constructor))void	construct_vehiclecommands_set2(void)
 {
 	struct s_eventhold ev4 = {"take", &take, 7};
 	struct s_eventhold ev5 = {"right", &right, 7};
@@ -42,12 +42,12 @@ __attribute__((constructor))void	construct_playercommands_set2(void)
 
 static int32_t		take(void *object)
 {
-	t_player	*pl;
+	t_vehicle	*pl;
 	char		*message;
 	char		*temp;
 	int			i;
 
-	pl = (t_player *)((t_event *)object)->entity;
+	pl = (t_vehicle *)((t_event *)object)->entity;
 	message = ((t_event *)(object))->message;
 	if ((temp = strchr(message, '\n')))
 		*temp = '\0';
@@ -71,52 +71,52 @@ static int32_t		take(void *object)
 	}
 	if (i == NRESOURCES)
 		communication.outgoing(pl->c_fd, "ko\n");
-	SRV_ALLP.status[pl->c_fd] = PLAYER;
+	SRV_CLNT.status[pl->c_fd] = PLAYER;
 	event.iswaiting(pl);
-	graphic.transmit.players.items(pl);
+	graphic.transmit.vehicles.items(pl);
 	return (EXIT_SUCCESS);
 }
 
 static int32_t		right(void *object)
 {
-	t_player	*pl;
+	t_vehicle	*pl;
 
-	pl = (t_player *)((t_event *)object)->entity;
+	pl = (t_vehicle *)((t_event *)object)->entity;
 	if (pl->location.orientation == WEST)
 		pl->location.orientation = NORTH;
 	else
 		pl->location.orientation = pl->location.orientation << 1;
 	communication.outgoing(pl->c_fd, "ok\n");
-	graphic.transmit.players.position(pl);
-	SRV_ALLP.status[pl->c_fd] = PLAYER;
+	graphic.transmit.vehicles.position(pl);
+	SRV_CLNT.status[pl->c_fd] = PLAYER;
 	event.iswaiting(pl);
 	return (EXIT_SUCCESS);
 }
 
 static int32_t		left(void *object)
 {
-	t_player	*pl;
+	t_vehicle	*pl;
 
-	pl = (t_player *)((t_event *)object)->entity;
+	pl = (t_vehicle *)((t_event *)object)->entity;
 	if (pl->location.orientation == NORTH)
 		pl->location.orientation = WEST;
 	else
 		pl->location.orientation = pl->location.orientation >> 1;
 	communication.outgoing(pl->c_fd, "ok\n");
-	graphic.transmit.players.position(pl);
-	SRV_ALLP.status[pl->c_fd] = PLAYER;
+	graphic.transmit.vehicles.position(pl);
+	SRV_CLNT.status[pl->c_fd] = PLAYER;
 	event.iswaiting(pl);
 	return (EXIT_SUCCESS);
 }
 
 static int32_t		put(void *object)
 {
-	t_player	*pl;
+	t_vehicle	*pl;
 	char		*message;
 	char		*temp;
 	int			i;
 
-	pl = (t_player *)((t_event *)object)->entity;
+	pl = (t_vehicle *)((t_event *)object)->entity;
 	message = ((t_event *)(object))->message;
 	if ((temp = strchr(message, '\n')))
 		*temp = '\0';
@@ -138,8 +138,8 @@ static int32_t		put(void *object)
 	}
 	if (i == NRESOURCES)
 		communication.outgoing(pl->c_fd, "ko\n");
-	SRV_ALLP.status[pl->c_fd] = PLAYER;
+	SRV_CLNT.status[pl->c_fd] = PLAYER;
 	event.iswaiting(pl);
-	graphic.transmit.players.items(pl);
+	graphic.transmit.vehicles.items(pl);
 	return (EXIT_SUCCESS);
 }

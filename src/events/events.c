@@ -15,13 +15,13 @@
 #include "time.h"
 #include "communication.h"
 
-# define PLAYER_ENT ((t_player *)entity)
+# define PLAYER_ENT ((t_vehicle *)entity)
 
 static int32_t		lookup(int32_t cl);
 static int32_t		add(t_eventhold *eventhold, void *entity, int32_t preprocess);
 static void			ft_remove(void *entity);
 static void			fail(int32_t cl);
-static void			iswaiting(t_player *pl);
+static void			iswaiting(t_vehicle *pl);
 
 __attribute__((constructor))void	construct_eventlogic(void)
 {
@@ -34,13 +34,13 @@ __attribute__((constructor))void	construct_eventlogic(void)
 
 static int32_t	lookup(int32_t cl)
 {
-	t_player	*pl;
+	t_vehicle	*pl;
 	char		**split;
 	char		**strings;
 	char		*temp;
 	int32_t		i;
 
-	pl = (t_player *)SRV_ALLP.lookup[cl];
+	pl = (t_vehicle *)SRV_CLNT.lookup[cl];
 	printf("  Looking up event |%s|\n", RECVBUF);
 	split = ft_strsplit(RECVBUF, '\n');
 	strings = split;
@@ -76,14 +76,14 @@ static int32_t	lookup(int32_t cl)
 
 static int32_t	pl_preprocess(void *entity, t_event *ev)
 {
-	printf("  Preprocess player command\n  Commands in players queue : %d\n",
+	printf("  Preprocess vehicle command\n  Commands in vehicles queue : %d\n",
 			PLAYER_ENT->pending.qlen);
 	printf("  Copying this message : |%s|\n", PLAYER_ENT->message);
 	if (PLAYER_ENT->message[0])
 		strcpy(ev->message, PLAYER_ENT->message);
-	if (SRV_ALLP.status[PLAYER_ENT->c_fd] == WORKING
-		|| SRV_ALLP.status[PLAYER_ENT->c_fd] == INCANTED
-		|| SRV_ALLP.status[PLAYER_ENT->c_fd] == INCANTING)
+	if (SRV_CLNT.status[PLAYER_ENT->c_fd] == WORKING
+		|| SRV_CLNT.status[PLAYER_ENT->c_fd] == INCANTED
+		|| SRV_CLNT.status[PLAYER_ENT->c_fd] == INCANTING)
 	{
 		printf("  Player is doing something already\n");
 		if (PLAYER_ENT->pending.qlen < 9)
@@ -114,7 +114,7 @@ static int32_t	add(t_eventhold *eventhold, void *entity, int32_t preprocess)
 	{
 		if (pl_preprocess(entity, ev))
 			return (EXIT_SUCCESS);
-		SRV_ALLP.status[PLAYER_ENT->c_fd] = WORKING;
+		SRV_CLNT.status[PLAYER_ENT->c_fd] = WORKING;
 	}
 	printf("  Adding event to main queue\n");
 	event.queue.add(ev);
@@ -142,7 +142,7 @@ static void		ft_remove(void *entity)
 	}
 }
 
-static void		iswaiting(t_player *pl)
+static void		iswaiting(t_vehicle *pl)
 {
 	t_dblist	*temp;
 	t_event		*ev;
@@ -152,7 +152,7 @@ static void		iswaiting(t_player *pl)
 		ev = (t_event *)(temp->data);
 		if (ev->message[0])
 			strcpy(pl->message, ev->message);
-		printf("[EVENT]\n  Pullling from player's command queue\n");
+		printf("[EVENT]\n  Pullling from vehicle's command queue\n");
 		event.add(ev->eventhold, pl, 1);
 		event.pool.add(ev);
 	}

@@ -12,11 +12,11 @@
 
 #include "universal.h"
 #include "death.h"
-#include "player.h"
+#include "vehicle.h"
 #include "egg.h"
 #include "time.h"
 
-#define TEMP_PLYS ((t_player *)(temp->data))
+#define TEMP_PLYS ((t_vehicle *)(temp->data))
 #define TEMP_EGGS ((t_egg *)(temp->data))
 
 static int32_t		new(void);
@@ -30,28 +30,28 @@ __attribute__((constructor))void	construct_death(void)
 
 static int32_t		new(void)
 {
-	if (!(death.track.players = (t_queue *)calloc(1, sizeof(t_queue))))
+	if (!(death.track.vehicles = (t_queue *)calloc(1, sizeof(t_queue))))
 		return (EXIT_FAILURE); // memory error loop
 	if (!(death.track.eggs = (t_queue *)calloc(1, sizeof(t_queue))))
 		return (EXIT_FAILURE); // memory error loop
 	return (EXIT_SUCCESS);
 }
 
-static int32_t		killplayer(void)
+static int32_t		killvehicle(void)
 {
 	t_dblist	*temp;
 
 	gettimeofday(&(SRV_RIPT), NULL);
-	if (death.track.players)
+	if (death.track.vehicles)
 	{
-		temp = (death.track.players->first);
+		temp = (death.track.vehicles->first);
 		while (temp)
 		{
 			if (time.compare(&SRV_RIPT, &(TEMP_PLYS->alarm)))
-				player.death.now();
+				vehicle.death.now();
 			else
 				break ;
-			temp = (death.track.players->first);
+			temp = (death.track.vehicles->first);
 		}
 	}
 	return (EXIT_SUCCESS);
@@ -82,7 +82,7 @@ static int32_t		killegg(void)
 static int32_t		check(void)
 {
 	printf("Check time against death queues\n");
-	killplayer();
+	killvehicle();
 	killegg();
 	return (EXIT_SUCCESS);
 }

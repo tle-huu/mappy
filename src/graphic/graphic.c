@@ -32,8 +32,8 @@ static int32_t		new(int32_t cl)
 	if (!(gr = (t_graphic *)calloc(1, sizeof(t_graphic))))
 		return (EXIT_FAILURE);
 	gr->c_fd = cl;
-	SRV_ALLP.lookup[cl] = gr;
-	SRV_ALLP.status[cl] = GRAPHIC;
+	SRV_CLNT.lookup[cl] = gr;
+	SRV_CLNT.status[cl] = GRAPHIC;
 	gr->container.data = gr;
 	ft_enqueue(&(g_servenv->graphical), &(gr->container), 0);
 	graphic.greeting(gr);
@@ -52,7 +52,7 @@ static int32_t		greeting(t_graphic *gr)
 	if ((graphic.transmit.mapsize(gr) == EXIT_FAILURE)
 		|| (graphic.transmit.timeunit(gr) == EXIT_FAILURE)
 		|| (graphic.transmit.tiles.all(gr) == EXIT_FAILURE)
-		|| (graphic.transmit.players.all(gr) == EXIT_FAILURE))
+		|| (graphic.transmit.vehicles.all(gr) == EXIT_FAILURE))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

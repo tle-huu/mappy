@@ -15,7 +15,7 @@
 #include "board.h"
 #include "inventory.h"
 #include "graphics.h"
-#include "player.h"
+#include "vehicle.h"
 #include "egg.h"
 
 static int32_t		eat(void *object);
@@ -34,16 +34,16 @@ __attribute__((constructor))void	construct_serverevents(void)
 
 static int32_t	eat(void *object)
 {
-	t_player	*pl;
+	t_vehicle	*pl;
 
-	pl = (t_player *)(((t_event *)object)->entity);
+	pl = (t_vehicle *)(((t_event *)object)->entity);
 	printf("[ACTION]\n  -- Eating --\n  Player @ : <%d>\n", pl->c_fd);
 	inventory.remove(&(pl->inventory.items), 0);
 	printf("  Food left : <%llu>\n", FOOD(pl->inventory.items));
 	if (!(FOOD(pl->inventory.items)))
-		player.death.soon(pl);
+		vehicle.death.soon(pl);
 	else
-		player.eats(pl);
+		vehicle.eats(pl);
 	return (EXIT_SUCCESS);
 }
 

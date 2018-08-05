@@ -11,29 +11,29 @@
 /* ************************************************************************** */
 
 #include "universal.h"
-#include "player.h"
+#include "vehicle.h"
 #include "board.h"
 
-static void		onboard(t_player *pl);
-static void		advance(t_player *pl);
+static void		onboard(t_vehicle *pl);
+static void		advance(t_vehicle *pl);
 
-__attribute__((constructor))void	construct_playerplace(void)
+__attribute__((constructor))void	construct_vehicleplace(void)
 {
-	player.place.onboard = &onboard;
-	player.place.advance = &advance;
+	vehicle.place.onboard = &onboard;
+	vehicle.place.advance = &advance;
 }
 
-static void		onboard(t_player *pl)
+static void		onboard(t_vehicle *pl)
 {
 	pl->location.x = arc4random_uniform((uint32_t)SRV_BORD.x);
 	pl->location.y = arc4random_uniform((uint32_t)SRV_BORD.y);
 	pl->location.orientation = 1 << (arc4random_uniform((uint32_t)3));
-	board.setplayer(pl);
+	board.setvehicle(pl);
 }
 
-static void		advance(t_player *pl)
+static void		advance(t_vehicle *pl)
 {
-	board.removeplayer(pl);
+	board.removevehicle(pl);
 	if (pl->location.orientation & NORTH)
 		(pl->location.y == 0) ? pl->location.y = SRV_BORD.y :
 			(pl->location.y)--;
@@ -46,5 +46,5 @@ static void		advance(t_player *pl)
 	else if (pl->location.orientation & EAST)
 		(pl->location.x == SRV_BORD.x) ? pl->location.x = 0 :
 			(pl->location.x)++;
-	board.setplayer(pl);
+	board.setvehicle(pl);
 }

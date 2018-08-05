@@ -18,15 +18,15 @@
 /* method function prototypes */
 static int32_t	send_dimensions(int32_t cl);
 static int32_t	new(void);
-static void		setplayer(t_player *pl);
-static void		removeplayer(t_player *pl);
+static void		setvehicle(t_vehicle *pl);
+static void		removevehicle(t_vehicle *pl);
 
 __attribute__((constructor))void	construct_board(void)
 {
 	board.new = &new;
 	board.send_dimensions = &send_dimensions;
-	board.setplayer = &setplayer;
-	board.removeplayer = &removeplayer;
+	board.setvehicle = &setvehicle;
+	board.removevehicle = &removevehicle;
 }
 
 static int32_t	new(void)
@@ -71,24 +71,24 @@ static int32_t	send_dimensions(int32_t cl)
 	return (EXIT_SUCCESS);
 }
 
-static void		setplayer(t_player *pl)
+static void		setvehicle(t_vehicle *pl)
 {
 	int32_t		x;
 	int32_t		y;
 
 	x = pl->location.x;
 	y = pl->location.y;
-	(((((SRV_BORD.tiles)[x]).column)[y]).players)[pl->c_fd] = pl;
+	(((((SRV_BORD.tiles)[x]).column)[y]).vehicles)[pl->c_fd] = pl;
 	ft_enqueue(&(PLAYERLIST), &(pl->tilecontainer), 0);
 }
 
-static void		removeplayer(t_player *pl)
+static void		removevehicle(t_vehicle *pl)
 {
 	int32_t		x;
 	int32_t		y;
 
 	x = pl->location.x;
 	y = pl->location.y;
-	(((((SRV_BORD.tiles)[x]).column)[y]).players)[pl->c_fd] = NULL;
+	(((((SRV_BORD.tiles)[x]).column)[y]).vehicles)[pl->c_fd] = NULL;
 	ft_middel(&(PLAYERLIST), &(pl->tilecontainer));
 }

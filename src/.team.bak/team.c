@@ -12,19 +12,19 @@
 
 #include "universal.h"
 #include "team.h"
-#include "player.h"
+#include "vehicle.h"
 #include "board.h"
 #include "client.h"
 #include "communication.h"
 
 static int32_t	nameindex(int32_t cl);
-static int32_t	addplayer(t_player *pl, int32_t tm);
+static int32_t	addvehicle(t_vehicle *pl, int32_t tm);
 static int32_t	send_freespots(int32_t cl, t_team *tm);
 
 __attribute__((constructor))void	construct_team(void)
 {
 	team.nameindex = &nameindex;
-	team.addplayer = &addplayer;
+	team.addvehicle = &addvehicle;
 	team.send_freespots = &send_freespots;
 }
 
@@ -48,28 +48,28 @@ static int32_t	nameindex(int32_t cl)
 	return (i);
 }
 
-static int32_t	addplayer(t_player *pl, int32_t teamindex)
+static int32_t	addvehicle(t_vehicle *pl, int32_t teamindex)
 {
 	t_team		*tm;
 
 	tm = &(SRV_TEAM[teamindex]);
-	if (tm->nplayers)
+	if (tm->nvehicles)
 	{
 		pl->team = tm;
-		(tm->players)[pl->c_fd] = pl;
+		(tm->vehicles)[pl->c_fd] = pl;
 		SRV_GENV.maxinitial_clients ? SRV_GENV.maxinitial_clients-- : 0;
 		pl->teamindex = teamindex;
-		tm->nplayers--;
-		if (!(tm->nplayers) && SRV_GENV.maxingame_players)
-			SRV_GENV.maxingame_players--;
-		printf("Adding player <%d> to |%s|\n", pl->c_fd, tm->name);
+		tm->nvehicles--;
+		if (!(tm->nvehicles) && SRV_GENV.maxingame_vehicles)
+			SRV_GENV.maxingame_vehicles--;
+		printf("Adding vehicle <%d> to |%s|\n", pl->c_fd, tm->name);
 		if ((team.send_freespots(pl->c_fd, tm) == EXIT_FAILURE)
 			|| (board.send_dimensions(pl->c_fd) == EXIT_FAILURE))
 			return (EXIT_FAILURE);
 	}
 	else
 	{
-		printf("player <%d> tried to join |%s|,no room\n", pl->c_fd, tm->name);
+		printf("vehicle <%d> tried to join |%s|,no room\n", pl->c_fd, tm->name);
 		return (-1);
 	}
 	return (EXIT_SUCCESS);
@@ -81,7 +81,7 @@ static int32_t	send_freespots(int32_t cl, t_team *tm)
 	char		*str;
 
 	num = NULL;
-	if (!(num = ft_itoa(tm->nplayers))
+	if (!(num = ft_itoa(tm->nvehicles))
 		|| (!(str = calloc(1, strlen(num) + 2)))
 		|| (!(str = ft_strfreecat(str, num)))
 		|| (!(str = strcat(str, "\n")))

@@ -3,3 +3,5 @@
 *swp*
 __initproj__
 server
+*.c.bak
+*.h.bak

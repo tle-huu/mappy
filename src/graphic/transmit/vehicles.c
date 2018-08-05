@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   players.c                                          :+:      :+:    :+:   */
+/*   vehicles.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -16,19 +16,19 @@
 #include "communication.h"
 
 static int32_t all(t_graphic *gr);
-static int32_t position(t_player *pl);
-static int32_t connected(t_player *pl);
-static int32_t death(t_player *pl);
+static int32_t position(t_vehicle *pl);
+static int32_t connected(t_vehicle *pl);
+static int32_t death(t_vehicle *pl);
 
-__attribute__((constructor)) void construct_transmit_players(void)
+__attribute__((constructor)) void construct_transmit_vehicles(void)
 {
-	graphic.transmit.players.all = &all;
-	graphic.transmit.players.position = &position;
-	graphic.transmit.players.connected = &connected;
-	graphic.transmit.players.death = &death;
+	graphic.transmit.vehicles.all = &all;
+	graphic.transmit.vehicles.position = &position;
+	graphic.transmit.vehicles.connected = &connected;
+	graphic.transmit.vehicles.death = &death;
 }
 
-static int32_t _tileloc(t_player *pl)
+static int32_t _tileloc(t_vehicle *pl)
 {
 	char *num;
 
@@ -41,7 +41,7 @@ static int32_t _tileloc(t_player *pl)
 	return (EXIT_SUCCESS);
 }
 
-static int32_t _orientation(t_player *pl)
+static int32_t _orientation(t_vehicle *pl)
 {
 	char *num;
 
@@ -59,12 +59,12 @@ static int32_t _orientation(t_player *pl)
 	return (EXIT_SUCCESS);
 }
 
-static int32_t	death(t_player *pl)
+static int32_t	death(t_vehicle *pl)
 {
 	char *num;
 
 	SENDBUF = strcat(SENDBUF, "pdi ");
-	num = ft_itoa((int32_t)(pl->player_id));
+	num = ft_itoa((int32_t)(pl->vehicle_id));
 	SENDBUF = ft_strfreecat(SENDBUF, num);
 	SENDBUF = strcat(SENDBUF, "\n");
 	communication.graphical(NULL, SENDBUF);
@@ -72,12 +72,12 @@ static int32_t	death(t_player *pl)
 	return (EXIT_SUCCESS);
 }
 
-static int32_t position(t_player *pl)
+static int32_t position(t_vehicle *pl)
 {
 	char *num;
 
 	SENDBUF = strcat(SENDBUF, "ppo ");
-	num = ft_itoa((int32_t)pl->player_id);
+	num = ft_itoa((int32_t)pl->vehicle_id);
 	SENDBUF = ft_strfreecat(SENDBUF, num);
 	SENDBUF = strcat(SENDBUF, " ");
 	_tileloc(pl);
@@ -88,14 +88,14 @@ static int32_t position(t_player *pl)
 	return (EXIT_SUCCESS);
 }
 
-static int32_t connected(t_player *pl)
+static int32_t connected(t_vehicle *pl)
 {
 	char *num;
 
 	if (pl)
 	{
 		SENDBUF = strcat(SENDBUF, "pnw ");
-		num = ft_itoa((int32_t)(pl->player_id));
+		num = ft_itoa((int32_t)(pl->vehicle_id));
 		SENDBUF = ft_strfreecat(SENDBUF, num);
 		SENDBUF = strcat(SENDBUF, " ");
 		_tileloc(pl);
@@ -109,19 +109,19 @@ static int32_t connected(t_player *pl)
 
 static int32_t all(t_graphic *gr)
 {
-	t_player *pl;
+	t_vehicle *pl;
 	char *num;
 	int32_t i;
 
 	i = 0;
 	while (i < SRV_SOCK.nfds)
 	{
-		if (SRV_ALLP.status[i] != GRAPHIC
-			&& SRV_ALLP.lookup[i])
+		if (SRV_CLNT.status[i] != GRAPHIC
+			&& SRV_CLNT.lookup[i])
 		{
-			pl = SRV_ALLP.lookup[i];
+			pl = SRV_CLNT.lookup[i];
 			SENDBUF = strcat(SENDBUF, "pnw ");
-			num = ft_itoa((int32_t)(pl->player_id));
+			num = ft_itoa((int32_t)(pl->vehicle_id));
 			SENDBUF = ft_strfreecat(SENDBUF, num);
 			SENDBUF = strcat(SENDBUF, " ");
 			_tileloc(pl);

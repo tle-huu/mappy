@@ -14,7 +14,7 @@
 #include "client.h"
 #include "communication.h"
 #include "events.h"
-#include "player.h"
+#include "vehicle.h"
 #include "graphics.h"
 
 static int32_t	new(void);
@@ -44,7 +44,7 @@ static int32_t		new(void)
 	ret = EXIT_SUCCESS;
 	newfd = accept(SRV_SOCK.sockfd,
 				(struct sockaddr *)&(SRV_SOCK.temp), &(SRV_SOCK.socklen));
-	(SRV_ALLP.status)[newfd] = NOT_ACCEPTED;
+	(SRV_CLNT.status)[newfd] = NOT_ACCEPTED;
 	add_fd_select(newfd);
 	ret = communication.outgoing(newfd, "WELCOME\n");
 	printf("New client %d connected\n", newfd);
@@ -54,16 +54,16 @@ static int32_t		new(void)
 static void			crash(int32_t cl)
 {
 	client.disconnect(cl);
-	if (SRV_ALLP.lookup[cl])
-		event.removeall(SRV_ALLP.lookup[cl]);
-	if ((SRV_ALLP.status[cl] != GRAPHIC)
-		&& (SRV_ALLP.status[cl] != NOT_ACCEPTED))
+	if (SRV_CLNT.lookup[cl])
+		event.removeall(SRV_CLNT.lookup[cl]);
+	if ((SRV_CLNT.status[cl] != GRAPHIC)
+		&& (SRV_CLNT.status[cl] != NOT_ACCEPTED))
 	{
-		graphic.transmit.players.death(SRV_ALLP.lookup[cl]);
-		player.pool.add(SRV_ALLP.lookup[cl]);
+		graphic.transmit.vehicles.death(SRV_CLNT.lookup[cl]);
+		vehicle.pool.add(SRV_CLNT.lookup[cl]);
 	}
-	if (SRV_ALLP.status[cl] == GRAPHIC)
-		graphic.clear(SRV_ALLP.lookup[cl]);
+	if (SRV_CLNT.status[cl] == GRAPHIC)
+		graphic.clear(SRV_CLNT.lookup[cl]);
 }
 
 static void			disconnect(int32_t cl)

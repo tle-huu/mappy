@@ -24,7 +24,7 @@ SRCDIR_EVS_SRV = server/
 SRCDIR_GFX = graphic/
 SRCDIR_GFX_TRS = transmit/
 SRCDIR_INV = inventory/
-SRCDIR_PLR = player/
+SRCDIR_PLR = vehicle/
 SRCDIR_SRV = server/
 SRCDIR_TEM = team/
 SRCDIR_TIM = time/
@@ -74,7 +74,7 @@ OBJSRC += $(patsubst %, %.o, $(addprefix \
 		  $(SRC_INV)))
 OBJSRC += $(patsubst %, %.o, $(addprefix \
 		  $(addprefix $(SRCDIR), $(SRCDIR_PLR)), \
-		  $(SRC_PLR)))
+		  $(SRC_VHC)))
 OBJSRC += $(patsubst %, %.o, $(addprefix \
 		  $(addprefix $(SRCDIR), $(SRCDIR_SRV)), \
 		  $(SRC_SRV)))
@@ -151,7 +151,7 @@ SRC_GFX = \
 SRC_GFX_TRS = \
 	transmit \
 	tiles \
-	players \
+	vehicles \
 #	eggs \
 #	incantation \
 #	teams \
@@ -163,9 +163,9 @@ SRC_GFX_TRS = \
 #	plus1 \
 #	plus2
 
-SRC_PLR = \
+SRC_VHC = \
 	place \
-	player \
+	vehicle \
 	pool \
 #	death
 

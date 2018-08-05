@@ -13,13 +13,13 @@
 #include "universal.h"
 #include "events.h"
 #include "communication.h"
-#include "player.h"
+#include "vehicle.h"
 #include "graphics.h"
 
 static int32_t		advance(void *object);
 static int32_t		connect_nbr(void *object);
 
-__attribute__((constructor))void	construct_playercommands_set1(void)
+__attribute__((constructor))void	construct_vehiclecommands_set1(void)
 {
 	struct s_eventhold ev0 = {"advance", &advance, 7};
 	struct s_eventhold ev2 = {"connect_nbr", &connect_nbr, 0};
@@ -31,30 +31,30 @@ __attribute__((constructor))void	construct_playercommands_set1(void)
 
 static int32_t	advance(void *object)
 {
-	t_player	*pl;
+	t_vehicle	*pl;
 
-	pl = (t_player *)((t_event *)object)->entity;
-	printf("[COMMAND]\n  player <%d> advanced\n", pl->c_fd);
-	player.place.advance(pl);
+	pl = (t_vehicle *)((t_event *)object)->entity;
+	printf("[COMMAND]\n  vehicle <%d> advanced\n", pl->c_fd);
+	vehicle.place.advance(pl);
 	communication.outgoing(pl->c_fd, "ok\n");
-	graphic.transmit.players.position(pl);
-	SRV_ALLP.status[pl->c_fd] = PLAYER;
+	graphic.transmit.vehicles.position(pl);
+	SRV_CLNT.status[pl->c_fd] = PLAYER;
 	event.iswaiting(pl);
 	return (EXIT_SUCCESS);
 }
 
 static int32_t	connect_nbr(void *object)
 {
-	t_player	*pl;
+	t_vehicle	*pl;
 	char		*num;
 
 	bzero(SENDBUF, 1024);
-	pl = (t_player *)((t_event *)object)->entity;
+	pl = (t_vehicle *)((t_event *)object)->entity;
 	if (!(num = ft_itoa(SRV_GENV.connected_vehicles))
 		|| !(SENDBUF = ft_strfreecat(SENDBUF, num))
 		|| !(SENDBUF = strcat(SENDBUF, "\n"))
 		|| (communication.outgoing(pl->c_fd, SENDBUF) == EXIT_FAILURE))
 		return (EXIT_FAILURE);
-	SRV_ALLP.status[pl->c_fd] = PLAYER;
+	SRV_CLNT.status[pl->c_fd] = PLAYER;
 	return (EXIT_SUCCESS);
 }

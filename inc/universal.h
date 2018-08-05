@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/11 12:46:41 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/04 16:37:11 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/04 21:05:34 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # include <sys/time.h>
 # include "libft.h"
 
-# define SRV_ALLP g_servenv->allplayers
+# define SRV_CLNT g_servenv->clients
 # define SRV_SOCK g_servenv->socket
 # define SRV_GENV g_servenv->gamenv
 # define SRV_BORD g_servenv->board
@@ -69,23 +69,23 @@ typedef	struct			s_location
 	int8_t				orientation;
 }						t_location;
 
-typedef struct		s_player
+typedef struct		s_vehicle
 {
 	t_dblist		container;
 	t_dblist		tilecontainer;
 	int32_t			c_fd;
-	uint64_t		player_id;
+	uint64_t		vehicle_id;
 	int8_t			conn_attempts;
 	t_location		location;
 	t_timeval		alarm;
 	t_queue			pending;
 	char			message[513];
-}					t_player;
+}					t_vehicle;
 
 typedef struct			s_tile
 {
-	t_player			*players[FD_SETSIZE];
-	t_queue				playerslist;
+	t_vehicle			*vehicles[FD_SETSIZE];
+	t_queue				vehicleslist;
 	struct s_tile		*column;
 }						t_tile;
 
@@ -100,7 +100,7 @@ typedef struct			s_gamenv
 {
 	int32_t				maxinitial_clients;
 	int32_t				connected_vehicles;
-	uint64_t			track_playerid;
+	uint64_t			track_vehicleid;
 	void				*entitytoremove;
 	float				timeinterval;
 }						t_gamenv;
@@ -119,15 +119,15 @@ typedef struct			s_socket
 	fd_set				*copy;
 }						t_socket;
 
-typedef struct			s_allplayers
+typedef struct			s_clients
 {
 	int8_t				status[FD_SETSIZE];
 	void				*lookup[FD_SETSIZE];
-}						t_allplayers;
+}						t_clients;
 
 typedef struct			s_servenv
 {
-	t_allplayers		allplayers;
+	t_clients			clients;
 	t_socket			socket;
 	t_board				board;
 	t_gamenv			gamenv;

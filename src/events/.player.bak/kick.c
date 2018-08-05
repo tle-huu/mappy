@@ -13,46 +13,46 @@
 #include "universal.h"
 #include "events.h"
 #include "communication.h"
-#include "player.h"
+#include "vehicle.h"
 #include "graphics.h"
 #include "board.h"
 
 static int32_t		kick(void *object);
 
-__attribute__((constructor))void		construct_playercommands_kick(void)
+__attribute__((constructor))void		construct_vehiclecommands_kick(void)
 {
 	struct s_eventhold	ev9 = {"kick", &kick, 7};
 
 	eventlookup[9] = ev9;
 }
 
-static void		_kickplayers(t_player *pl, t_player *og)
+static void		_kickvehicles(t_vehicle *pl, t_vehicle *og)
 {
 	char	*num;
 
 	if (pl != og)
 	{
-		player.place.advance(pl);
+		vehicle.place.advance(pl);
 		(pl->location.orientation <= 2)  ?
 			(num = ft_itoa(pl->location.orientation << 2)) :
 			(num = ft_itoa(pl->location.orientation >> 2));
 		SENDBUF = strcat(SENDBUF, "moving <");
 		SENDBUF = ft_strfreecat(SENDBUF, num);
 		SENDBUF = strcat(SENDBUF, ">\n");
-		graphic.transmit.players.position(pl);
+		graphic.transmit.vehicles.position(pl);
 		bzero(SENDBUF, g_servenv->nsend);
 	}
 }
 
 static int32_t		kick(void *object)
 {
-	t_player	*pl;
-	t_player	*og;
+	t_vehicle	*pl;
+	t_vehicle	*og;
 	int32_t		x;
 	int32_t		y;
 	t_dblist	*temp;
 
-	og = (t_player *)((t_event *)object)->entity;
+	og = (t_vehicle *)((t_event *)object)->entity;
 	x = og->location.x;
 	y = og->location.y;
 	temp = PLAYERLIST.first;
@@ -63,11 +63,11 @@ static int32_t		kick(void *object)
 		communication.outgoing(og->c_fd, "ko\n");
 	while (temp)
 	{
-		pl = (t_player *)temp->data;
-		_kickplayers(pl, og);
+		pl = (t_vehicle *)temp->data;
+		_kickvehicles(pl, og);
 		temp = temp->next;
 	}
-	SRV_ALLP.status[og->c_fd] = PLAYER;
+	SRV_CLNT.status[og->c_fd] = PLAYER;
 	bzero(SENDBUF, g_servenv->nsend);
 	event.iswaiting(og);
 	return (EXIT_SUCCESS);

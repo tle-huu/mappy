@@ -16,7 +16,7 @@
 #include "events.h"
 #include "graphics.h"
 
-static int32_t	incubate(t_player *pl);
+static int32_t	incubate(t_vehicle *pl);
 static int32_t	hatch(void *entity);
 
 __attribute__((constructor))void	construct_egg(void)
@@ -25,7 +25,7 @@ __attribute__((constructor))void	construct_egg(void)
 	egg.hatch = &hatch;
 }
 
-static int32_t	incubate(t_player *pl)
+static int32_t	incubate(t_vehicle *pl)
 {
 	t_dblist	*temp;
 	t_egg		*eg;
@@ -33,7 +33,7 @@ static int32_t	incubate(t_player *pl)
 	if (!(temp = egg.pool.pop()))
 		return (-1);
 	eg = (t_egg *)temp->data;
-	eg->progenitor = pl->player_id;
+	eg->progenitor = pl->vehicle_id;
 	eg->teamindex = pl->teamindex;
 	eg->egg_id = SRV_GENV.track_eggid++;
 	egg.place.onboard(eg);
@@ -49,8 +49,8 @@ static int32_t	hatch(void *object)
 	printf("[ACTION]\n  Hatching!\n");
 	eg = (t_egg *)(((t_event *)object)->entity);
 	tm = &(SRV_TEAM[eg->teamindex]);
-	tm->nplayers++;
-	SRV_GENV.maxingame_players++;
+	tm->nvehicles++;
+	SRV_GENV.maxingame_vehicles++;
 	printf("  Ready to enqueue egg on team\n");
 	ft_enqueue(&(tm->eggqueue), &(eg->container), 0);
 	graphic.transmit.eggs.one(eg);

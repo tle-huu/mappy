@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   player.h                                           :+:      :+:    :+:   */
+/*   vehicle.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -14,28 +14,28 @@
 # define PLAYER_H
 
 
-typedef struct		s_playerpool
+typedef struct		s_vehiclepool
 {
 	t_queue			*data;
 	int32_t			(*new)(void);
 	t_dblist		*(*pop)(void);
-	void			(*add)(t_player *add);
-}					t_playerpool;
+	void			(*add)(t_vehicle *add);
+}					t_vehiclepool;
 
-typedef struct		s_playerplace
+typedef struct		s_vehicleplace
 {
-	void			(*onboard)(t_player *);
-	void			(*advance)(t_player *);
-}					t_playerplace;
+	void			(*onboard)(t_vehicle *);
+	void			(*advance)(t_vehicle *);
+}					t_vehicleplace;
 
-typedef struct		s_player_methods
+typedef struct		s_vehicle_methods
 {
-	t_playerpool	pool;
-	t_playerplace	place;
+	t_vehiclepool	pool;
+	t_vehicleplace	place;
 	int32_t			(*new)(int32_t);
-	int32_t			(*command)(t_player *);
-}					t_player_methods;
+	int32_t			(*command)(t_vehicle *);
+}					t_vehicle_methods;
 
-t_player_methods	player;
+t_vehicle_methods	vehicle;
 
 #endif

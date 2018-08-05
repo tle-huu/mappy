@@ -20,7 +20,7 @@
 
 static int32_t		see(void *object);
 
-__attribute__((constructor))void		construct_playercommands_see(void)
+__attribute__((constructor))void		construct_vehiclecommands_see(void)
 {
 	struct s_eventhold	ev8 = {"see", &see, 7};
 
@@ -46,13 +46,13 @@ static void		_boardwrap(int32_t *x, int32_t *y)
 		*y = *y + SRV_BORD.y;
 }
 
-static int32_t		_sendstr(t_player *pl)
+static int32_t		_sendstr(t_vehicle *pl)
 {
 	printf("  I see: |%s|\n", SENDBUF);
 	SENDBUF = strcat(SENDBUF, "}\n");
 	communication.outgoing(pl->c_fd, SENDBUF);
 	bzero(SENDBUF, g_servenv->nsend);
-	SRV_ALLP.status[pl->c_fd] = PLAYER;
+	SRV_CLNT.status[pl->c_fd] = PLAYER;
 	event.iswaiting(pl);
 	return (EXIT_SUCCESS);
 }
@@ -90,7 +90,7 @@ static int32_t		_buildresourcestr(int32_t x, int32_t y)
 	return (EXIT_SUCCESS);
 }
 
-static int32_t		_buildplayerstr(int32_t x, int32_t y, t_player *pl)
+static int32_t		_buildvehiclestr(int32_t x, int32_t y, t_vehicle *pl)
 {
 	t_dblist	*temp;
 	int32_t		nfill;
@@ -100,11 +100,11 @@ static int32_t		_buildplayerstr(int32_t x, int32_t y, t_player *pl)
 	temp = PLAYERLIST.first;
 	while (temp)
 	{
-		printf("  finding players\n");
+		printf("  finding vehicles\n");
 		if (temp->data != (void *)pl)
 		{
 			printf("  found one\n");
-			nfill += sizeof("player");
+			nfill += sizeof("vehicle");
 			if (!SENDBUF || (nfill > g_servenv->nsend))
 			{
 				printf(" REALLOC CALL\n");
@@ -112,7 +112,7 @@ static int32_t		_buildplayerstr(int32_t x, int32_t y, t_player *pl)
 					return (EXIT_FAILURE);
 				g_servenv->nsend += nfill;
 			}
-			SENDBUF = strcat(SENDBUF, "player ");
+			SENDBUF = strcat(SENDBUF, "vehicle ");
 		}
 		temp = temp->next;
 	}
@@ -120,7 +120,7 @@ static int32_t		_buildplayerstr(int32_t x, int32_t y, t_player *pl)
 	return (EXIT_SUCCESS);
 }
 
-static int32_t		_zeroblock(t_player *pl)
+static int32_t		_zeroblock(t_vehicle *pl)
 {
 	int32_t	x;
 	int32_t	y;
@@ -129,7 +129,7 @@ static int32_t		_zeroblock(t_player *pl)
 	y = pl->location.y;
 	bzero(SENDBUF, g_servenv->nsend);
 	SENDBUF = strcat(SENDBUF, "{");
-	if (_buildplayerstr(x, y, pl) == EXIT_FAILURE
+	if (_buildvehiclestr(x, y, pl) == EXIT_FAILURE
 		|| _buildresourcestr(x, y) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	if (!SENDBUF[1])
@@ -141,7 +141,7 @@ static int32_t		_zeroblock(t_player *pl)
 
 static int32_t		see(void *object)
 {
-	t_player	*pl;
+	t_vehicle	*pl;
 	int32_t		mainline;
 	int32_t		maintrans;
 	int32_t		perptrans;
@@ -151,7 +151,7 @@ static int32_t		see(void *object)
 	int32_t		i;
 	int32_t		j;
 
-	pl = (t_player *)((t_event *)object)->entity;
+	pl = (t_vehicle *)((t_event *)object)->entity;
 	(pl->location.orientation & (NORTH | SOUTH)) ? (mainline = Y_AXIS) :
 		(mainline = X_AXIS);
 	(pl->location.orientation & (NORTH | EAST)) ? (maintrans = -1) :
@@ -182,7 +182,7 @@ static int32_t		see(void *object)
 				(mainline == Y_AXIS) ? (x = perpaxis) :
 					(y = perpaxis);
 			pl->location.orientation & (NORTH | EAST) ? perpaxis++ : perpaxis--;
-			_buildplayerstr(x, y, pl);
+			_buildvehiclestr(x, y, pl);
 			_buildresourcestr(x, y);
 			if (i != pl->level || j != ((1 + (i * 2)) - 1))
 			{

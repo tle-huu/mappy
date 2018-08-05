@@ -35,9 +35,9 @@ static int32_t	newclient(int32_t cl)
 	if (communication.incoming(cl) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	if (ft_strequ(RECVBUF, "GRAPHIC\n"))
-		SRV_ALLP.status[cl] = JOINGRAPHIC;
+		SRV_CLNT.status[cl] = JOINGRAPHIC;
 	else
-		SRV_ALLP.status[cl] = JOINVEHICLE;
+		SRV_CLNT.status[cl] = JOINVEHICLE;
 	return (EXIT_SUCCESS);
 }
 

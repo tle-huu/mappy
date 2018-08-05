@@ -11,37 +11,37 @@
 /* ************************************************************************** */
 
 #include "universal.h"
-#include "player.h"
+#include "vehicle.h"
 #include "board.h"
 
 static int32_t		new(void);
 static t_dblist		*pop(void);
-static void			add(t_player *pl);
+static void			add(t_vehicle *pl);
 
-__attribute__((constructor))void	construct_playerpool(void)
+__attribute__((constructor))void	construct_vehiclepool(void)
 {
-	player.pool.new = &new;
-	player.pool.pop = &pop;
-	player.pool.add = &add;
+	vehicle.pool.new = &new;
+	vehicle.pool.pop = &pop;
+	vehicle.pool.add = &add;
 }
 
 static int32_t		new(void)
 {
-	t_player	*pl;
+	t_vehicle	*pl;
 	int32_t		i;
 	int32_t		reps;
 
 	i = 0;
 	reps = MAX_CLIENTS;
-	if (!(player.pool.data = (t_queue *)calloc(1, sizeof(t_queue))))
+	if (!(vehicle.pool.data = (t_queue *)calloc(1, sizeof(t_queue))))
 		return (EXIT_FAILURE); // memory error
 	while (i < reps)
 	{
-		if (!(pl = (t_player *)calloc(1, sizeof(t_player))))
+		if (!(pl = (t_vehicle *)calloc(1, sizeof(t_vehicle))))
 			return (EXIT_FAILURE);
 		pl->container.data = pl;
 		pl->tilecontainer.data = pl;
-		if (!(ft_enqueue(player.pool.data, &(pl->container), 0)))
+		if (!(ft_enqueue(vehicle.pool.data, &(pl->container), 0)))
 			return (EXIT_FAILURE);
 		i++;
 	}
@@ -50,16 +50,16 @@ static int32_t		new(void)
 
 static t_dblist		*pop(void)
 {
-	return (ft_popfirst(player.pool.data));
+	return (ft_popfirst(vehicle.pool.data));
 }
 
-static void			add(t_player *pl)
+static void			add(t_vehicle *pl)
 {
-	SRV_ALLP.status[pl->c_fd] = 0;
-	SRV_ALLP.lookup[pl->c_fd] = NULL;
-	board.removeplayer(pl);
-	bzero(pl, sizeof(t_player));
+	SRV_CLNT.status[pl->c_fd] = 0;
+	SRV_CLNT.lookup[pl->c_fd] = NULL;
+	board.removevehicle(pl);
+	bzero(pl, sizeof(t_vehicle));
 	pl->container.data = pl;
 	pl->tilecontainer.data = pl;
-	ft_enqueue(player.pool.data, &(pl->container), 0);
+	ft_enqueue(vehicle.pool.data, &(pl->container), 0);
 }

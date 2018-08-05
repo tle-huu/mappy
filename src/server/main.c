@@ -14,7 +14,7 @@
 #include "server.h"
 #include "board.h"
 #include "events.h"
-#include "player.h"
+#include "vehicle.h"
 
 t_opts	arr_opts[] = {
 	{"p", 1, &srv_setport},
@@ -66,7 +66,7 @@ static int32_t		ft_initializers(void)
 		|| (init_fd_select() == EXIT_FAILURE)
 		|| (event.queue.new() == EXIT_FAILURE)
 		|| (event.pool.new() == EXIT_FAILURE)
-		|| (player.pool.new() == EXIT_FAILURE)
+		|| (vehicle.pool.new() == EXIT_FAILURE)
 		|| (board.new() == EXIT_FAILURE)
 		|| !(SENDBUF = calloc(1, 1024)))
 		return (EXIT_FAILURE);

@@ -35,7 +35,7 @@ t_sacrifice_required		sacrifice[] = {
 	{0, {0,0,0,0,0,0}}
 };
 
-__attribute__((constructor))void		construct_playercommands_incantation(void)
+__attribute__((constructor))void		construct_vehiclecommands_incantation(void)
 {
 	struct s_eventhold	ev10 = {"incantation", &incantation, 0};
 	struct s_eventhold	ev_levelup = {"-- lvlup --", &levelup, 300};
@@ -44,32 +44,32 @@ __attribute__((constructor))void		construct_playercommands_incantation(void)
 	eventlookup[LVLUP] = ev_levelup;
 }
 
-static int32_t	_checkplayers(t_player *og, int32_t x, int32_t y)
+static int32_t	_checkvehicles(t_vehicle *og, int32_t x, int32_t y)
 {
 	t_dblist	*temp;
-	t_player	*pl;
-	int32_t		req_players;
+	t_vehicle	*pl;
+	int32_t		req_vehicles;
 
-	req_players = (sacrifice[og->level]).players - 1;
+	req_vehicles = (sacrifice[og->level]).vehicles - 1;
 	temp = PLAYERLIST.first;
 	while (temp)
 	{
 		pl = temp->data;
-		if (!req_players)
+		if (!req_vehicles)
 			break ;
 		if (pl != og)
 		{
 			if (pl->level >= og->level)
-				req_players--;
+				req_vehicles--;
 		}
 		temp = temp->next;
 	}
-	if (req_players > 0)
+	if (req_vehicles > 0)
 		return (0);
 	return (1);
 }
 
-static int32_t	_checkresources(t_player *pl)
+static int32_t	_checkresources(t_vehicle *pl)
 {
 	int8_t		*req_resources;
 	int32_t		i;
@@ -85,7 +85,7 @@ static int32_t	_checkresources(t_player *pl)
 	return (1);
 }
 
-static int32_t	_sendlevel(int8_t level, t_player *pl)
+static int32_t	_sendlevel(int8_t level, t_vehicle *pl)
 {
 	char	*num;
 
@@ -93,7 +93,7 @@ static int32_t	_sendlevel(int8_t level, t_player *pl)
 	{
 		(pl->level == 8) ? pl->level : pl->level++;
 	}
-	SRV_ALLP.status[pl->c_fd] = LEVELING;
+	SRV_CLNT.status[pl->c_fd] = LEVELING;
 	num = ft_itoa(pl->level);
 	SENDBUF = strcat(SENDBUF, "current level : ");
 	SENDBUF = ft_strfreecat(SENDBUF, num);
@@ -107,18 +107,18 @@ static int32_t	_sendlevel(int8_t level, t_player *pl)
 static int32_t	_commandkickstart(int32_t x, int32_t y)
 {
 	t_dblist	*temp;
-	t_player	*pl;
+	t_vehicle	*pl;
 
 	temp = PLAYERLIST.first;
 	while (temp)
 	{
-		pl = (t_player *)temp->data;
-		if (SRV_ALLP.status[pl->c_fd] == LEVELING)
+		pl = (t_vehicle *)temp->data;
+		if (SRV_CLNT.status[pl->c_fd] == LEVELING)
 		{
 			pl->priest = 0;
 			event.iswaiting(pl);
 			temp = temp->next;
-			SRV_ALLP.status[pl->c_fd] = PLAYER;
+			SRV_CLNT.status[pl->c_fd] = PLAYER;
 		}
 	}
 	return (EXIT_SUCCESS);
@@ -127,12 +127,12 @@ static int32_t	_commandkickstart(int32_t x, int32_t y)
 static int32_t	levelup(void *object)
 {
 	t_dblist	*temp;
-	t_player	*pl;
+	t_vehicle	*pl;
 	int32_t		priest;
 	int32_t		x;
 	int32_t		y;
 
-	pl = (t_player *)((t_event *)object)->entity;
+	pl = (t_vehicle *)((t_event *)object)->entity;
 	priest = pl->priest;
 	x = pl->location.x;
 	y = pl->location.y;
@@ -143,7 +143,7 @@ static int32_t	levelup(void *object)
 		if (pl->priest == priest)
 		{
 			if (_checkresources(pl)
-				|| _checkplayers(pl, x, y))
+				|| _checkvehicles(pl, x, y))
 				_sendlevel(UP, pl);
 			else
 				_sendlevel(SAME, pl);
@@ -154,18 +154,18 @@ static int32_t	levelup(void *object)
 	return (EXIT_SUCCESS);
 }
 
-static int32_t	_checkog(t_player *og)
+static int32_t	_checkog(t_vehicle *og)
 {
 	if (!_checkresources(og)
-		|| !_checkplayers(og, og->location.x, og->location.y))
+		|| !_checkvehicles(og, og->location.x, og->location.y))
 	{
 		communication.outgoing(og->c_fd, "ko\n");
 		event.iswaiting(og);
-		SRV_ALLP.status[og->c_fd] = PLAYER;
+		SRV_CLNT.status[og->c_fd] = PLAYER;
 		return (0);
 	}
 	communication.outgoing(og->c_fd, "elevation in progress\n");
-	SRV_ALLP.status[og->c_fd] = INCANTING;
+	SRV_CLNT.status[og->c_fd] = INCANTING;
 	og->priest = og->c_fd;
 	graphic.transmit.incantation.start(og);
 	return (1);
@@ -174,12 +174,12 @@ static int32_t	_checkog(t_player *og)
 static int32_t	incantation(void *object)
 {
 	t_dblist	*temp;
-	t_player	*pl;
-	t_player	*og;
+	t_vehicle	*pl;
+	t_vehicle	*og;
 	int32_t		x;
 	int32_t		y;
 
-	og = (t_player *)((t_event *)object)->entity;
+	og = (t_vehicle *)((t_event *)object)->entity;
 	x = og->location.x;
 	y = og->location.y;
 	if (!_checkog(og))
@@ -188,14 +188,14 @@ static int32_t	incantation(void *object)
 		temp = PLAYERLIST.first;
 	while (temp)
 	{
-		pl = (t_player *)temp->data;
+		pl = (t_vehicle *)temp->data;
 		if (pl != og)
 		{
 			if (_checkresources(pl)
-				|| _checkplayers(pl, x, y))
+				|| _checkvehicles(pl, x, y))
 			{
 				communication.outgoing(pl->c_fd, "elevation in progress\n");
-				SRV_ALLP.status[pl->c_fd] = INCANTED;
+				SRV_CLNT.status[pl->c_fd] = INCANTED;
 				pl->priest = og->c_fd;
 				graphic.transmit.incantation.start(pl);
 				event.removeall(pl, 1);
