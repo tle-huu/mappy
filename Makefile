@@ -16,7 +16,6 @@ SRCDIR_CLN = client/
 SRCDIR_COM = communication/
 SRCDIR_DTH = death/
 SRCDIR_EGG = egg/
-SRCDIR_ERR = error/
 SRCDIR_EVS = events/
 SRCDIR_EVS_GFX = graphic/
 SRCDIR_EVS_VHC = vehicle/
@@ -29,7 +28,8 @@ SRCDIR_SRV = server/
 SRCDIR_TEM = team/
 SRCDIR_TIM = time/
 
-OBJSRC = $(patsubst %, %.o, $(addprefix \
+OBJSRC = $(patsubst %, %.o, $(addprefix $(SRCDIR), $(SRC)))
+OBJSRC += $(patsubst %, %.o, $(addprefix \
 		 $(addprefix $(SRCDIR), $(SRCDIR_BRD)), \
 		 $(SRC_BRD)))
 OBJSRC += $(patsubst %, %.o, $(addprefix \
@@ -41,12 +41,6 @@ OBJSRC += $(patsubst %, %.o, $(addprefix \
 OBJSRC += $(patsubst %, %.o, $(addprefix \
 		  $(addprefix $(SRCDIR), $(SRCDIR_DTH)), \
 		  $(SRC_DTH)))
-OBJSRC += $(patsubst %, %.o, $(addprefix \
-		  $(addprefix $(SRCDIR), $(SRCDIR_EGG)), \
-		  $(SRC_EGG)))
-OBJSRC += $(patsubst %, %.o, $(addprefix \
-		  $(addprefix $(SRCDIR), $(SRCDIR_ERR)), \
-		  $(SRC_ERR)))
 OBJSRC += $(patsubst %, %.o, $(addprefix \
 		  $(addprefix $(SRCDIR), $(SRCDIR_EVS)), \
 		  $(SRC_EVS)))
@@ -109,22 +103,12 @@ RES = \033[0m
 
 SRC_BRD = \
 	board \
-#	tile
 
 SRC_CLN = \
 	client
 
 SRC_COM = \
 	communication
-
-#SRC_DTH = \
-# 	death
-
-#SRC_EGG = \
-#	death \
-#	egg \
-#	place \
-#	pool
 
 SRC_ERR = \
 	error
@@ -136,14 +120,6 @@ SRC_EVS = \
 
 SRC_EVS_VHC = \
 	commands
-#	commandset_2 \
-#	see \
-#	incantation \
-#	kick \
-#	broadcast
-
-#SRC_EVS_SRV = \
-#	actions
 
 SRC_GFX = \
 	graphic
@@ -152,33 +128,21 @@ SRC_GFX_TRS = \
 	transmit \
 	tiles \
 	vehicles \
-#	eggs \
-#	incantation \
-#	teams \
-
-#SRC_INV = \
-#	inventory \
-#	minus1 \
-#	minus2 \
-#	plus1 \
-#	plus2
 
 SRC_VHC = \
 	place \
 	vehicle \
 	pool \
-#	death
 
 SRC_SRV = \
-	io \
-	main \
-	srv_setup
-
-#SRC_TEM = \
-#	team
+	server \
+	opts \
 
 SRC_TIM = \
 	time
+
+SRC = \
+	main
 
 ################################################################################
 # SOURCE FILES                                                                 #

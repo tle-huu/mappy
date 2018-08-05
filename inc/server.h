@@ -6,34 +6,34 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/31 18:10:48 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/04 15:35:02 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/05 00:44:49 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef SERVER_H
 # define SERVER_H
 
-/*
-**	srv_sets
-*/
+#include "universal.h"
 
-int32_t		srv_setboardx(char **argv, __attribute__((unused))t_opts *opt);
-int32_t		srv_setboardy(char **argv, __attribute__((unused))t_opts *opt);
-int32_t		srv_setport(char **argv, t_opts *opt);
-int32_t		srv_setmaxclients(char **argv, t_opts *opt);
-int32_t		srv_settimeint(char **argv, __attribute__((unused))t_opts *opt);
+void					construct_servergetopts(void);
 
-/*
-**	error
-*/
+typedef struct			s_server_getopts
+{
+	int32_t				(*boardx)(char **, t_opts *);
+	int32_t				(*boardy)(char **, t_opts *);
+	int32_t				(*timeinterval)(char **, t_opts *);
+	int32_t				(*port)(char **, t_opts *);
+	int32_t				(*maxclients)(char **, t_opts *);
+}						t_server_getopts;
 
-void		usage_warning(char *str);
+typedef struct			s_server
+{
+	t_server_getopts	opts;
+	int32_t				(*io)(void);
+	void				(*usagewarning)(char *);
+}						t_server;
 
-/*
-**	client_init
-*/
-
-int32_t		client_init(void);
-int32_t		game_io(void);
+t_server				server;
+t_opts					arr_opts[6];
 
 #endif

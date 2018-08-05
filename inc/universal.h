@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/11 12:46:41 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/04 21:05:34 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/04 22:02:26 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,15 @@
 # include <stdlib.h>
 # include <sys/time.h>
 # include "libft.h"
+# include "board.h"
+# include "vehicle.h"
 
-# define SRV_CLNT g_servenv->clients
+# define SRV_CLNT g_servenv->client_data
 # define SRV_SOCK g_servenv->socket
 # define SRV_GENV g_servenv->gamenv
 # define SRV_BORD g_servenv->board
 # define SRV_CMND g_servenv->command
 # define SRV_TIME g_servenv->time
-# define SRV_RIPT g_servenv->deathtime
-# define SRV_TEAM g_servenv->teams
 # define SENDBUF g_servenv->sendbuf
 # define RECVBUF g_servenv->recvbuf
 # define PEEK 42
@@ -61,40 +61,6 @@ typedef struct			s_graphic
 	int32_t				c_fd;
 	t_dblist			container;
 }						t_graphic;
-
-typedef	struct			s_location
-{
-	int32_t				x;
-	int32_t				y;
-	int8_t				orientation;
-}						t_location;
-
-typedef struct		s_vehicle
-{
-	t_dblist		container;
-	t_dblist		tilecontainer;
-	int32_t			c_fd;
-	uint64_t		vehicle_id;
-	int8_t			conn_attempts;
-	t_location		location;
-	t_timeval		alarm;
-	t_queue			pending;
-	char			message[513];
-}					t_vehicle;
-
-typedef struct			s_tile
-{
-	t_vehicle			*vehicles[FD_SETSIZE];
-	t_queue				vehicleslist;
-	struct s_tile		*column;
-}						t_tile;
-
-typedef	struct			s_board
-{
-	int32_t				x;
-	int32_t				y;
-	t_tile				*tiles;
-}						t_board;
 
 typedef struct			s_gamenv
 {
@@ -127,16 +93,15 @@ typedef struct			s_clients
 
 typedef struct			s_servenv
 {
-	t_clients			clients;
-	t_socket			socket;
-	t_board				board;
-	t_gamenv			gamenv;
-	t_timeval			time;
-	t_queue				graphical;
-	t_timeval			*keeptimer;
-	char				*sendbuf;
-	int32_t				nsend;
-	char				recvbuf[513];
+	t_clients			client_data; // <-- data
+	t_socket			socket; // convert to class
+	t_board				board; // is class
+	t_gamenv			gamenv; // <-- data
+	t_timeval			time; // <-- data
+	t_queue				graphical; // <-- data
+	char				*sendbuf; // <-- data
+	int32_t				nsend; // <-- data
+	char				recvbuf[513]; // <-- data
 }						t_servenv;
 
 t_servenv				*g_servenv;

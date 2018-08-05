@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/21 10:48:06 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/04 16:21:54 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/04 22:10:18 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static void			ft_remove(void *entity);
 static void			fail(int32_t cl);
 static void			iswaiting(t_vehicle *pl);
 
-__attribute__((constructor))void	construct_eventlogic(void)
+void		__attribute__((constructor))construct_eventlogic(void)
 {
 	event.lookup = &lookup;
 	event.add = &add;

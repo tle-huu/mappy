@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/13 11:16:44 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/04 13:56:55 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/05 00:48:24 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,14 +16,32 @@
 #include "events.h"
 #include "vehicle.h"
 
-t_opts	arr_opts[] = {
-	{"p", 1, &srv_setport},
-	{"x", 1, &srv_setboardx},
-	{"y", 1, &srv_setboardy},
-	{"c", 1, &srv_setmaxclients},
-	{"t", 1, &srv_settimeint},
-	{NULL, 0, NULL}
-};
+void	__attribute((constructor))construct_getopts(void)
+{
+	construct_servergetopts();
+	struct s_opts	opt0 = {"p", 1, server.opts.port};
+	struct s_opts	opt1 = {"x", 1, server.opts.boardx};
+	struct s_opts	opt2 = {"y", 1, server.opts.boardy};
+	struct s_opts	opt3 = {"c", 1, server.opts.maxclients};
+	struct s_opts	opt4 = {"t", 1, server.opts.timeinterval};
+	struct s_opts	opt5 = {NULL, 0, NULL};
+
+	arr_opts[0] = opt0;
+	arr_opts[1] = opt1;
+	arr_opts[2] = opt2;
+	arr_opts[3] = opt3;
+	arr_opts[4] = opt4;
+	arr_opts[5] = opt5;
+
+//	t_opts arr_opts[6] = {
+//		{"p", 1, server.opts.port},
+//		{"x", 1, server.opts.boardx},
+//		{"y", 1, server.opts.boardy},
+//		{"c", 1, server.opts.maxclients},
+//		{"t", 1, server.opts.timeinterval},
+//		{NULL, 0, NULL}
+//	};
+}
 
 static inline __attribute__((always_inline))int32_t	init_fd_select(void)
 {
@@ -87,7 +105,7 @@ static int32_t		ft_serverinit(void)
 	{
 		printf("\n[SELECT]\n  Body of Select\n");
 		event.queue.check();
-		if ((ret = game_io()) == EXIT_FAILURE)
+		if ((ret = server.io()) == EXIT_FAILURE)
 			ft_printf("gameio failure\n");
 		time.settimer(&timeout);
 		FD_COPY(SRV_SOCK.copy, SRV_SOCK.input);
@@ -104,13 +122,13 @@ int32_t		main(int argc, char **argv)
 	arg = 0;
 	if (argc < 11)
 	{
-		usage_warning(NULL);
+		server.usagewarning(NULL);
 		return (EXIT_FAILURE);
 	}
 	if (!(g_servenv = (t_servenv *)ft_memalloc(sizeof(t_servenv))))
 		return (EXIT_FAILURE);
 	if ((arg = ft_getopts(arr_opts, argv)) != EXIT_SUCCESS)
-		usage_warning(argv[arg]);
+		server.usagewarning(argv[arg]);
 	ft_serverinit();
 	perror(strerror(errno));
 	return (EXIT_SUCCESS);
