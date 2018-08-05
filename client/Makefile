@@ -6,14 +6,14 @@
 #    By: tle-huu- <tle-huu-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/06/25 09:04:20 by tle-huu-          #+#    #+#              #
-#    Updated: 2018/08/05 14:11:56 by tle-huu-         ###   ########.fr        #
+#    Updated: 2018/08/05 14:13:02 by tle-huu-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = execlient
 
 SRCS = 	srcs/CommunicationSocket.cpp \
-		srcs/Datagram.cpp
+		srcs/Datagram.cpp		\
 		lol.cpp
 
 INCLUDES = includes/
@@ -28,10 +28,10 @@ RM = rm -rf
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CXX) $(LDFLAGS) -I $(INCLUDES) $(OBJS) -o $@
+	$(CXX) $(LDFLAGS) -I . -I $(INCLUDES) $(OBJS) -o $@
 
 %.o: %.cpp
-	$(CXX) $(CXXFLAGS) -I $(INCLUDES) -c $< -o $@
+	$(CXX) $(CXXFLAGS) -I . -I $(INCLUDES) -c $< -o $@
 
 clean:
 	$(RM) $(OBJS)

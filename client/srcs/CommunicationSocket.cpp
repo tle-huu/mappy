@@ -40,7 +40,6 @@ std::string			CommunicationSocket::read(void) const
 	char				buffer[BUFF_SIZE] = {0};
 	int					ret;
 	Datagram			datagram;
-	std::size_t			spliter;
 
 	if ((ret = recv(this->_socket, buffer, BUFF_SIZE - 1, 0)) < 0)
 		throw("CommunicationSocket:get_datagram(): recv error\n");
@@ -115,15 +114,13 @@ void		CommunicationSocket::send_datagram(Datagram const & datagram) const
 
 Map			CommunicationSocket::get_map()
 {
-	int							x;
-	int							y;
 	std::string					header;
 	std::string					raw;
 	std::vector<std::string>	tokens;
 	Map							map;
 	bool						done = false;
 
-	this->_events["msz"] = [this, &map](std::string data)
+	this->_events["msz"] = [&map](std::string data)
 	{
 		int		x;
 		int		y;
@@ -135,7 +132,7 @@ Map			CommunicationSocket::get_map()
 			m.resize(y);
 	};
 
-	this->_events["bct"] = [this, &map](std::string data)
+	this->_events["bct"] = [&map](std::string data)
 	{
 		int				x;
 		int				y;
@@ -176,7 +173,7 @@ Position	CommunicationSocket::get_position(void)
 	Position		pos;
 	std::string		raw;
 
-	this->_events["pos"] = [this, &pos](std::string data)
+	this->_events["pos"] = [&pos](std::string data)
 	{
 		std::string			header;
 		std::stringstream	ss(data);
@@ -193,7 +190,7 @@ Position	CommunicationSocket::get_destination(void)
 	Position		pos;
 	std::string		raw;
 
-	this->_events["des"] = [this, &pos](std::string data)
+	this->_events["des"] = [&pos](std::string data)
 	{
 		std::string		header;
 		std::stringstream	ss(data);
@@ -218,7 +215,6 @@ void	CommunicationSocket::get_peer(std::string data, Map &map) const
 
 void	CommunicationSocket::get_peers(Map &map) const
 {
-	Position			pos;
 	std::string			raw;
 	std::string			header;
 	bool				done = false;

@@ -15,7 +15,7 @@ typedef struct coucou
 	int lol;
 }				t_coucou;
 
-int main(int argc, const char *argv[])
+int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 {
 
 	std::string header;
