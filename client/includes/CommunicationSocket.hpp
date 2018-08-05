@@ -21,11 +21,12 @@
 # include <iostream>
 # include <sstream>
 # include <queue>
+# include <map>
+# include "mappy_client.hpp"
+
 # include "Datagram.hpp"
 
 # define BUFF_SIZE 8192
-
-class Map;
 
 class CommunicationSocket
 {
@@ -34,7 +35,7 @@ class CommunicationSocket
 		int													_port;
 		int													_socket;
 		bool												_connected;
-		// map<std::string, function<void(std::string)>> 	_events;
+		std::map<std::string, std::function<void(std::string)>> 		_events;
 		std::queue<Datagram>								_datagram_queue;
 
 
@@ -55,11 +56,14 @@ class CommunicationSocket
 		void			listen();
 		void			send_datagram(std::string header, std::string message) const;
 		void			send_datagram(Datagram const & Datagram) const;
+		Map				get_map(void);
 		void 			get_info(Map& map, Position& start, Position& dest);
 		// Map			get_map() const;
-		// Position								get_position(void)		const;
-		// Position								get_destination(void)	const;
+		Position								get_position(void);
+		Position								get_destination(void);
 		// std::vector<Pair<Position, Position>>	get_updates(void);
+		void		wait_for_game(void) const;
+
 
 };
 

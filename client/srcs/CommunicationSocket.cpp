@@ -117,36 +117,37 @@ Map			CommunicationSocket::get_map()
 {
 	int							x;
 	int							y;
-	std::string						reader;
+	std::string					header;
+	std::string					raw;
 	std::vector<std::string>	tokens;
 	Map							map;
 	bool						done = false;
 
-	this->_events["msz"] = [this](std::string data)
+	this->_events["msz"] = [this, &map](std::string data)
 	{
 		int		x;
 		int		y;
-		stringstream		ss(data);
+		std::stringstream		ss(data);
 
 		ss >> x >> y;
 		map.resize(x);
 		for (auto& m : map)
-		m.resize(y);
-	}
+			m.resize(y);
+	};
 
-	this->_events["bct"] = [this](std::string data)
+	this->_events["bct"] = [this, &map](std::string data)
 	{
 		int				x;
 		int				y;
 		std::string		header;
-		stringstream	ss(data);
+		std::stringstream	ss(data);
 		Square			square;
 
 
 		ss >> header >> x >> y >> square.is_road;
 		square.total_cars = 0;
 		map[x][y] = square;
-	}
+	};
 	raw = this->read();
 	std::stringstream ss0(raw);
 	ss0 >> header;
@@ -167,7 +168,7 @@ Map			CommunicationSocket::get_map()
 				done = true;
 		}
 	}
-	return (Map);
+	return (map);
 }
 
 Position	CommunicationSocket::get_position(void)
@@ -175,15 +176,13 @@ Position	CommunicationSocket::get_position(void)
 	Position		pos;
 	std::string		raw;
 
-	this->_events["pos"] = [this](std::string data)
+	this->_events["pos"] = [this, &pos](std::string data)
 	{
-		int					x;
-		int					y;
 		std::string			header;
 		std::stringstream	ss(data);
 
 		ss >> header >> pos.x >> pos.y;
-	}
+	};
 	raw = this->read();
 	this->_events["pos"](raw);
 	return (pos);
@@ -194,15 +193,13 @@ Position	CommunicationSocket::get_destination(void)
 	Position		pos;
 	std::string		raw;
 
-	this->_events["des"] = [this](std::string data)
+	this->_events["des"] = [this, &pos](std::string data)
 	{
-		int				x;
-		int				y;
 		std::string		header;
 		std::stringstream	ss(data);
 
 		ss >> header >> pos.x >> pos.y;
-	}
+	};
 	raw = this->read();
 	this->_events["des"](raw);
 	return (pos);
@@ -216,10 +213,10 @@ void	CommunicationSocket::get_peer(std::string data, Map &map) const
 	std::stringstream		ss(data);
 
 	ss >> header >> x >> y;
-	Map[x][y].total_cars++;
+	map[x][y].total_cars++;
 }
 
-void	CommunicationSocket::get_peers(Map &map)
+void	CommunicationSocket::get_peers(Map &map) const
 {
 	Position			pos;
 	std::string			raw;
@@ -253,11 +250,11 @@ void		CommunicationSocket::get_info(Map &map, Position& start, Position &end)
 	this->get_peers(map);
 }
 
-void		CommunicationSocket::wait_for_game(void)
+void		CommunicationSocket::wait_for_game(void) const
 {
 	std::string		data;
 
-	while ((data = this->read() != "start"))
+	while ((data = this->read()) != "start")
 		std::cout << "Waiting for game to start but received : " << data << std::endl;
 	std::cout << "!! Simulation started !! " << std::endl;
 }
