@@ -22,6 +22,11 @@ Car::~Car()
 static Datagram	generate_move_data(Position from, Position to, double time)
 {
 	Datagram out;
+	out.header = "mvd";
+
+	std::stringstream ss;
+	ss << from.x << " " << from.y << " " << to.x << " " << to.y << " " << time;
+	out.message = ss.str();
 
 	return out;
 }
