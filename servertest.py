@@ -1,14 +1,18 @@
 import socket
 import sys
+import time
 
 def send_map(conn):
     conn.sendall("msz 10 5\n")
     conn.sendall("bct 0 0 1\n")
-    conn.sendall("bct 0 1 1\n")
-    conn.sendall("bct 1 1 1\n")
-    conn.sendall("bct 0 2 0\n")
-    conn.sendall("bct 2 2 1\n")
+    conn.sendall("bct 0 1 0\n")
+    conn.sendall("bct 1 1 0\n")
+    conn.sendall("bct 1 0 0\n")
+    conn.sendall("ppo 1 0\n")
+    conn.sendall("des 0 1\n")
+    time.sleep(1)
     conn.sendall("done\n")
+    conn.sendall("start\n")
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 

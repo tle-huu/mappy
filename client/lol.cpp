@@ -30,12 +30,15 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 {
 	Map 			map;
 	Position		start;
-	Position		end;
+	Position		destination;
 
 	CommunicationSocket		sock("localhost", 1337);
 	sock.send_datagram("car", "\n");
-	sock.get_first_info(map, start, end);
+	sock.get_first_info(map, start, destination);
 	display_map(map);
+	std::cout << "start : " << start.x << " , "<< start.y << std::endl;
+	std::cout << "destination : " << destination.x << " , "<< destination.y << std::endl;
+	sock.wait_for_game();
     //
 	// // Datagram		datagram("header : ", "message");
     //

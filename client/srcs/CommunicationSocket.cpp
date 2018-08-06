@@ -146,12 +146,16 @@ void		CommunicationSocket::send_datagram(Datagram const & datagram) const
 		throw("CommunicationSocket:send_datagram(): send error\n");
 }
 
-Map			CommunicationSocket::get_map()
+Map		CommunicationSocket::get_first_info(Map &map, Position& start, Position &end)
 {
+	// map = this->get_map();
+	// start = this->get_position();
+	// end = this->get_destination();
+	// this->get_peers(map);
+
 	std::string					header;
 	std::string					raw;
 	std::vector<std::string>	tokens;
-	Map							map;
 	bool						done = false;
 
 	this->_events["msz"] = [&map](std::string data)
@@ -178,17 +182,25 @@ Map			CommunicationSocket::get_map()
 		Square			square;
 
 		ss >> header >> x >> y >> square.is_road;
-		std::cout << "x : " << x << " y : " << y << " square : "<< square.is_road << std::endl;
+		// std::cout << "x : " << x << " y : " << y << " square : "<< square.is_road << std::endl;
 		square.total_cars = 0;
 		map[x][y] = square;
 	};
-	// raw = this->read();
-	// std::stringstream ss0(raw);
-	// ss0 >> header;
-	// if (header != "msz")
-	// 	std::cout << "CommunicationSocket::get_map size fucked up" << std::endl;
-	// this->_events["msz"](raw);
+	this->_events["ppo"] = [&start](std::string data)
+	{
+		std::string			header;
+		std::stringstream	ss(data);
 
+		ss >> header >> start.x >> start.y;
+	};
+
+	this->_events["des"] = [&end](std::string data)
+	{
+		std::string			header;
+		std::stringstream	ss(data);
+
+		ss >> header >> end.x >> end.y;
+	};
 	while (!done)
 	{
 		raw = this->read();
@@ -200,59 +212,34 @@ Map			CommunicationSocket::get_map()
 			if (this->_events.count(header) > 0)
 				this->_events[header](line);
 			else
+			{
+				std::cout << KRED << "get_first_info(): Should not go here : " << KNRM << KYEL << line << KNRM << std::endl;
 				done = true;
+			}
 		}
 		// std::stringstream ss(raw);
 	}
 	return (map);
 }
 
-Position	CommunicationSocket::get_position(void)
-{
-	Position		pos;
-	std::string		raw;
-
-	this->_events["pnw"] = [&pos](std::string data)
-	{
-		std::string			header;
-		std::stringstream	ss(data);
-
-		ss >> header >> pos.x >> pos.y;
-	};
-	raw = this->read();
-	this->_events["pnw"](raw);
-	return (pos);
-}
-
-Position	CommunicationSocket::get_destination(void)
-{
-	Position			pos;
-	std::string			raw;
-	std::string			header;
-
-	raw = this->read();
-	std::stringstream	ss(raw);
-	ss >> header >> pos.x >> pos.y;
-	return (pos);
-}
-
-void		CommunicationSocket::get_first_info(Map &map, Position& start, Position &end)
-{
-	std::cout << "ici\n";
-	map = this->get_map();
-	std::cout << "la\n";
-	// start = this->get_position();
-	// end = this->get_destination();
-	// this->get_peers(map);
-}
-
 void		CommunicationSocket::wait_for_game(void) const
 {
 	std::string		data;
+	bool			start = false;
 
-	while ((data = this->read()) != "start")
-		std::cout << "Waiting for game to start but received : " << data << std::endl;
-	std::cout << "!! Simulation started !! " << std::endl;
+	while (!start)
+	{
+		data = this->read();
+		std::stringstream ss(data);
+		for (std::string line; std::getline(ss, line);)
+		{
+			if (line == "start")
+				start = true;
+			else
+				std::cout << "Waiting for game to start but received : " << data << std::endl;
+		}
+	}
+	std::cout << KGRN << " !! Simulation started !! " << KNRM << std::endl;
 }
 
 bool		CommunicationSocket::get_datagram(Datagram & datagram)
