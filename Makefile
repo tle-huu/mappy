@@ -15,7 +15,7 @@ SRCDIR_COM = communication/
 SRCDIR_EVS = events/
 SRCDIR_EVS_VHC = vehicle/
 SRCDIR_GFX = graphic/
-SRCDIR_GFX_TRS = transmit/
+SRCDIR_TRS = transmit/
 SRCDIR_SRV = server/
 SRCDIR_VHC = vehicle/
 
@@ -34,9 +34,8 @@ OBJSRC += $(patsubst %, %.o, $(addprefix \
 		  $(addprefix $(SRCDIR), $(SRCDIR_GFX)), \
 		  $(SRC_GFX)))
 OBJSRC += $(patsubst %, %.o, $(addprefix \
-		  $(addprefix $(SRCDIR), \
-		  $(addprefix $(SRCDIR_GFX), $(SRCDIR_GFX_TRS))), \
-		  $(SRC_GFX_TRS)))
+		  $(addprefix $(SRCDIR), $(SRCDIR_TRS)), \
+		  $(SRC_TRS)))
 OBJSRC += $(patsubst %, %.o, $(addprefix \
 		  $(addprefix $(SRCDIR), $(SRCDIR_SRV)), \
 		  $(SRC_SRV)))
@@ -72,7 +71,7 @@ SRC_EVS_VHC = \
 SRC_GFX = \
 	graphic
 
-SRC_GFX_TRS = \
+SRC_TRS = \
 	transmit \
 	tiles \
 	vehicles \

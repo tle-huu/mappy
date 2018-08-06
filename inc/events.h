@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 15:58:08 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/04 15:45:47 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/05 23:55:40 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 # define EVENTS_H
 
 # define NCOMMANDS 12
-
-typedef struct		s_event	t_event;
 
 typedef struct		s_eventhold
 {
@@ -52,7 +50,7 @@ typedef struct		s_eventpool
 	t_dblist		*(*pop)(void);
 }					t_eventpool;
 
-typedef struct		s_event_methods
+typedef struct		s_events
 {
 	t_eventpool		pool;
 	t_eventqueue	queue;
@@ -61,9 +59,9 @@ typedef struct		s_event_methods
 	void			(*removeall)(void *);
 	void			(*fail)(int32_t);
 	void			(*iswaiting)(t_vehicle *);
-}					t_event_methods;
+}					t_events;
 
-t_event_methods				event;
+t_events				event;
 t_eventhold					eventlookup[17];
 
 #endif

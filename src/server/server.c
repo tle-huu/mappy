@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/04 22:43:47 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/05 22:31:12 by psprawka         ###   ########.fr       */
+/*   Updated: 2018/08/06 14:27:31 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static void			warning(char *str);
 static int32_t		io(void);
 static int32_t		new(void);
 
-void		__attribute__((constructor))construct_server(void)
+void		__attribute((constructor))construct_server(void)
 {
 	server.io = &io;
 	server.usagewarning = &warning;

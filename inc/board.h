@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/05 11:14:26 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/05 14:47:15 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/06 14:30:30 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,28 +24,22 @@ typedef struct			s_tile
 	struct s_tile		*column;
 }						t_tile;
 
-typedef	struct			s_board
+typedef	struct			s_board_data
 {
 	int32_t				x;
 	int32_t				y;
 	t_tile				*tiles;
+}						t_board_data;
+
+typedef struct			s_board
+{
+	t_board_data		data;
+	int32_t				(*new)(void);
+	int32_t				(*send_dimensions)(int32_t);
+	void				(*setvehicle)(t_vehicle *);
+	void				(*removevehicle)(t_vehicle *pl);
 }						t_board;
 
-typedef struct		s_board_tile
-{
-	int32_t			(*check)(int32_t, int32_t, int32_t);
-}					t_board_tile;
-
-typedef struct		s_board_methods
-{
-	t_board			data;
-	t_board_tile	tile;
-	int32_t			(*new)(void);
-	int32_t			(*send_dimensions)(int32_t);
-	void			(*setvehicle)(t_vehicle *);
-	void			(*removevehicle)(t_vehicle *pl);
-}					t_board_methods;
-
-t_board_methods		board;
+t_board					board;
 
 #endif

@@ -6,19 +6,19 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 15:30:42 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/04 21:51:53 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/06 14:23:05 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PLAYER_H
 # define PLAYER_H
 
-typedef	struct			s_location
+typedef	struct		s_location
 {
-	int32_t				x;
-	int32_t				y;
-	int8_t				orientation;
-}						t_location;
+	int32_t			x;
+	int32_t			y;
+	int8_t			orientation;
+}					t_location;
 
 typedef struct		s_vehicle
 {

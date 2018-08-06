@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/31 18:10:48 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/05 19:31:21 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/06 14:30:44 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@
 # include "board.h"
 # include "vehicle.h"
 
-# define SRV_GENV g_servenv->gamenv
-# define SRV_TIME g_servenv->time
 # define PEEK 42
 # define NOT_ACCEPTED 1
 # define JOINVEHICLE 2
@@ -67,21 +65,21 @@ typedef struct			s_simenv
 	float				timeinterval;
 }						t_simenv;
 
-typedef struct			s_clients
+typedef struct			s_client_assoc
 {
 	int8_t				status[FD_SETSIZE];
 	void				*lookup[FD_SETSIZE];
-}						t_clients;
+}						t_client_assoc;
 
 typedef struct			s_server
 {
 	t_server_getopts	opts;
-	t_clients			clients; // <-- data
-	t_simenv			simenv; // <-- data
-	t_timeval			time; // <-- data
-	char				*sendbuf; // <-- data
-	int32_t				nsend; // <-- data
-	char				recvbuf[513]; // <-- data
+	t_client_assoc		clients;
+	t_simenv			simenv;
+	t_timeval			time;
+	char				*sendbuf;
+	int32_t				nsend;
+	char				recvbuf[513];
 	int32_t				(*io)(void);
 	void				(*usagewarning)(char *);
 	int32_t				(*new)(void);
