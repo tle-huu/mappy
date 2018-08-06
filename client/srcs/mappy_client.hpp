@@ -14,4 +14,4 @@ struct	Square
 	int total_cars;
 };
 
-typedef Map std::vector<std::vector<Square>>;
+typedef std::vector<std::vector<Square>> Map;

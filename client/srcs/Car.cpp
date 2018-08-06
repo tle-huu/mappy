@@ -1,28 +1,39 @@
 #include "Car.hpp"
 
-Car::Car()
+Car::Car() : _ai(_map)
 {
-	Map map;
-	_communicator.get_info(map, _current_pos, _destination);
-	_ai = new AI(map);
-	_communicator.wait_for_game();
-	_cooldown = 0;
+
+	_events["mvd"] = [this](std::string data)
+	 {
+		 std::stringstream ss(data);
+		 Position from, to;
+		 ss >> from.x >> from.y >> to.x >> to.y;
+		 _map[from.x][from.y] -= 1;
+		 _map[to.x][to.y] += 1;
+	 };
+	_communicator.get_first_info(_map, _current_pos, _destination);
+	_communicator.wait_for_game();	
 }
 
 Car::~Car()
 {
-	delete _ai;
 }
 
-void	Car::update(double dt)
+static Datagram	generate_move_data(Position from, Position to, double time)
 {
-	_ai->update(_communicator.get_updates());
-	_cooldown -= dt;
-	if (cooldown > 0)
-		return;
-	_cooldown = 0;
+	Datagram out;
 
-	Position newPos = _ai->where_to(_current_pos, _destination, _cooldown);
-	_communicator.change_location(_current_pos, newPos);
-	_current_pos = newPos;
+	return out;
+}
+
+void	Car::move()
+{	
+	for (Datagram d; _communicator.get_datagram(d);)
+		_events[d.header](d.message);
+	
+	double time;
+	Position newPos = _ai.where_to(_current_pos, _destination, &time);
+	Datagram moveData = generate_move_data(_current_pos, newPos, time);
+	_communicator.send_datagram(moveData);
+	_communicator.wait_for_move();
 }

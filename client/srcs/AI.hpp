@@ -5,11 +5,10 @@
 
 class	AI
 {
-	Map _map;
+	Map& _map;
 
 public:
-	AI(const Map& map);
+	AI(Map& map);
 
 	Position	where_to(Position current, Position dest, double& cooldown);
-	void		update(std::vector<std::pair<Position, Position>>);
 };
