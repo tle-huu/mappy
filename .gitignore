@@ -4,3 +4,5 @@
 __initproj__
 *.c.bak
 *.h.bak
+._*
+.*

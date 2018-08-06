@@ -47,6 +47,7 @@
 typedef struct			timeval		t_timeval;
 
 void					construct_servergetopts(void);
+void					construct_server(void);
 
 typedef struct			s_server_getopts
 {
