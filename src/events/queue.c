@@ -6,11 +6,11 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 20:48:31 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/20 00:14:28 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/05 19:19:21 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "universal.h"
+#include "server.h"
 #include "events.h"
 #include "time.h"
 
@@ -75,13 +75,13 @@ static int32_t	check(void)
 	t_dblist	*temp;
 
 	printf("[EVENT]\n  Check queue\n");
-	gettimeofday(&(SRV_TIME), NULL);
+	gettimeofday(&(server.time), NULL);
 	if (event.queue.data->first)
 	{
 		temp = (event.queue.data->first);
 		while (temp)
 		{
-			if (time.compare(&SRV_TIME, &CQU_OBJ->alarm))
+			if (time.compare(&server.time, &CQU_OBJ->alarm))
 			{
 				printf("  Action\n");
 				event.queue.pop();

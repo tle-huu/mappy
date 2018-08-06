@@ -6,11 +6,11 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/17 17:07:12 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/04 15:52:48 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/05 19:19:20 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "universal.h"
+#include "server.h"
 #include "graphics.h"
 
 static int32_t		new(int32_t cl);
@@ -32,17 +32,17 @@ static int32_t		new(int32_t cl)
 	if (!(gr = (t_graphic *)calloc(1, sizeof(t_graphic))))
 		return (EXIT_FAILURE);
 	gr->c_fd = cl;
-	SRV_CLNT.lookup[cl] = gr;
-	SRV_CLNT.status[cl] = GRAPHIC;
+	server.clients.lookup[cl] = gr;
+	server.clients.status[cl] = GRAPHIC;
 	gr->container.data = gr;
-	ft_enqueue(&(g_servenv->graphical), &(gr->container), 0);
+	ft_enqueue(&(graphic.data), &(gr->container), 0);
 	graphic.greeting(gr);
 	return (EXIT_SUCCESS);
 }
 
 static int32_t		clear(t_graphic *gr)
 {
-	ft_middel(&(g_servenv->graphical), &(gr->container));
+	ft_middel(&(graphic.data), &(gr->container));
 	free(gr);
 	return (EXIT_SUCCESS);
 }

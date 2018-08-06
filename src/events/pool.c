@@ -6,11 +6,12 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 16:52:08 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/20 20:58:08 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/05 19:19:22 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "universal.h"
+#include "server.h"
+#include "socket.h"
 #include "events.h"
 
 static int32_t		new(void);

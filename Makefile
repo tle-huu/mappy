@@ -11,51 +11,25 @@ CC = gcc
 ################################################################################
 
 SRCDIR = src/
-SRCDIR_BRD = board/
-SRCDIR_CLN = client/
 SRCDIR_COM = communication/
-SRCDIR_DTH = death/
-SRCDIR_EGG = egg/
 SRCDIR_EVS = events/
-SRCDIR_EVS_GFX = graphic/
 SRCDIR_EVS_VHC = vehicle/
-SRCDIR_EVS_SRV = server/
 SRCDIR_GFX = graphic/
 SRCDIR_GFX_TRS = transmit/
-SRCDIR_INV = inventory/
-SRCDIR_PLR = vehicle/
 SRCDIR_SRV = server/
-SRCDIR_TEM = team/
-SRCDIR_TIM = time/
+SRCDIR_VHC = vehicle/
 
 OBJSRC = $(patsubst %, %.o, $(addprefix $(SRCDIR), $(SRC)))
 OBJSRC += $(patsubst %, %.o, $(addprefix \
-		 $(addprefix $(SRCDIR), $(SRCDIR_BRD)), \
-		 $(SRC_BRD)))
-OBJSRC += $(patsubst %, %.o, $(addprefix \
-		  $(addprefix $(SRCDIR), $(SRCDIR_CLN)), \
-		  $(SRC_CLN)))
-OBJSRC += $(patsubst %, %.o, $(addprefix \
 		  $(addprefix $(SRCDIR), $(SRCDIR_COM)), \
 		  $(SRC_COM)))
-OBJSRC += $(patsubst %, %.o, $(addprefix \
-		  $(addprefix $(SRCDIR), $(SRCDIR_DTH)), \
-		  $(SRC_DTH)))
 OBJSRC += $(patsubst %, %.o, $(addprefix \
 		  $(addprefix $(SRCDIR), $(SRCDIR_EVS)), \
 		  $(SRC_EVS)))
 OBJSRC += $(patsubst %, %.o, $(addprefix \
 		  $(addprefix $(SRCDIR), \
-		  $(addprefix $(SRCDIR_EVS), $(SRCDIR_EVS_GFX))), \
-		  $(SRC_EVS_GFX)))
-OBJSRC += $(patsubst %, %.o, $(addprefix \
-		  $(addprefix $(SRCDIR), \
 		  $(addprefix $(SRCDIR_EVS), $(SRCDIR_EVS_VHC))), \
 		  $(SRC_EVS_VHC)))
-OBJSRC += $(patsubst %, %.o, $(addprefix \
-		  $(addprefix $(SRCDIR), \
-		  $(addprefix $(SRCDIR_EVS), $(SRCDIR_EVS_SRV))), \
-		  $(SRC_EVS_SRV)))
 OBJSRC += $(patsubst %, %.o, $(addprefix \
 		  $(addprefix $(SRCDIR), $(SRCDIR_GFX)), \
 		  $(SRC_GFX)))
@@ -64,28 +38,11 @@ OBJSRC += $(patsubst %, %.o, $(addprefix \
 		  $(addprefix $(SRCDIR_GFX), $(SRCDIR_GFX_TRS))), \
 		  $(SRC_GFX_TRS)))
 OBJSRC += $(patsubst %, %.o, $(addprefix \
-		  $(addprefix $(SRCDIR), $(SRCDIR_INV)), \
-		  $(SRC_INV)))
-OBJSRC += $(patsubst %, %.o, $(addprefix \
-		  $(addprefix $(SRCDIR), $(SRCDIR_PLR)), \
-		  $(SRC_VHC)))
-OBJSRC += $(patsubst %, %.o, $(addprefix \
 		  $(addprefix $(SRCDIR), $(SRCDIR_SRV)), \
 		  $(SRC_SRV)))
 OBJSRC += $(patsubst %, %.o, $(addprefix \
-		  $(addprefix $(SRCDIR), $(SRCDIR_TEM)), \
-		  $(SRC_TEM)))
-OBJSRC += $(patsubst %, %.o, $(addprefix \
-		  $(addprefix $(SRCDIR), $(SRCDIR_TIM)), \
-		  $(SRC_TIM)))
-
-#OBJSRC = $(patsubst %, %.o, $(addprefix \
-#		 $(addprefix $(SRCDIR), $(SRCDIR_IO)), \
-#		 $(SRC_IO)))
-#OBJSRC += $(patsubst %, %.o, $(addprefix \
-#		  $(addprefix $(SRCDIR), \
-#		  $(addprefix $(SRCDIR_IO), $(SRCDIR_IO_FTPRINTF))), \
-#		  $(SRC_IO_FTPRINTF)))
+		  $(addprefix $(SRCDIR), $(SRCDIR_VHC)), \
+		  $(SRC_VHC)))
 
 ################################################################################
 # COLOR                                                                        #
@@ -101,17 +58,8 @@ RES = \033[0m
 # SOURCE FILES                                                                 #
 ################################################################################
 
-SRC_BRD = \
-	board \
-
-SRC_CLN = \
-	client
-
 SRC_COM = \
 	communication
-
-SRC_ERR = \
-	error
 
 SRC_EVS = \
 	events \
@@ -129,20 +77,21 @@ SRC_GFX_TRS = \
 	tiles \
 	vehicles \
 
+SRC_SRV = \
+	server \
+	opts \
+
 SRC_VHC = \
 	place \
 	vehicle \
 	pool \
 
-SRC_SRV = \
-	server \
-	opts \
-
-SRC_TIM = \
-	time
-
 SRC = \
-	main
+	board \
+	client \
+	main \
+	socket \
+	time
 
 ################################################################################
 # SOURCE FILES                                                                 #

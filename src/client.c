@@ -6,11 +6,12 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 13:40:27 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/04 15:49:51 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/05 19:19:31 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "universal.h"
+#include "server.h"
+#include "socket.h"
 #include "client.h"
 #include "communication.h"
 #include "events.h"
@@ -30,10 +31,10 @@ __attribute__((constructor))void	construct_client(void)
 
 static inline __attribute__((always_inline))void	add_fd_select(int32_t sock)
 {
-	printf("fd to add : <%d>\ncurrent nfds : <%d>\n", sock, SRV_SOCK.nfds);
-	FD_SET(sock, SRV_SOCK.copy);
-	if (SRV_SOCK.nfds <= sock)
-		SRV_SOCK.nfds = (sock + 1);
+	printf("fd to add : <%d>\ncurrent nfds : <%d>\n", sock, ft_socket.nfds);
+	FD_SET(sock, ft_socket.copy);
+	if (ft_socket.nfds <= sock)
+		ft_socket.nfds = (sock + 1);
 }
 
 static int32_t		new(void)
@@ -42,9 +43,9 @@ static int32_t		new(void)
 	int32_t	ret;
 
 	ret = EXIT_SUCCESS;
-	newfd = accept(SRV_SOCK.sockfd,
-				(struct sockaddr *)&(SRV_SOCK.temp), &(SRV_SOCK.socklen));
-	(SRV_CLNT.status)[newfd] = NOT_ACCEPTED;
+	newfd = accept(ft_socket.sockfd,
+				(struct sockaddr *)&(ft_socket.temp), &(ft_socket.socklen));
+	(server.clients.status)[newfd] = NOT_ACCEPTED;
 	add_fd_select(newfd);
 	ret = communication.outgoing(newfd, "WELCOME\n");
 	printf("New client %d connected\n", newfd);
@@ -54,22 +55,22 @@ static int32_t		new(void)
 static void			crash(int32_t cl)
 {
 	client.disconnect(cl);
-	if (SRV_CLNT.lookup[cl])
-		event.removeall(SRV_CLNT.lookup[cl]);
-	if ((SRV_CLNT.status[cl] != GRAPHIC)
-		&& (SRV_CLNT.status[cl] != NOT_ACCEPTED))
+	if (server.clients.lookup[cl])
+		event.removeall(server.clients.lookup[cl]);
+	if ((server.clients.status[cl] != GRAPHIC)
+		&& (server.clients.status[cl] != NOT_ACCEPTED))
 	{
-		graphic.transmit.vehicles.death(SRV_CLNT.lookup[cl]);
-		vehicle.pool.add(SRV_CLNT.lookup[cl]);
+		graphic.transmit.vehicles.death(server.clients.lookup[cl]);
+		vehicle.pool.add(server.clients.lookup[cl]);
 	}
-	if (SRV_CLNT.status[cl] == GRAPHIC)
-		graphic.clear(SRV_CLNT.lookup[cl]);
+	if (server.clients.status[cl] == GRAPHIC)
+		graphic.clear(server.clients.lookup[cl]);
 }
 
 static void			disconnect(int32_t cl)
 {
 	printf("Remove client <%d> from fdset and lookup\n", cl);
 	close(cl);
-	FD_CLR(cl, SRV_SOCK.copy);
+	FD_CLR(cl, ft_socket.copy);
 	printf("  Client removed\n");
 }

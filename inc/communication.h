@@ -6,12 +6,14 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 16:11:12 by nkouris           #+#    #+#             */
-/*   Updated: 2018/06/19 13:19:55 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/05 14:48:08 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_COMM_H
 # define FT_COMM_H
+
+#include "graphics.h"
 
 typedef struct			s_communication_methods
 {

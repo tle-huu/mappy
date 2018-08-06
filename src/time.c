@@ -6,11 +6,11 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 10:53:55 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/04 16:02:42 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/05 19:19:26 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "universal.h"
+#include "server.h"
 #include "time.h"
 #include "events.h"
 
@@ -82,7 +82,7 @@ static void		setalarm(t_timeval *alarm, float factor)
 
 	gettimeofday(&temp, NULL);
 	printf("[TIME]\n  -- Set Alarm --\n  It is <%ld> seconds & <%d> microseconds\n", temp.tv_sec, temp.tv_usec);
-	interval = factor/SRV_GENV.timeinterval;
+	interval = factor/server.simenv.timeinterval;
 	integer = 0;
 	if (interval > 1)
 		interval = modf(interval, &integer);

@@ -6,11 +6,11 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/21 10:48:06 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/04 22:10:18 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/05 19:19:28 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "universal.h"
+#include "server.h"
 #include "events.h"
 #include "time.h"
 #include "communication.h"
@@ -40,9 +40,9 @@ static int32_t	lookup(int32_t cl)
 	char		*temp;
 	int32_t		i;
 
-	pl = (t_vehicle *)SRV_CLNT.lookup[cl];
-	printf("  Looking up event |%s|\n", RECVBUF);
-	split = ft_strsplit(RECVBUF, '\n');
+	pl = (t_vehicle *)server.clients.lookup[cl];
+	printf("  Looking up event |%s|\n", server.recvbuf);
+	split = ft_strsplit(server.recvbuf, '\n');
 	strings = split;
 	while (*split)
 	{
@@ -81,9 +81,9 @@ static int32_t	pl_preprocess(void *entity, t_event *ev)
 	printf("  Copying this message : |%s|\n", PLAYER_ENT->message);
 	if (PLAYER_ENT->message[0])
 		strcpy(ev->message, PLAYER_ENT->message);
-	if (SRV_CLNT.status[PLAYER_ENT->c_fd] == WORKING
-		|| SRV_CLNT.status[PLAYER_ENT->c_fd] == INCANTED
-		|| SRV_CLNT.status[PLAYER_ENT->c_fd] == INCANTING)
+	if (server.clients.status[PLAYER_ENT->c_fd] == WORKING
+		|| server.clients.status[PLAYER_ENT->c_fd] == INCANTED
+		|| server.clients.status[PLAYER_ENT->c_fd] == INCANTING)
 	{
 		printf("  Player is doing something already\n");
 		if (PLAYER_ENT->pending.qlen < 9)
@@ -114,7 +114,7 @@ static int32_t	add(t_eventhold *eventhold, void *entity, int32_t preprocess)
 	{
 		if (pl_preprocess(entity, ev))
 			return (EXIT_SUCCESS);
-		SRV_CLNT.status[PLAYER_ENT->c_fd] = WORKING;
+		server.clients.status[PLAYER_ENT->c_fd] = WORKING;
 	}
 	printf("  Adding event to main queue\n");
 	event.queue.add(ev);

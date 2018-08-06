@@ -6,11 +6,11 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/04 16:32:22 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/04 16:38:50 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/05 19:19:22 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "universal.h"
+#include "server.h"
 #include "events.h"
 #include "communication.h"
 #include "vehicle.h"
@@ -38,7 +38,7 @@ static int32_t	advance(void *object)
 	vehicle.place.advance(pl);
 	communication.outgoing(pl->c_fd, "ok\n");
 	graphic.transmit.vehicles.position(pl);
-	SRV_CLNT.status[pl->c_fd] = PLAYER;
+	server.clients.status[pl->c_fd] = PLAYER;
 	event.iswaiting(pl);
 	return (EXIT_SUCCESS);
 }
@@ -48,13 +48,13 @@ static int32_t	connect_nbr(void *object)
 	t_vehicle	*pl;
 	char		*num;
 
-	bzero(SENDBUF, 1024);
+	bzero(server.sendbuf, 1024);
 	pl = (t_vehicle *)((t_event *)object)->entity;
-	if (!(num = ft_itoa(SRV_GENV.connected_vehicles))
-		|| !(SENDBUF = ft_strfreecat(SENDBUF, num))
-		|| !(SENDBUF = strcat(SENDBUF, "\n"))
-		|| (communication.outgoing(pl->c_fd, SENDBUF) == EXIT_FAILURE))
+	if (!(num = ft_itoa(server.simenv.connected_vehicles))
+		|| !(server.sendbuf = ft_strfreecat(server.sendbuf, num))
+		|| !(server.sendbuf = strcat(server.sendbuf, "\n"))
+		|| (communication.outgoing(pl->c_fd, server.sendbuf) == EXIT_FAILURE))
 		return (EXIT_FAILURE);
-	SRV_CLNT.status[pl->c_fd] = PLAYER;
+	server.clients.status[pl->c_fd] = PLAYER;
 	return (EXIT_SUCCESS);
 }

@@ -6,11 +6,12 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 22:27:23 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/04 15:57:13 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/05 19:19:27 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "universal.h"
+#include "server.h"
+#include "socket.h"
 #include "vehicle.h"
 #include "board.h"
 
@@ -55,8 +56,8 @@ static t_dblist		*pop(void)
 
 static void			add(t_vehicle *pl)
 {
-	SRV_CLNT.status[pl->c_fd] = 0;
-	SRV_CLNT.lookup[pl->c_fd] = NULL;
+	server.clients.status[pl->c_fd] = 0;
+	server.clients.lookup[pl->c_fd] = NULL;
 	board.removevehicle(pl);
 	bzero(pl, sizeof(t_vehicle));
 	pl->container.data = pl;

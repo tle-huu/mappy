@@ -6,11 +6,11 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/17 19:09:02 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/04 15:54:06 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/05 19:19:21 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "universal.h"
+#include "server.h"
 #include "graphics.h"
 #include "board.h"
 #include "communication.h"
@@ -31,20 +31,20 @@ static int32_t all(t_graphic *gr)
 	char *num;
 
 	x = 0;
-	while (x <= SRV_BORD.x)
+	while (x <= board.data.x)
 	{
 		y = 0;
-		while (y <= SRV_BORD.y)
+		while (y <= board.data.y)
 		{
-			SENDBUF = strcat(SENDBUF, "bct ");
+			server.sendbuf = strcat(server.sendbuf, "bct ");
 			num = ft_itoa(x);
-			SENDBUF = ft_strfreecat(SENDBUF, num);
-			SENDBUF = strcat(SENDBUF, " ");
+			server.sendbuf = ft_strfreecat(server.sendbuf, num);
+			server.sendbuf = strcat(server.sendbuf, " ");
 			num = ft_itoa(y);
-			SENDBUF = ft_strfreecat(SENDBUF, num);
-			SENDBUF = strcat(SENDBUF, "\n");
-			communication.graphical(gr, SENDBUF);
-			bzero(SENDBUF, g_servenv->nsend);
+			server.sendbuf = ft_strfreecat(server.sendbuf, num);
+			server.sendbuf = strcat(server.sendbuf, "\n");
+			communication.graphical(gr, server.sendbuf);
+			bzero(server.sendbuf, server.nsend);
 			y++;
 		}
 		x++;
@@ -56,14 +56,14 @@ static int32_t one(t_graphic *gr, int32_t x, int32_t y)
 {
 	char *num;
 
-	SENDBUF = strcat(SENDBUF, "bct ");
+	server.sendbuf = strcat(server.sendbuf, "bct ");
 	num = ft_itoa(x);
-	SENDBUF = ft_strfreecat(SENDBUF, num);
-	SENDBUF = strcat(SENDBUF, " ");
+	server.sendbuf = ft_strfreecat(server.sendbuf, num);
+	server.sendbuf = strcat(server.sendbuf, " ");
 	num = ft_itoa(y);
-	SENDBUF = ft_strfreecat(SENDBUF, num);
-	SENDBUF = strcat(SENDBUF, "\n");
-	communication.graphical(gr, SENDBUF);
-	bzero(SENDBUF, g_servenv->nsend);
+	server.sendbuf = ft_strfreecat(server.sendbuf, num);
+	server.sendbuf = strcat(server.sendbuf, "\n");
+	communication.graphical(gr, server.sendbuf);
+	bzero(server.sendbuf, server.nsend);
 	return (EXIT_SUCCESS);
 }

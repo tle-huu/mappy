@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/05 11:14:26 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/04 21:52:26 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/05 14:47:15 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # include "vehicle.h"
 
-# define PLAYERLIST (((((SRV_BORD.tiles)[x]).column)[y]).vehicleslist)
+# define PLAYERLIST (((((board.data.tiles)[x]).column)[y]).vehicleslist)
 
 typedef struct			s_tile
 {

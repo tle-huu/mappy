@@ -6,11 +6,11 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 13:20:08 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/04 16:38:57 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/05 19:19:27 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "universal.h"
+#include "server.h"
 #include "vehicle.h"
 #include "events.h"
 #include "board.h"
@@ -31,12 +31,12 @@ static void		_initialize(t_vehicle *pl)
 {
 	int32_t i;
 
-	pl->vehicle_id = (SRV_GENV.track_vehicleid)++;
+	pl->vehicle_id = (server.simenv.track_vehicleid)++;
 	pl->tilecontainer.data = pl;
 	i = 0;
 	vehicle.place.onboard(pl);
-	SRV_CLNT.status[pl->c_fd] = PLAYER;
-	SRV_CLNT.lookup[pl->c_fd] = pl;
+	server.clients.status[pl->c_fd] = PLAYER;
+	server.clients.lookup[pl->c_fd] = pl;
 }
 
 static int32_t	new(int32_t cl)
@@ -51,7 +51,7 @@ static int32_t	new(int32_t cl)
 		return (EXIT_FAILURE);
 	pl = (t_vehicle *)temp->data;
 	pl->c_fd = cl;
-	if ((!SRV_GENV.maxinitial_clients))
+	if ((!server.simenv.maxinitial_clients))
 	{
 		client.disconnect(pl->c_fd);
 		vehicle.pool.add(pl);
@@ -59,7 +59,7 @@ static int32_t	new(int32_t cl)
 	else
 	{
 		_initialize(pl);
-		SRV_GENV.connected_vehicles++;
+		server.simenv.connected_vehicles++;
 		graphic.transmit.vehicles.connected(pl);
 	}
 	return (EXIT_SUCCESS);
