@@ -6,7 +6,7 @@
 #    By: tle-huu- <tle-huu-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/06/25 09:04:20 by tle-huu-          #+#    #+#              #
-#    Updated: 2018/08/05 14:13:02 by tle-huu-         ###   ########.fr        #
+#    Updated: 2018/08/05 14:36:04 by tle-huu-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,8 +20,9 @@ INCLUDES = includes/
 OBJS = $(SRCS:.cpp=.o)
 
 CXX = clang++
-CXXFLAGS += -Wall -Wextra -Werror -std=c++11
-# LDFLAGS +=  -Wall -Wextra -Werror -fsanitize=address
+CXXFLAGS += -std=c++11
+# CXXFLAGS += -Wall -Wextra -Werror
+LDFLAGS +=  -fsanitize=address
 
 RM = rm -rf
 

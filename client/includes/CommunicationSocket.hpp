@@ -13,6 +13,7 @@
 # include <netdb.h>
 # include <sys/uio.h>
 # include <sys/time.h>
+# include <sys/select.h>
 # include <sys/wait.h>
 # include <fcntl.h>
 # include <fstream>
@@ -31,12 +32,16 @@
 class CommunicationSocket
 {
 	private:
-		std::string											_addr;
-		int													_port;
-		int													_socket;
-		bool												_connected;
-		std::map<std::string, std::function<void(std::string)>> 		_events;
-		std::queue<Datagram>								_datagram_queue;
+		std::string													_addr;
+		int															_port;
+		int															_socket;
+		bool														_connected;
+		std::map<std::string, std::function<void(std::string)>> 	_events;
+		std::queue<Datagram>										_datagram_queue;
+
+		/*  Select related << listen_loop >> */
+		fd_set				_rfds;
+		struct timeval		_tv;
 
 
 		CommunicationSocket(CommunicationSocket const & src);
@@ -53,18 +58,15 @@ class CommunicationSocket
 		CommunicationSocket(char * addr, int port);
 		~CommunicationSocket();
 
-		void			listen();
+		void			listen_loop(void);
 		void			send_datagram(std::string header, std::string message) const;
 		void			send_datagram(Datagram const & Datagram) const;
 		Map				get_map(void);
-		void 			get_info(Map& map, Position& start, Position& dest);
-		// Map			get_map() const;
-		Position								get_position(void);
-		Position								get_destination(void);
-		// std::vector<Pair<Position, Position>>	get_updates(void);
-		void		wait_for_game(void) const;
-
-
+		Position		get_position(void);
+		Position		get_destination(void);
+		void 			get_first_info(Map& map, Position& start, Position& dest);
+		void			wait_for_game(void) const;
+		bool			get_datagram(Datagram & datagram);
 };
 
 #endif

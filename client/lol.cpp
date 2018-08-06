@@ -6,8 +6,8 @@
 #include "mappy_client.hpp"
 #include <vector>
 
-// #include "Datagram.hpp"
-// #include "CommunicationSocket.hpp"
+#include "Datagram.hpp"
+#include "CommunicationSocket.hpp"
 
 typedef struct coucou
 
@@ -15,26 +15,27 @@ typedef struct coucou
 	int lol;
 }				t_coucou;
 
+void display_map(Map & map)
+{
+	std::cout << "I am entering display map\n\n";
+	for (int i = 0; i < map.size(); i++)
+	{
+		for (int j = 0; j < map[i].size(); j++)
+			std::cout << "[" << i << "," << j << ", " << map[i][j].is_road << "]    ";
+		std::cout << std::endl;
+	}
+}
+
 int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 {
+	Map 			map;
+	Position		start;
+	Position		end;
 
-	std::string header;
-	int x , y;
-
-	std::string coucou("bonjour 1 3");
-	std::stringstream ss(coucou);
-
-	ss >> header >> x >> y;
-
-	std::cout << "header : " << header << " x : " <<  x << " y : " << y << std::endl;
-
-
-	// while (ss)
-	// {
-	// 	if (ss >> lol)
-	// 		std::cout << lol << std::endl;
-	// }
-	// std::string s2("bonjour");
+	CommunicationSocket		sock("localhost", 1337);
+	sock.send_datagram("car", "\n");
+	sock.get_first_info(map, start, end);
+	display_map(map);
     //
 	// // Datagram		datagram("header : ", "message");
     //
