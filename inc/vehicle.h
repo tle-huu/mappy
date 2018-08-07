@@ -6,12 +6,18 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 15:30:42 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/06 18:59:08 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/07 01:32:09 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PLAYER_H
 # define PLAYER_H
+
+typedef struct		s_destination
+{
+	int32_t			x;
+	int32_t			y;
+}					t_destination;
 
 typedef	struct		s_location
 {
@@ -31,6 +37,7 @@ typedef struct		s_vehicle
 	t_location		location;
 	t_timeval		alarm;
 	t_queue			pending;
+	t_destination	goal;
 	char			message[513];
 }					t_vehicle;
 
@@ -46,6 +53,7 @@ typedef struct		s_vehicleplace
 {
 	void			(*onboard)(t_vehicle *);
 	void			(*advance)(t_vehicle *);
+	void			(*goal)(t_vehicle *);
 }					t_vehicleplace;
 
 typedef struct		s_vehicles

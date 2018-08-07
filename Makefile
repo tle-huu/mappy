@@ -96,11 +96,15 @@ SRC = \
 # SOURCE FILES                                                                 #
 ################################################################################
 
-all: $(LIB) $(SRV)
+all: $(SRV)
+
+libft: $(LIB)
+
 
 debug: CFLAGS += -g -fsanitize=address -fsanitize=null -DDEBUG
-debug: $(LIBDEBUG)
 debug: $(SRV)
+
+ldebug: $(LIBDEBUG)
 
 $(SRV): $(OBJSRC)
 	@ echo "$(CYAN)Compiling binary$(RES)"
@@ -118,14 +122,18 @@ $(LIBDEBUG):
 	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
-	rm -f $(OBJSRC)
-	make clean -C lib/
 	@ echo "$(RED)Cleaning folders of object files...$(RES)"
+	rm -f $(OBJSRC)
+
+lclean:
+	make clean -C lib/
+
+lfclean:
+	rm -f lib/$(LIB)
 
 fclean: clean
-	rm -f $(SRV)
-	rm -f lib/$(LIB)
 	@ echo "$(RED)Removing program...$(RES)"
+	rm -f $(SRV)
 
 re: fclean all
 	@ echo "$(GREEN)Program Remade$(RES)"

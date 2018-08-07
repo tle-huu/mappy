@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/05 10:45:14 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/06 23:00:50 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/07 01:34:46 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ __attribute__((constructor))void	construct_board(void)
 
 static void		_generate_random_board(void)
 {
-	int32_t	fill;
+//	int32_t	fill;
 	int32_t x;
 	int32_t y;
 
@@ -43,10 +43,10 @@ static void		_generate_random_board(void)
 		y = 0;
 		while (y <= board.data.y)
 		{
-			fill = arc4random_uniform((uint32_t)10);
-			if (fill < 2)
-				(board.data.tiles[x]).column[y].state = 0;
-			else
+//			fill = arc4random_uniform((uint32_t)10);
+//			if (fill < 2)
+//				(board.data.tiles[x]).column[y].state = 0;
+//			else
 				(board.data.tiles[x]).column[y].state = 1;
 			y++;
 		}
@@ -60,7 +60,6 @@ static int32_t	new(void)
 
 	printf("Creating the board\n");
 	x = 0;
-	printf("Board x : %d\nBoard y : %d\n", board.data.x, board.data.y);
 	if (!(board.data.tiles =
 				(t_tile *)(calloc(1, sizeof(t_tile) * (board.data.x + 1)))))
 		return (EXIT_FAILURE);

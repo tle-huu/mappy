@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/04 16:32:22 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/06 22:33:50 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/07 00:03:10 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static int32_t	advance(void *object)
 	printf("\n\nTHIS IS THE \"MESSAGE\" : %s\n\n", vl->message);
 	printf("[COMMAND]\n  vehicle <%d> advanced\n", vl->c_fd);
 //	vehicle.place.advance(vl);
-	communication.outgoing(vl->c_fd, "ok\n");
+	communication.outgoing(vl->c_fd, "ok \n");
 //	transmit.flag = GRAPHICAL;
 //	transmit.vehicles.position(vl);
 //	transmit.flag = VEHICLE;

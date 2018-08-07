@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 13:20:08 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/06 21:25:18 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/07 12:11:56 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,7 @@ __attribute__((constructor)) void construct_vehicle(void)
 
 static void		_checksimulate(void)
 {
-	if (server.simenv.connected_vehicles == server.simenv.maxinitial_clients
-		&& server.flag != SIMULATE)
+	if (server.simenv.connected_vehicles == server.simenv.maxinitial_clients)
 	{
 		server.flag = SIMULATE;
 		transmit.flag = VEHICLE;
@@ -60,6 +59,7 @@ static void		_initialize(t_vehicle *vl)
 	vl->commscontainer.data = vl;
 	i = 0;
 	vehicle.place.onboard(vl);
+	vehicle.place.goal(vl);
 	server.clients.status[vl->c_fd] = PLAYER;
 	server.clients.lookup[vl->c_fd] = vl;
 }

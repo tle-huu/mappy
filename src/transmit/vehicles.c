@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/19 15:41:24 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/06 22:33:34 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/07 12:16:09 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int32_t	all(void *trans);
 static int32_t 	position(t_vehicle *vl);
 static int32_t 	connected(t_vehicle *vl);
 static int32_t 	exited(t_vehicle *vl);
-static int32_t	goal(void *);
+static int32_t	goal(t_vehicle *vl);
 static int32_t	endtransmit(void *);
 static int32_t	datagram_pass(t_vehicle *);
 
@@ -110,6 +110,18 @@ static int32_t connected(t_vehicle *vl)
 	return (EXIT_SUCCESS);
 }
 
+// if new cars join, and recieve the whole map, old cars on the map will receive
+// "done"
+static void	_donestamp(void)
+{
+	if (transmit.flag != VEHICLE)
+		return ;
+	communication.vehicles(NULL, "done\n", 0);
+	sleep(1);
+	communication.vehicles(NULL, "start\n", 0);
+	
+}
+
 static int32_t all(void *trans)
 {
 	t_dblist	*temp;
@@ -128,36 +140,29 @@ static int32_t all(void *trans)
 		_tileloc(vl);
 		server.sendbuf = strcat(server.sendbuf, "\n");
 		if (transmit.flag == VEHICLE)
-		{
 			communication.vehicles(vl, server.sendbuf, 0);
-		}
 		else if (transmit.flag == GRAPHIC)
 			communication.graphical(trans, server.sendbuf);
 		bzero(server.sendbuf, server.nsend);
 		temp = temp->next;
 	}
-	communication.vehicles(NULL, "done\n", 0);
-	sleep(1);
-	communication.vehicles(NULL, "start\n", 0);
+	_donestamp();
 	return (EXIT_SUCCESS);
 }
 
-static int32_t	goal(void *trans)
+static int32_t	goal(t_vehicle *vl)
 {
-	int32_t		x;
-	int32_t		y;
 	char		*num;
 
-	x = arc4random_uniform((uint32_t)board.data.x);
-	y = arc4random_uniform((uint32_t)board.data.y);
 	server.sendbuf = strcat(server.sendbuf, "des ");
-	num = ft_itoa(x);
+	num = ft_itoa(vl->goal.x);
 	server.sendbuf = ft_strfreecat(server.sendbuf, num);
 	server.sendbuf = strcat(server.sendbuf, " ");
-	num = ft_itoa(y);
+	num = ft_itoa(vl->goal.y);
 	server.sendbuf = ft_strfreecat(server.sendbuf, num);
 	server.sendbuf = strcat(server.sendbuf, "\n");
-	communication.vehicles(trans, server.sendbuf, 1);
+	communication.vehicles(vl, server.sendbuf, 1);
+	communication.graphical(NULL, server.sendbuf);
 	bzero(server.sendbuf, server.nsend);
 	return (EXIT_SUCCESS);
 }

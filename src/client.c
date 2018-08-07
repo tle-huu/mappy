@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 13:40:27 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/06 20:16:40 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/07 12:09:07 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ static void			crash(int32_t cl)
 		transmit.flag = GRAPHICAL;
 		transmit.vehicles.exited(server.clients.lookup[cl]);
 		vehicle.pool.add(server.clients.lookup[cl]);
+		server.simenv.connected_vehicles--;
 	}
 	if (server.clients.status[cl] == GRAPHIC)
 		graphic.clear(server.clients.lookup[cl]);
@@ -71,7 +72,6 @@ static void			crash(int32_t cl)
 
 static void			disconnect(int32_t cl)
 {
-	server.simenv.connected_vehicles--;
 	printf("Remove client <%d> from fdset and lookup\n", cl);
 	close(cl);
 	FD_CLR(cl, ft_socket.copy);
