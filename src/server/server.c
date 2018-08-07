@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
+/*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/04 22:43:47 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/06 18:20:11 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/06 21:45:53 by psprawka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ static int32_t		initializers(void)
 		|| (event.queue.new() == EXIT_FAILURE)
 		|| (event.pool.new() == EXIT_FAILURE)
 		|| (vehicle.pool.new() == EXIT_FAILURE)
-		|| (board.new() == EXIT_FAILURE)
+		|| (server.opts.boardType == XYMAP && board.new() == EXIT_FAILURE)
+		|| (server.opts.boardType == LOADMAP && board.load_file() == EXIT_FAILURE)
 		|| !(server.sendbuf = calloc(1, 1024)))
 		return (EXIT_FAILURE);
 	server.nsend = 1024;
@@ -120,7 +121,7 @@ static void		warning(char *str)
 	if (str)
 		printf("Illegal option: %s\n\n", str);
 	printf("USAGE:\n\
-./server -p <port> -x <width> -y <height>\
+./server -p <port> [-x <width> -y <height>] || [-f <filename>]\
 -c <nb> -t <t>\n\n-p port number\n-x world width\n-y world height\n\
 -c number of vehicles allowed in simulation\n-t time unit\
 (the greater t is, the faster the simulation will run)\n\n");

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   board.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
+/*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/05 10:45:14 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/06 22:15:40 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/06 23:00:50 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,14 @@
 /* method function prototypes */
 static int32_t	send_dimensions(int32_t cl);
 static int32_t	new(void);
+static int32_t	load_file(void);
 static void		setvehicle(t_vehicle *pl);
 static void		removevehicle(t_vehicle *pl);
 
 __attribute__((constructor))void	construct_board(void)
 {
 	board.new = &new;
+	board.load_file = &load_file;
 	board.send_dimensions = &send_dimensions;
 	board.setvehicle = &setvehicle;
 	board.removevehicle = &removevehicle;
@@ -70,6 +72,55 @@ static int32_t	new(void)
 		x++;
 	}
 	_generate_random_board();
+	return (EXIT_SUCCESS);
+}
+
+static int32_t	_fill_board(int fd, char *line)
+{
+	int32_t x;
+	int32_t y;
+
+	x = 0;
+	while (x <= board.data.x)
+	{
+		y = 0;
+		if (get_next_line(fd, &line) != 1)
+			return (EXIT_FAILURE);
+		while (y <= board.data.y)
+		{
+			if (!line[y])
+				return (EXIT_FAILURE);
+			(board.data.tiles[x]).column[y].state = line[y] - 48;
+			y++;
+		}
+		x++;
+	}
+	return (EXIT_SUCCESS);
+}
+
+static int32_t	load_file(void)
+{
+	int32_t	i;
+	int32_t fd;
+	char	*line;
+
+	printf("Loading the board from file \"%s\"\n", board.data.filename);
+	if ((fd = open(board.data.filename, O_RDONLY)) < 3
+		|| get_next_line(fd, &line) != 1)
+		return (EXIT_FAILURE);
+	board.data.x = atoi(line) - 1;
+	i = 0;
+	while (line[i] && line[i] != ' ' && line[i] != '\t')
+		i++;
+	while (line[i] && (line[i] == ' ' || line[i] == '\t'))
+		i++;
+	if (!line[i])
+		return (EXIT_FAILURE);
+	board.data.y = atoi(&(line[i])) - 1;
+	board.new();
+	if (_fill_board(fd, line) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	close (fd);
 	return (EXIT_SUCCESS);
 }
 
