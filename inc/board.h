@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   board.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
+/*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/05 11:14:26 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/06 16:44:35 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/06 21:38:31 by psprawka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef	struct			s_board_data
 {
 	int32_t				x;
 	int32_t				y;
+	char				*filename;
 	t_tile				*tiles;
 }						t_board_data;
 
@@ -36,6 +37,7 @@ typedef struct			s_board
 {
 	t_board_data		data;
 	int32_t				(*new)(void);
+	int32_t				(*load_file)(void);
 	int32_t				(*send_dimensions)(int32_t);
 	void				(*setvehicle)(t_vehicle *);
 	void				(*removevehicle)(t_vehicle *pl);

@@ -35,6 +35,9 @@
 # define DOOMED 33
 # define DEAD 66
 # define SIMULATE 75
+# define LOADMAP 84
+# define XYMAP 69
+# define UNKNOWNMAP 53
 
 # define NORTH 0x1
 # define EAST 0x2
@@ -50,6 +53,8 @@ void					construct_server(void);
 
 typedef struct			s_server_getopts
 {
+	int8_t				boardType;
+	int32_t				(*boardload)(char **, t_opts *);	
 	int32_t				(*boardx)(char **, t_opts *);
 	int32_t				(*boardy)(char **, t_opts *);
 	int32_t				(*timeinterval)(char **, t_opts *);
@@ -88,6 +93,6 @@ typedef struct			s_server
 }						t_server;
 
 t_server				server;
-t_opts					arr_opts[6];
+t_opts					arr_opts[7];
 
 #endif
