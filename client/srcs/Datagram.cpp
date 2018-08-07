@@ -4,7 +4,7 @@
 /*
 ** ==================		CONSTRUCTORS DESTRUCTORS	 	==================
 */
-Datagram::Datagram() : _header("NULL"), _message("NULL") {}
+Datagram::Datagram() : _header("EMPTY"), _message("EMPTY") {}
 
 Datagram::Datagram(std::string header, std::string message) :	_header(header),
 																_message(message)

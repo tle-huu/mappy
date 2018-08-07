@@ -23,11 +23,10 @@
 # include <sstream>
 # include <queue>
 # include <map>
+# include <stack>
 # include "mappy_client.hpp"
 
 # include "Datagram.hpp"
-
-# define BUFF_SIZE 3072000
 
 class CommunicationSocket
 {
@@ -39,7 +38,7 @@ class CommunicationSocket
 		std::map<std::string, std::function<void(std::string)>> 	_events;
 
 		/* need a mutex to access tis variable if multithreaded */
-		std::queue<Datagram>										_datagram_queue;
+		std::stack<Datagram>										_datagram_stack;
 
 		/*  Select related << listen_loop >> */
 		fd_set				_rfds;
@@ -65,6 +64,7 @@ class CommunicationSocket
 		void			send_datagram(Datagram const & Datagram) const;
 		Map 			get_first_info(Map& map, Position& start, Position& dest);
 		void			wait_for_game(void) const;
+		void			wait_for_move(void);
 		bool			get_datagram(Datagram & datagram);
 };
 

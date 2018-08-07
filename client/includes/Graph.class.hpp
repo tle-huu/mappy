@@ -22,7 +22,7 @@ struct Node
 	int					weight;
 	int					cost;
 
-	std::vector<Node*>	adjacency_list;
+	std::vector<int>	adjacency_list;
 
 	Node() = default;
 	Node(int index, int is_road, int nb_cars)
@@ -30,6 +30,7 @@ struct Node
 		this->index = index;
 		this->is_road = is_road;
 		this->nb_cars = nb_cars;
+		this->color = 4242;
 	}
 };
 
@@ -44,11 +45,11 @@ class Graph
 		int									_vertexNumber;
 		int									_edgeNumber;
 		std::vector<std::vector<Edge> >		_graph;
-		std::vector<Node>					_nodes;
 
 	public:
+		std::vector<Node>					_nodes;
 		Graph();
-		Graph(Map &, Position const &, Position const &);
+		Graph(Map &);
 		~Graph();
 
 		void		addNode(int, int, Square &);

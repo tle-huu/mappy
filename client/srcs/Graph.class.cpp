@@ -5,20 +5,17 @@
 
 Graph::Graph() {}
 
-Graph::Graph(Map & map, Position const & start, Position const & destination)
+Graph::Graph(Map & map)
 {
 	_mapWidth = map.size();
 	_mapHeight = map[0].size();
 	_vertexNumber = _mapHeight * _mapWidth;
 
 	std::cout << _mapWidth << " -- " << _mapHeight << std::endl;
-	std::cout << "vertex umber : " << _vertexNumber;
+	std::cout << "vertex number : " << _vertexNumber;
 
 	this->_nodes.resize(_vertexNumber);
 	// this->_graph.resize(_vertexNumber);
-
-	_start = coord_to_index(start.x, start.y, _mapWidth, _mapHeight);
-	_destination = coord_to_index(destination.x, destination.y, _mapWidth, _mapHeight);
 
 	/* add nodes */
 	for (int i = 0; i < map.size(); i++)
@@ -55,13 +52,13 @@ void		Graph::addNeighbors(Node &node, Map const & map)
 
 	index_to_coor(node.index , x, y , _mapWidth);
 	if (x + 1 < _mapWidth && map[x + 1][y].is_road)
-		node.adjacency_list.push_back(&_nodes[coord_to_index(x + 1, y, _mapWidth, _mapHeight)]);
+		node.adjacency_list.push_back(coord_to_index(x + 1, y, _mapWidth, _mapHeight));
 	if (x - 1 >= 0 && map[x - 1][y].is_road)
-		node.adjacency_list.push_back(&_nodes[coord_to_index(x - 1, y, _mapWidth, _mapHeight)]);
+		node.adjacency_list.push_back(coord_to_index(x - 1, y, _mapWidth, _mapHeight));
 	if (y + 1 < _mapHeight && map[x][y + 1].is_road)
-		node.adjacency_list.push_back(&_nodes[coord_to_index(x, y + 1, _mapWidth, _mapHeight)]);
+		node.adjacency_list.push_back(coord_to_index(x, y + 1, _mapWidth, _mapHeight));
 	if (y - 1 >= 0 && map[x][y - 1].is_road)
-		node.adjacency_list.push_back(&_nodes[coord_to_index(x, y - 1, _mapWidth, _mapHeight)]);
+		node.adjacency_list.push_back(coord_to_index(x, y - 1, _mapWidth, _mapHeight));
 }
 
 void		Graph::addEdge(Edge edge)
@@ -98,8 +95,8 @@ void		Graph::print_graph() const
 		std::cout << "Node [" << node.index << "] ("<< x <<  ","<< y <<  ")==> ";
 		for (auto& n : node.adjacency_list)
 		{
-			index_to_coor(n->index, x , y , _mapWidth);
-			std::cout << "[" << n->index << "] ("<< x <<  ","<< y <<  ") :: ";
+			index_to_coor(this->_nodes[n].index, x , y , _mapWidth);
+			std::cout << "[" << this->_nodes[n].index << "] ("<< x <<  ","<< y <<  ") :: ";
 		}
 		std::cout << std::endl;
 	}

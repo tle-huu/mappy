@@ -11,6 +11,8 @@
 #include "utils.hpp"
 #include "Graph.class.hpp"
 #include "Ai.class.hpp"
+#include "Car.hpp"
+
 typedef struct coucou
 
 {
@@ -27,7 +29,7 @@ void display_map(Map & map)
 		std::cout << std::endl;
 	}
 }
-
+/*
 int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 {
 	Map 			map;
@@ -45,11 +47,11 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 
 	print_map(map);
 
-	Graph		graph(map, start, destination);
+	Graph		graph(map);
 	std::cout << "\nGraph\n\n";
 	graph.print_graph();
 
-	Ai			nick(map, graph);
+	Ai			nick(map);
 
 	double speed = 12;
 	Position proute = nick.where_to(start, destination, speed);
@@ -57,5 +59,17 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 	// std::cout << "next move is " << coord_to_index(proute.x, proute.y, graph.getMapWidth(), graph.getMapHeight()) << " (" << proute.x << ", " << proute.y << ")\n";
 
 
+	return 0;
+}
+*/
+
+int main(int argc, char *argv[])
+{
+
+	if (argc != 3)
+		return 1;
+	Car car(argv[1], std::atoi(argv[2]));
+	while (1)
+		car.move();
 	return 0;
 }

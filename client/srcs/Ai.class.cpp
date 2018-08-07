@@ -3,61 +3,81 @@
 
 #include <queue>
 #include <vector>
+#include <unistd.h>
 
-Ai::Ai(Map & map, Graph & graph) : _heatmap(map), _graph(graph)
+Ai::Ai(Map & map) : _heatmap(map), _graph()
 {
-
+	_graph = Graph(map);
 }
 
 Ai::~Ai() {}
-
 
 Position		Ai::where_to(Position pos, Position dest, double &speed)
 {
 	Position			nextmove;
 	int					index = -1;
 	int					color = -1;
-	std::vector<int>	path;
 	int					current = coord_to_index(pos.x, pos.y, _graph.getMapWidth(), _graph.getMapHeight());
 	int					end = coord_to_index(dest.x, dest.y, _graph.getMapWidth(), _graph.getMapHeight());
 	bool fortest = false;
+
+	static std::vector<int> 		path;
+	static int 				i = 0;
+
 	std::cout << dest.x << " " << dest.y << std::endl;
 	std::cout << "current : " << current << std::endl;
 
 	/* calculating best path */
-	this->bfs(dest);
-
-	std::cout << "[" << current << "] => ";
-
-	color = _graph.getNode(current).color;
-	while (current != end)
-	{
-		for (auto& n : _graph.getNode(current).adjacency_list)
-		{
-			if (color < 0)
-			{
-				color = n->color;
-				current = n->index;
-			}
-			if (n->color < color)
-			{
-				std::cout << "[" << n->index << "] => ";
-				if (!fortest)
-				{
-					index = n->index;
-					fortest = true;
-				}
-				color = n->color;
-				current = n->index;
-			}
-		}
-	}
-	std::cout << "\n index : " << index << std::endl;;
-	index_to_coor(index, pos.x, pos.y, _graph.getMapWidth());
+	if (i == path.size())
+		i = 0;
+	if (i == 0)
+		this->bfs(dest, pos, path);
+	std::cout << "after bfs" << std::endl;
+	// for (auto& n : _graph.getNode(current).adjacency_list)
+	// {
+	// 	if (color < 0 || _graph.nodes[n].color < color)
+	// 	{
+	// 		index = _graph.nodes[n].index;
+	// 		color = _graph.nodes[n].color;
+	// 	}
+	// }
+	// std::cout << "[" << current << "] => " << std::endl;
+	// static int lol = 0;
+	// color = _graph.getNode(current).color;
+	// while (current != end)
+	// {
+	// 	for (auto& n : _graph.getNode(current).adjacency_list)
+	// 	{
+	// 		if (color < 0)
+	// 		{
+	// 			color = _graph.nodes[n].color;
+	// 			current = _graph.nodes[n].index;
+	// 		}
+	// 		if (_graph.nodes[n].color < color)
+	// 		{
+	// 			std::cout << "[" << _graph.nodes[n].index << "] => ";
+	// 			if (!fortest)
+	// 			{
+	// 				index = _graph.nodes[n].index;
+	// 				fortest = true;
+	// 			}
+	// 			color = _graph.nodes[n].color;
+	// 			current = _graph.nodes[n].index;
+	// 		}
+	// 	}
+	// }
+	std::cout << "path size : " << path.size() << std::endl;
+	Position printcurrent;
+	index_to_coor(current, printcurrent.x, printcurrent.y, _graph.getMapWidth());
+	std::cout << "i => " << i << "; current (" << printcurrent.x << "," << printcurrent.y << ") ;";
+	index_to_coor(path[i], pos.x, pos.y, _graph.getMapWidth());
+	std::cout << " next (" << pos.x << "," << pos.y << ") ;";
+	speed = 1;
+	i++;
 	return (pos);
 }
 
-void			Ai::bfs(Position &dest)
+void			Ai::bfs(Position &dest, Position &start, std::vector<int> &path)
 {
 
 	Map					mymap = this->_heatmap;
@@ -73,29 +93,56 @@ void			Ai::bfs(Position &dest)
 		// b = false;
 
 	std::queue<int>		queue;
-
 	/* launching the bfs from the end to get the next node */
 	s = coord_to_index(dest.x, dest.y, width, height);
-	std::cout << "starting node : " << s << std::endl;
+
+	std::cout << "starting node : ( " << dest.x << "," << dest.y << ")" << s << std::endl;
 	visited[s] = true;
 	queue.push(s);
 	(this->_graph.getNode(s)).color = level;
 	while (!queue.empty())
 	{
 		s = queue.front();
-		/* Action */
-		/* Action */
+		std::cout << "icibfs0" << std::endl;
+		queue.pop();
 		level = this->_graph.getNode(s).color;
 		for (auto& n : (_graph.getNode(s)).adjacency_list)
 		{
-			if (!(visited[n->index]))
+			// if (_graph._nodes[n].index > width * height)
+				// break;
+			if (!(visited[_graph._nodes[n].index]))
 			{
-				visited[n->index] = true;
-				queue.push(n->index);
-				_graph.getNode(n->index).color = level + 1;
-				std::cout << "Coloring [" << n->index << "] with " << level + 1 << std::endl;
+
+				visited[_graph._nodes[n].index] = true;
+				queue.push(_graph._nodes[n].index);
+				_graph.getNode(_graph._nodes[n].index).color = level + 1;
+				// std::cout << "Coloring [" << _graph.nodes[n].index << "] with " << level + 1 << std::endl;
+			}
+
+		}
+	}
+	int current = coord_to_index(start.x, start.y, _graph.getMapWidth(), _graph.getMapHeight());
+	int end = coord_to_index(dest.x, dest.y, _graph.getMapWidth(), _graph.getMapHeight());
+
+	int color = _graph.getNode(current).color;
+	int index = current;
+	while (current != end)
+	{
+		int min = _graph._nodes[current].color;
+		for (auto& n : (_graph.getNode(current)).adjacency_list)
+		{
+			// std::cout << "parent color : " << color << " n color : " << _graph.nodes[n].color << std::endl;
+			if ((_graph._nodes)[n].color <= min)
+			{
+				min = (_graph._nodes)[n].color;
+				index = n;
 			}
 		}
-		queue.pop();
+		path.push_back(index);
+		current = index;
+		std::cout << "[" << index << "] => ";
 	}
+	std::cout << "ending bfs : " << path.size() << std::endl;;
+	// sleep(3);
+	return ;
 }

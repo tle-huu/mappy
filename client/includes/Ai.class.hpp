@@ -9,15 +9,15 @@ class Ai
 {
 	private:
 		Map&		_heatmap;
-		Graph&		_graph;
+		Graph		_graph;
 		Ai();
 
 	public:
-		Ai(Map & map, Graph & graph);
+		Ai(Map & map);
 		~Ai();
 
 		Position	where_to(Position pos, Position dest, double &speed);
-		void		bfs(Position &dest);
+		void		bfs(Position &dest, Position &, std::vector<int> &v);
 
 };
 

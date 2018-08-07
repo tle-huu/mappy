@@ -1,5 +1,6 @@
 
 #include "CommunicationSocket.hpp"
+# define BUFF_SIZE 3072000
 
 /*
 ** ==================		CONSTRUCTORS DESTRUCTORS	 	==================
@@ -27,12 +28,13 @@ CommunicationSocket::CommunicationSocket(const char* addr, int port) : _addr(add
 	if (connect(this->_socket, (const struct sockaddr *)&sin, sizeof(sin)) == -1)
 		throw(std::runtime_error("CommunicationSocket(): connect error"));
 	this->_connected = true;
-	this->send_datagram("car", "\n");
 	if (this->read() != "WELCOME\n")
 	{
 		std::cout << "\ncrash\n";
 		exit(1);
 	}
+	this->send_datagram("car", "\n");
+
 	std::cout << "CommunicationSocket has been connected to " << addr << ":" << port<< std::endl;
 }
 
@@ -55,7 +57,7 @@ std::string			CommunicationSocket::read(void) const
 	if ((ret = recv(this->_socket, buffer, BUFF_SIZE - 1, 0)) < 0)
 		throw("CommunicationSocket:get_datagram(): recv error\n");
 	buffer[ret] = 0;
-	std::cout << "I have read [" << buffer << "]\n";
+	std::cout << "I have read " << ret << " bytes [" << buffer << "]\n";
 	return (std::string(buffer));
 }
 
@@ -73,14 +75,15 @@ void				CommunicationSocket::get_datagram(void)
 	for (std::string line; std::getline(ss, line);)
 	{
 		std::cout << "raw_message : [" << line << "]" << std::endl;
-		if ((spliter = line.find(";;")) == std::string::npos)
+		if ((spliter = line.find(" ")) == std::string::npos)
 			throw(std::runtime_error("CommunicationSocket(): get_datagram line.find error"));
 		std::cout << " spliter : " << spliter << std::endl;
 		datagram.setHeader(line.substr(0, spliter));
-		datagram.setMessage(line.substr(spliter + 2));
+		datagram.setMessage(line.substr(spliter));
+		std::cout << datagram.getHeader() << "| === |" << datagram.getMessage() << std::endl;
 		try
 		{
-			this->_datagram_queue.push(datagram);
+			this->_datagram_stack.push(datagram);
 		}
 		catch (std::exception &e)
 		{
@@ -201,8 +204,9 @@ Map		CommunicationSocket::get_first_info(Map &map, Position& start, Position &en
 		}
 		std::string			header;
 		std::stringstream	ss(data);
+		int					id;
 
-		ss >> header >> start.x >> start.y;
+		ss >> header >> id >> start.x >> start.y;
 	};
 
 	this->_events["des"] = [&end, &gotsize](std::string data)
@@ -230,9 +234,11 @@ Map		CommunicationSocket::get_first_info(Map &map, Position& start, Position &en
 		int					y;
 		int					id;
 
-		ss >> header >> x >> y >> id;
+		ss >> header >> id >> x >> y;
 		map[x][y].total_cars++;
 	};
+
+
 	while (!done)
 	{
 		raw = this->read();
@@ -253,9 +259,7 @@ Map		CommunicationSocket::get_first_info(Map &map, Position& start, Position &en
 		}
 		// std::stringstream ss(raw);
 	}
-	std::cout << "before get pers\n";
-	this->get_peers(map);
-	std::cout << "after get peers\n";
+
 	return (map);
 }
 
@@ -286,10 +290,10 @@ bool		CommunicationSocket::get_datagram(Datagram & datagram)
 {
 	try
 	{
-		if (!this->_datagram_queue.empty())
+		if (!this->_datagram_stack.empty())
 		{
-			this->_datagram_queue.front();
-			this->_datagram_queue.pop();
+			this->_datagram_stack.top();
+			this->_datagram_stack.pop();
 			return (true);
 		}
 	}
@@ -300,13 +304,21 @@ bool		CommunicationSocket::get_datagram(Datagram & datagram)
 	return (false);
 }
 
+// void			CommunicationSocket::wait_for_move(void) const
+// {
+//
+// }
+
+
 /*	while loop with a select statement to get message from server */
-void				CommunicationSocket::listen_loop(void)
+void				CommunicationSocket::wait_for_move(void)
 {
 	struct timeval		tv;
 	fd_set				rfds;
 	fd_set				copy;
 	int					ret;
+	bool				moved = false;
+	Datagram			data;
 
 	FD_ZERO(&_rfds);
 	FD_SET(_socket, &_rfds);
@@ -314,14 +326,18 @@ void				CommunicationSocket::listen_loop(void)
 	FD_COPY(&_rfds, &copy);
 
 	/* Need to think about the structure, multithreaded or not */
-	while (select(_socket + 1, &_rfds, NULL, NULL, &_tv) >= 0)
+	std::cout << "Entering move" << std::endl;
+	while (!moved && select(_socket + 1, &_rfds, NULL, NULL, &_tv) >= 0)
 	{
-		if (FD_ISSET(_socket, &_rfds))
+		if (FD_ISSET(_socket, &copy))
 		{
 			this->get_datagram();
-			std::cout << " Here is what I just read : ";
-			std::cout << this->_datagram_queue.front();
-			std::cout << std::endl;
+			data = this->_datagram_stack.top();
+			if (data.getHeader() == "ok")
+			{
+				moved = true;
+				this->_datagram_stack.pop();
+			}
 			FD_ZERO(&_rfds);
 			FD_COPY(&copy, &_rfds);
 		}
