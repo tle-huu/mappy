@@ -68,8 +68,17 @@ Map::Map(int fd) : _serverMonitor(fd)
 		ss >> x >> x >> y;
 
 		std::cout << x << " " << y << std::endl;
-		
 		_staticCars[x + y * _width]++;
+	};
+	_events["pdi"] = [this](std::string data)
+	{
+		std::stringstream ss(data);
+
+		int x, y;
+
+		ss >> x >> y;
+
+		_staticCars[x + y * _width]--;		
 	};
 }
 
@@ -87,7 +96,7 @@ void	Map::drawMovingCar(std::vector<unsigned char>& image, const MovingCar& car)
 	
 	size_t index = pos.x + pos.y * _width * 5;
 	unsigned color = 0xff223377;
-	std::memmove(&image[index], &color, 4);
+	std::memmove(&image[index * 4], &color, 4);
 }
 
 static unsigned	density_color(int density)
@@ -119,7 +128,7 @@ void	Map::drawStaticCars(std::vector<unsigned char>& image)
 				size_t index = (w * 5 + 2) + (h * 5 + 2) * (_width * 5);
 				unsigned color = density_color(totalCars);
 				
-				std::memmove(&image[index], &color, 4);
+				std::memmove(&image[index * 4], &color, 4);
 			}
 		}
 	}
