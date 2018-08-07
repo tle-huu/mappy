@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 13:20:08 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/06 20:20:45 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/06 21:25:18 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,29 @@ __attribute__((constructor)) void construct_vehicle(void)
 {
 	vehicle.new = &new;
 	vehicle.command = &command;
+}
+
+static void		_checksimulate(void)
+{
+	if (server.simenv.connected_vehicles == server.simenv.maxinitial_clients
+		&& server.flag != SIMULATE)
+	{
+		server.flag = SIMULATE;
+		transmit.flag = VEHICLE;
+		transmit.vehicles.all(NULL);
+	}
+}
+
+static void		_greeting(t_vehicle *vl)
+{
+	transmit.flag = GRAPHICAL;
+	transmit.vehicles.connected(vl);
+	transmit.flag = VEHICLE;
+	transmit.tiles.mapsize(vl);
+	transmit.tiles.all(vl);
+	transmit.vehicles.position(vl);
+	transmit.vehicles.goal(vl);
+	transmit.vehicles.endtransmit(vl);
 }
 
 static void		_initialize(t_vehicle *vl)
@@ -62,21 +85,9 @@ static int32_t	new(int32_t cl)
 	{
 		_initialize(vl);
 		ft_enqueue(&(vehicle.data), &(vl->commscontainer), 0);
+		_greeting(vl);
 		server.simenv.connected_vehicles++;
-		transmit.flag = GRAPHICAL;
-		transmit.vehicles.connected(vl);
-		transmit.flag = VEHICLE;
-		transmit.tiles.mapsize(vl);
-		transmit.tiles.all(vl);
-		transmit.vehicles.position(vl);
-		transmit.vehicles.goal(vl);
-		if (server.simenv.connected_vehicles == server.simenv.maxinitial_clients
-			&& server.flag != SIMULATE)
-		{
-			server.flag = SIMULATE;
-			transmit.flag = VEHICLE;
-			transmit.vehicles.all(NULL);
-		}
+		_checksimulate();
 	}
 	return (EXIT_SUCCESS);
 }

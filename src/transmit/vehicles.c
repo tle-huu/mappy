@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/19 15:41:24 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/06 20:09:35 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/06 21:29:53 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static int32_t 	position(t_vehicle *vl);
 static int32_t 	connected(t_vehicle *vl);
 static int32_t 	exited(t_vehicle *vl);
 static int32_t	goal(void *);
+static int32_t	endtransmit(void *);
 
 __attribute__((constructor)) void construct_transmit_vehicles(void)
 {
@@ -30,6 +31,7 @@ __attribute__((constructor)) void construct_transmit_vehicles(void)
 	transmit.vehicles.connected = &connected;
 	transmit.vehicles.exited = &exited;
 	transmit.vehicles.goal = &goal;
+	transmit.vehicles.endtransmit = &endtransmit;
 }
 
 static int32_t _tileloc(t_vehicle *vl)
@@ -45,29 +47,12 @@ static int32_t _tileloc(t_vehicle *vl)
 	return (EXIT_SUCCESS);
 }
 
-static int32_t _orientation(t_vehicle *vl)
-{
-	char *num;
-
-	num = NULL;
-	if (vl->location.orientation & NORTH)
-		num = ft_itoa(1);
-	else if (vl->location.orientation & EAST)
-		num = ft_itoa(2);
-	else if (vl->location.orientation & SOUTH)
-		num = ft_itoa(3);
-	else if (vl->location.orientation & WEST)
-		num = ft_itoa(4);
-	server.sendbuf = ft_strfreecat(server.sendbuf, num);
-	server.sendbuf = strcat(server.sendbuf, " ");
-	return (EXIT_SUCCESS);
-}
-
 static int32_t	exited(t_vehicle *vl)
 {
 	char *num;
 
 	server.sendbuf = strcat(server.sendbuf, "pdi ");
+	_tileloc(vl);
 	num = ft_itoa((int32_t)(vl->vehicle_id));
 	server.sendbuf = ft_strfreecat(server.sendbuf, num);
 	server.sendbuf = strcat(server.sendbuf, "\n");
@@ -85,7 +70,6 @@ static int32_t position(t_vehicle *vl)
 	server.sendbuf = ft_strfreecat(server.sendbuf, num);
 	server.sendbuf = strcat(server.sendbuf, " ");
 	_tileloc(vl);
-	_orientation(vl);
 	server.sendbuf = strcat(server.sendbuf, "\n");
 	if (transmit.flag == VEHICLE)
 		communication.vehicles(vl, server.sendbuf, 1);
@@ -138,6 +122,8 @@ static int32_t all(void *trans)
 		bzero(server.sendbuf, server.nsend);
 		temp = temp->next;
 	}
+	if (transmit.flag == VEHICLE)
+		transmit.vehicles.endtransmit(vl);
 	return (EXIT_SUCCESS);
 }
 
@@ -157,5 +143,16 @@ static int32_t	goal(void *trans)
 	server.sendbuf = ft_strfreecat(server.sendbuf, num);
 	server.sendbuf = strcat(server.sendbuf, "\n");
 	communication.vehicles(trans, server.sendbuf, 1);
+	bzero(server.sendbuf, server.nsend);
+	return (EXIT_SUCCESS);
+}
+
+static int32_t	endtransmit(void *trans)
+{
+	char	*done = "done\n";
+
+	server.sendbuf = strcat(server.sendbuf, done);
+	communication.vehicles(trans, server.sendbuf, 1);
+	bzero(server.sendbuf, server.nsend);
 	return (EXIT_SUCCESS);
 }
