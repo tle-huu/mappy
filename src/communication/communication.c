@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/13 14:11:03 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/06 22:07:55 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/07 14:21:17 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ static int32_t	incoming(int32_t cl)
 
 	printf("Recieving message from client <%d>\n", cl);
 	bzero(server.recvbuf, 512);
+	printf("Recv buffer zeroed\n");
 	if ((ret = recv(cl, server.recvbuf, 512, 0)) < 0)
 		return (EXIT_FAILURE);
 	else if (!ret)

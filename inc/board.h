@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/05 11:14:26 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/06 21:38:31 by psprawka         ###   ########.fr       */
+/*   Updated: 2018/08/07 14:57:10 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ typedef	struct			s_board_data
 	int32_t				y;
 	char				*filename;
 	t_tile				*tiles;
+	uint8_t				goal;
 }						t_board_data;
 
 typedef struct			s_board

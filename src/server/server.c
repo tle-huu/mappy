@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/04 22:43:47 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/07 12:05:57 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/07 14:37:33 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,10 @@ static inline int32_t	__attribute__((always_inline))known_socket(int32_t cl)
 		return (EXIT_SUCCESS);
 	}
 	if (server.clients.status[cl] == NOT_ACCEPTED)
-		communication.newclient(cl);
+	{
+		if (communication.newclient(cl) == EXIT_FAILURE)
+			return (EXIT_FAILURE);
+	}
 	if (server.clients.status[cl] == JOINVEHICLE)
 		vehicle.new(cl);
 	else if (server.clients.status[cl] == JOINGRAPHIC)

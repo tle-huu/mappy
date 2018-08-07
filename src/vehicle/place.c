@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 22:58:22 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/07 12:11:46 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/07 14:59:49 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,15 +27,22 @@ __attribute__((constructor))void	construct_vehicleplace(void)
 
 static void		goal(t_vehicle *vl)
 {
-	int8_t		road;
+	int8_t		road = 0;
+	static int32_t	x = 0;
+	static int32_t	y = 0;
 	
-	road = 0;
-	while (!road)
+	if (!board.data.goal)
 	{
-		vl->goal.x = arc4random_uniform((uint32_t)board.data.x);
-		vl->goal.y = arc4random_uniform((uint32_t)board.data.y);
-		road = (board.data.tiles)[vl->goal.x].column[vl->goal.y].state;
+		while (!road)
+		{
+			x = arc4random_uniform((uint32_t)board.data.x);
+			y = arc4random_uniform((uint32_t)board.data.y);
+			road = (board.data.tiles)[x].column[y].state;
+		}
+		board.data.goal = 1;
 	}
+	vl->goal.x = x;
+	vl->goal.y = y;
 }
 
 static void		onboard(t_vehicle *vl)
