@@ -27,6 +27,11 @@ CommunicationSocket::CommunicationSocket(const char* addr, int port) : _addr(add
 	if (connect(this->_socket, (const struct sockaddr *)&sin, sizeof(sin)) == -1)
 		throw(std::runtime_error("CommunicationSocket(): connect error"));
 	this->_connected = true;
+	if (this->read() != "WELCOME\n")
+	{
+		std::cout << "\ncrash\n";
+		exit(1);
+	}
 	std::cout << "CommunicationSocket has been connected to " << addr << ":" << port<< std::endl;
 }
 
@@ -88,9 +93,10 @@ void	CommunicationSocket::get_peer(std::string data, Map &map) const
 	std::string				header;
 	int						x;
 	int						y;
+	int						id;
 	std::stringstream		ss(data);
 
-	ss >> header >> x >> y;
+	ss >> header >> x >> y >> id;
 	(map[x][y].total_cars)++;
 }
 
@@ -151,8 +157,9 @@ Map		CommunicationSocket::get_first_info(Map &map, Position& start, Position &en
 	std::string					raw;
 	std::vector<std::string>	tokens;
 	bool						done = false;
+	bool						gotsize = false;
 
-	this->_events["msz"] = [&map](std::string data)
+	this->_events["msz"] = [&map, &gotsize](std::string data)
 	{
 		int					x;
 		int					y;
@@ -163,10 +170,16 @@ Map		CommunicationSocket::get_first_info(Map &map, Position& start, Position &en
 		map.resize(x);
 		for (auto& m : map)
 			m.resize(y);
+		gotsize = true;
 	};
 
-	this->_events["bct"] = [&map](std::string data)
+	this->_events["bct"] = [&map, &gotsize](std::string data)
 	{
+		if (!gotsize)
+		{
+			std::cout << "No size\n";
+			exit(1);
+		}
 		int				x;
 		int				y;
 		std::string		header;
@@ -178,27 +191,46 @@ Map		CommunicationSocket::get_first_info(Map &map, Position& start, Position &en
 		square.total_cars = 0;
 		map[x][y] = square;
 	};
-	this->_events["ppo"] = [&start](std::string data)
+	this->_events["ppo"] = [&start, &gotsize](std::string data)
 	{
+		if (!gotsize)
+		{
+			std::cout << "No size\n";
+			exit(1);
+		}
 		std::string			header;
 		std::stringstream	ss(data);
 
 		ss >> header >> start.x >> start.y;
 	};
 
-	this->_events["des"] = [&end](std::string data)
+	this->_events["des"] = [&end, &gotsize](std::string data)
 	{
+		if (!gotsize)
+		{
+			std::cout << "No size\n";
+			exit(1);
+		}
 		std::string			header;
 		std::stringstream	ss(data);
 
 		ss >> header >> end.x >> end.y;
 	};
-	this->_events["pnw"] = [&end](std::string data)
+	this->_events["pnw"] = [&map, &gotsize](std::string data)
 	{
+		if (!gotsize)
+		{
+			std::cout << "No size\n";
+			exit(1);
+		}
 		std::string			header;
 		std::stringstream	ss(data);
+		int					x;
+		int					y;
+		int					id;
 
-		ss >> header >> end.x >> end.y;
+		ss >> header >> x >> y >> id;
+		map[x][y].total_cars++;
 	};
 	while (!done)
 	{
@@ -209,7 +241,9 @@ Map		CommunicationSocket::get_first_info(Map &map, Position& start, Position &en
 			std::stringstream ss2(line);
 			ss2 >> header;
 			if (this->_events.count(header) > 0)
+			{
 				this->_events[header](line);
+			}
 			else
 			{
 				std::cout << KRED << "get_first_info(): Should not go here : " << KNRM << KYEL << line << KNRM << std::endl;
@@ -218,6 +252,9 @@ Map		CommunicationSocket::get_first_info(Map &map, Position& start, Position &en
 		}
 		// std::stringstream ss(raw);
 	}
+	std::cout << "ebefore get pers\n";
+	this->get_peers(map);
+	std::cout << "after get peers\n";
 	return (map);
 }
 
@@ -226,6 +263,7 @@ void		CommunicationSocket::wait_for_game(void) const
 	std::string		data;
 	bool			start = false;
 
+	std::cout << "wait for game\n";
 	while (!start)
 	{
 		data = this->read();
@@ -235,7 +273,9 @@ void		CommunicationSocket::wait_for_game(void) const
 			if (line == "start")
 				start = true;
 			else
+			{
 				std::cout << "Waiting for game to start but received : " << data << std::endl;
+			}
 		}
 	}
 	std::cout << KGRN << " !! Simulation started !! " << KNRM << std::endl;

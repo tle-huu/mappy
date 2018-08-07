@@ -22,7 +22,7 @@ struct Node
 	int					weight;
 	int					cost;
 
-	std::vector<Node>	adjacency_list;
+	std::vector<Node*>	adjacency_list;
 
 	Node() = default;
 	Node(int index, int is_road, int nb_cars)
@@ -65,5 +65,7 @@ class Graph
 		int			getMapWidth(void) const;
 		int			getMapHeight(void) const;
 };
+
+std::ostream & operator<<( std::ostream & o, Graph const & rhs);
 
 #endif

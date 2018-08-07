@@ -33,9 +33,12 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 	Map 			map;
 	Position		start;
 	Position		destination;
-	std::string		ip("localhost");
+	std::string		ip("10.114.12.13");
+	// std::string		ip("localhost");
 
-	CommunicationSocket		sock(ip.c_str(), 1337);
+	// 10.114.12.13 8888
+
+	CommunicationSocket		sock(ip.c_str(), 8888);
 	sock.send_datagram("car", "\n");
 	sock.get_first_info(map, start, destination);
 	display_map(map);
@@ -50,7 +53,10 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 	Ai			nick(map, graph);
 
 	double speed = 12;
-	nick.where_to(start, destination, speed);
+	Position proute = nick.where_to(start, destination, speed);
+
+	// std::cout << "next move is " << coord_to_index(proute.x, proute.y, graph.getMapWidth(), graph.getMapHeight()) << " (" << proute.x << ", " << proute.y << ")\n";
+
 
 	return 0;
 }

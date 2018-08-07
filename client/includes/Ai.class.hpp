@@ -17,6 +17,8 @@ class Ai
 		~Ai();
 
 		Position	where_to(Position &pos, Position &dest, double &speed);
+		void		bfs(Position &dest);
+
 };
 
 #endif
