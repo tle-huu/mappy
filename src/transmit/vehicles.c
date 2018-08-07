@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/19 15:41:24 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/05 19:19:20 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/06 20:09:35 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,57 +15,60 @@
 #include "graphics.h"
 #include "board.h"
 #include "communication.h"
+#include "transmit.h"
 
-static int32_t all(t_graphic *gr);
-static int32_t position(t_vehicle *pl);
-static int32_t connected(t_vehicle *pl);
-static int32_t death(t_vehicle *pl);
+static int32_t	all(void *trans);
+static int32_t 	position(t_vehicle *vl);
+static int32_t 	connected(t_vehicle *vl);
+static int32_t 	exited(t_vehicle *vl);
+static int32_t	goal(void *);
 
 __attribute__((constructor)) void construct_transmit_vehicles(void)
 {
-	graphic.transmit.vehicles.all = &all;
-	graphic.transmit.vehicles.position = &position;
-	graphic.transmit.vehicles.connected = &connected;
-	graphic.transmit.vehicles.death = &death;
+	transmit.vehicles.all = &all;
+	transmit.vehicles.position = &position;
+	transmit.vehicles.connected = &connected;
+	transmit.vehicles.exited = &exited;
+	transmit.vehicles.goal = &goal;
 }
 
-static int32_t _tileloc(t_vehicle *pl)
+static int32_t _tileloc(t_vehicle *vl)
 {
 	char *num;
 
-	num = ft_itoa(pl->location.x);
+	num = ft_itoa(vl->location.x);
 	server.sendbuf = ft_strfreecat(server.sendbuf, num);
 	server.sendbuf = strcat(server.sendbuf, " ");
-	num = ft_itoa(pl->location.y);
+	num = ft_itoa(vl->location.y);
 	server.sendbuf = ft_strfreecat(server.sendbuf, num);
 	server.sendbuf = strcat(server.sendbuf, " ");
 	return (EXIT_SUCCESS);
 }
 
-static int32_t _orientation(t_vehicle *pl)
+static int32_t _orientation(t_vehicle *vl)
 {
 	char *num;
 
 	num = NULL;
-	if (pl->location.orientation & NORTH)
+	if (vl->location.orientation & NORTH)
 		num = ft_itoa(1);
-	else if (pl->location.orientation & EAST)
+	else if (vl->location.orientation & EAST)
 		num = ft_itoa(2);
-	else if (pl->location.orientation & SOUTH)
+	else if (vl->location.orientation & SOUTH)
 		num = ft_itoa(3);
-	else if (pl->location.orientation & WEST)
+	else if (vl->location.orientation & WEST)
 		num = ft_itoa(4);
 	server.sendbuf = ft_strfreecat(server.sendbuf, num);
 	server.sendbuf = strcat(server.sendbuf, " ");
 	return (EXIT_SUCCESS);
 }
 
-static int32_t	death(t_vehicle *pl)
+static int32_t	exited(t_vehicle *vl)
 {
 	char *num;
 
 	server.sendbuf = strcat(server.sendbuf, "pdi ");
-	num = ft_itoa((int32_t)(pl->vehicle_id));
+	num = ft_itoa((int32_t)(vl->vehicle_id));
 	server.sendbuf = ft_strfreecat(server.sendbuf, num);
 	server.sendbuf = strcat(server.sendbuf, "\n");
 	communication.graphical(NULL, server.sendbuf);
@@ -73,65 +76,86 @@ static int32_t	death(t_vehicle *pl)
 	return (EXIT_SUCCESS);
 }
 
-static int32_t position(t_vehicle *pl)
+static int32_t position(t_vehicle *vl)
 {
 	char *num;
 
 	server.sendbuf = strcat(server.sendbuf, "ppo ");
-	num = ft_itoa((int32_t)pl->vehicle_id);
+	num = ft_itoa((int32_t)vl->vehicle_id);
 	server.sendbuf = ft_strfreecat(server.sendbuf, num);
 	server.sendbuf = strcat(server.sendbuf, " ");
-	_tileloc(pl);
-	_orientation(pl);
+	_tileloc(vl);
+	_orientation(vl);
 	server.sendbuf = strcat(server.sendbuf, "\n");
-	communication.graphical(NULL, server.sendbuf);
+	if (transmit.flag == VEHICLE)
+		communication.vehicles(vl, server.sendbuf, 1);
+	else if (transmit.flag == GRAPHIC)
+		communication.graphical(NULL, server.sendbuf);
 	bzero(server.sendbuf, server.nsend);
 	return (EXIT_SUCCESS);
 }
 
-static int32_t connected(t_vehicle *pl)
+static int32_t connected(t_vehicle *vl)
 {
 	char *num;
 
-	if (pl)
+	if (vl)
 	{
 		server.sendbuf = strcat(server.sendbuf, "pnw ");
-		num = ft_itoa((int32_t)(pl->vehicle_id));
+		num = ft_itoa((int32_t)(vl->vehicle_id));
 		server.sendbuf = ft_strfreecat(server.sendbuf, num);
 		server.sendbuf = strcat(server.sendbuf, " ");
-		_tileloc(pl);
-		_orientation(pl);
+		_tileloc(vl);
 		server.sendbuf = strcat(server.sendbuf, "\n");
-		communication.graphical(NULL, server.sendbuf);
+		if (transmit.flag == GRAPHICAL)
+			communication.graphical(NULL, server.sendbuf);
 		bzero(server.sendbuf, server.nsend);
 	}
 	return (EXIT_SUCCESS);
 }
 
-static int32_t all(t_graphic *gr)
+static int32_t all(void *trans)
 {
-	t_vehicle *pl;
-	char *num;
-	int32_t i;
+	t_dblist	*temp;
+	t_vehicle	*vl;
+	char		*num;
 
-	i = 0;
-	while (i < ft_socket.nfds)
+	temp = vehicle.data.first;
+	while (temp)
 	{
-		if (server.clients.status[i] != GRAPHIC
-			&& server.clients.lookup[i])
-		{
-			pl = server.clients.lookup[i];
-			server.sendbuf = strcat(server.sendbuf, "pnw ");
-			num = ft_itoa((int32_t)(pl->vehicle_id));
-			server.sendbuf = ft_strfreecat(server.sendbuf, num);
-			server.sendbuf = strcat(server.sendbuf, " ");
-			_tileloc(pl);
-			_orientation(pl);
-			server.sendbuf = strcat(server.sendbuf, "\n");
-			communication.graphical(gr, server.sendbuf);
-			bzero(server.sendbuf, server.nsend);
-		}
-		i++;
+		printf("TRANSMIT THIS ALL\n");
+		vl = (t_vehicle *)(temp->data);
+		server.sendbuf = strcat(server.sendbuf, "pnw ");
+		num = ft_itoa((int32_t)(vl->vehicle_id));
+		server.sendbuf = ft_strfreecat(server.sendbuf, num);
+		server.sendbuf = strcat(server.sendbuf, " ");
+		_tileloc(vl);
+		server.sendbuf = strcat(server.sendbuf, "\n");
+		if (transmit.flag == VEHICLE)
+			communication.vehicles(vl, server.sendbuf, 0);
+		else if (transmit.flag == GRAPHIC)
+			communication.graphical(trans, server.sendbuf);
+		bzero(server.sendbuf, server.nsend);
+		temp = temp->next;
 	}
+	return (EXIT_SUCCESS);
+}
+
+static int32_t	goal(void *trans)
+{
+	int32_t		x;
+	int32_t		y;
+	char		*num;
+
+	x = arc4random_uniform((uint32_t)board.data.x);
+	y = arc4random_uniform((uint32_t)board.data.y);
+	server.sendbuf = strcat(server.sendbuf, "des ");
+	num = ft_itoa(x);
+	server.sendbuf = ft_strfreecat(server.sendbuf, num);
+	server.sendbuf = strcat(server.sendbuf, " ");
+	num = ft_itoa(y);
+	server.sendbuf = ft_strfreecat(server.sendbuf, num);
+	server.sendbuf = strcat(server.sendbuf, "\n");
+	communication.vehicles(trans, server.sendbuf, 1);
 	return (EXIT_SUCCESS);
 }

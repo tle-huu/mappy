@@ -6,12 +6,13 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/17 17:07:12 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/05 19:19:20 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/06 16:06:42 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
 #include "graphics.h"
+#include "transmit.h"
 
 static int32_t		new(int32_t cl);
 static int32_t		greeting(t_graphic *gr);
@@ -49,10 +50,11 @@ static int32_t		clear(t_graphic *gr)
 
 static int32_t		greeting(t_graphic *gr)
 {
-	if ((graphic.transmit.mapsize(gr) == EXIT_FAILURE)
-		|| (graphic.transmit.timeunit(gr) == EXIT_FAILURE)
-		|| (graphic.transmit.tiles.all(gr) == EXIT_FAILURE)
-		|| (graphic.transmit.vehicles.all(gr) == EXIT_FAILURE))
+	transmit.flag = GRAPHICAL;
+	if ((transmit.tiles.mapsize(gr) == EXIT_FAILURE)
+		|| (transmit.timeunit(gr) == EXIT_FAILURE)
+		|| (transmit.tiles.all(gr) == EXIT_FAILURE)
+		|| (transmit.vehicles.all(gr) == EXIT_FAILURE))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 22:27:23 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/05 19:19:27 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/06 17:42:00 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 static int32_t		new(void);
 static t_dblist		*pop(void);
-static void			add(t_vehicle *pl);
+static void			add(t_vehicle *vl);
 
 __attribute__((constructor))void	construct_vehiclepool(void)
 {
@@ -28,7 +28,7 @@ __attribute__((constructor))void	construct_vehiclepool(void)
 
 static int32_t		new(void)
 {
-	t_vehicle	*pl;
+	t_vehicle	*vl;
 	int32_t		i;
 	int32_t		reps;
 
@@ -38,11 +38,11 @@ static int32_t		new(void)
 		return (EXIT_FAILURE); // memory error
 	while (i < reps)
 	{
-		if (!(pl = (t_vehicle *)calloc(1, sizeof(t_vehicle))))
+		if (!(vl = (t_vehicle *)calloc(1, sizeof(t_vehicle))))
 			return (EXIT_FAILURE);
-		pl->container.data = pl;
-		pl->tilecontainer.data = pl;
-		if (!(ft_enqueue(vehicle.pool.data, &(pl->container), 0)))
+		vl->container.data = vl;
+		vl->tilecontainer.data = vl;
+		if (!(ft_enqueue(vehicle.pool.data, &(vl->container), 0)))
 			return (EXIT_FAILURE);
 		i++;
 	}
@@ -54,13 +54,14 @@ static t_dblist		*pop(void)
 	return (ft_popfirst(vehicle.pool.data));
 }
 
-static void			add(t_vehicle *pl)
+static void			add(t_vehicle *vl)
 {
-	server.clients.status[pl->c_fd] = 0;
-	server.clients.lookup[pl->c_fd] = NULL;
-	board.removevehicle(pl);
-	bzero(pl, sizeof(t_vehicle));
-	pl->container.data = pl;
-	pl->tilecontainer.data = pl;
-	ft_enqueue(vehicle.pool.data, &(pl->container), 0);
+	ft_middel(&(vehicle.data), &(vl->commscontainer));
+	server.clients.status[vl->c_fd] = 0;
+	server.clients.lookup[vl->c_fd] = NULL;
+	board.removevehicle(vl);
+	bzero(vl, sizeof(t_vehicle));
+	vl->container.data = vl;
+	vl->tilecontainer.data = vl;
+	ft_enqueue(vehicle.pool.data, &(vl->container), 0);
 }

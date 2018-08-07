@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 15:30:42 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/06 14:23:05 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/06 18:59:08 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ typedef struct		s_vehicle
 {
 	t_dblist		container;
 	t_dblist		tilecontainer;
+	t_dblist		commscontainer;
 	int32_t			c_fd;
 	uint64_t		vehicle_id;
 	int8_t			conn_attempts;
@@ -47,14 +48,15 @@ typedef struct		s_vehicleplace
 	void			(*advance)(t_vehicle *);
 }					t_vehicleplace;
 
-typedef struct		s_vehicle_methods
+typedef struct		s_vehicles
 {
 	t_vehiclepool	pool;
 	t_vehicleplace	place;
+	t_queue			data;
 	int32_t			(*new)(int32_t);
 	int32_t			(*command)(t_vehicle *);
-}					t_vehicle_methods;
+}					t_vehicles;
 
-t_vehicle_methods	vehicle;
+t_vehicles			vehicle;
 
 #endif

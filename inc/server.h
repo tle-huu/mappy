@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/31 18:10:48 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/06 14:30:44 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/06 19:07:34 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@
 # define LEVELING 103
 # define DOOMED 33
 # define DEAD 66
+# define SIMULATE 75
 
 # define NORTH 0x1
 # define EAST 0x2
@@ -79,6 +80,7 @@ typedef struct			s_server
 	t_timeval			time;
 	char				*sendbuf;
 	int32_t				nsend;
+	uint8_t				flag;
 	char				recvbuf[513];
 	int32_t				(*io)(void);
 	void				(*usagewarning)(char *);

@@ -6,13 +6,14 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/13 14:11:03 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/05 19:19:26 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/06 20:05:51 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
 #include "graphics.h"
 #include "client.h"
+#include "vehicle.h"
 #include "communication.h"
 
 /* method function prototypes */
@@ -20,6 +21,7 @@ static int32_t	outgoing(int32_t cl, char *str);
 static int32_t	incoming(int32_t cl);
 static int32_t	printraw(void);
 static int32_t	newclient(int32_t cl);
+static int32_t	vehicles(t_vehicle *vl, void *datagram, int8_t);
 static int32_t	graphical(t_graphic *gr, char *str);
 
 __attribute__((constructor))void	construct_communication(void)
@@ -28,6 +30,7 @@ __attribute__((constructor))void	construct_communication(void)
 	communication.incoming = &incoming;
 	communication.printraw = &printraw;
 	communication.graphical = &graphical;
+	communication.vehicles = &vehicles;
 	communication.newclient = &newclient;
 }
 
@@ -76,6 +79,28 @@ static int32_t	graphical(t_graphic *gr, char *str)
 	}
 	else
 		communication.outgoing(gr->c_fd, str);
+	return (EXIT_SUCCESS);
+}
+
+static int32_t	vehicles(t_vehicle *vl, void *datagram, int8_t single)
+{
+	t_vehicle	*og;
+	t_dblist	*temp;
+
+	og = vl;
+	temp = vehicle.data.first;
+	if (!single)
+	{
+		while (temp)
+		{
+			vl = (t_vehicle *)(temp->data);
+			if (vl != og)
+				communication.outgoing(vl->c_fd, datagram);
+			temp = temp->next;
+		}
+	}
+	else
+		communication.outgoing(vl->c_fd, datagram);
 	return (EXIT_SUCCESS);
 }
 

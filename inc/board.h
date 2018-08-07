@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/05 11:14:26 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/06 14:30:30 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/06 16:44:35 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ typedef struct			s_tile
 	t_vehicle			*vehicles[FD_SETSIZE];
 	t_queue				vehicleslist;
 	struct s_tile		*column;
+	uint8_t				state;	
 }						t_tile;
 
 typedef	struct			s_board_data

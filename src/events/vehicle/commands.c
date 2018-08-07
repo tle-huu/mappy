@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/04 16:32:22 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/05 19:19:22 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/06 20:12:31 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include "communication.h"
 #include "vehicle.h"
 #include "graphics.h"
+#include "transmit.h"
 
 static int32_t		advance(void *object);
 static int32_t		connect_nbr(void *object);
@@ -37,7 +38,10 @@ static int32_t	advance(void *object)
 	printf("[COMMAND]\n  vehicle <%d> advanced\n", pl->c_fd);
 	vehicle.place.advance(pl);
 	communication.outgoing(pl->c_fd, "ok\n");
-	graphic.transmit.vehicles.position(pl);
+	transmit.flag = GRAPHICAL;
+	transmit.vehicles.position(pl);
+	transmit.flag = VEHICLE;
+	transmit.vehicles.position(pl);
 	server.clients.status[pl->c_fd] = PLAYER;
 	event.iswaiting(pl);
 	return (EXIT_SUCCESS);

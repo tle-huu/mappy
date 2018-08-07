@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 13:20:08 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/05 19:19:27 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/06 20:20:45 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,10 @@
 #include "graphics.h"
 #include "client.h"
 #include "communication.h"
+#include "transmit.h"
 
 static int32_t	new (int32_t cl);
-static int32_t	command(t_vehicle *pl);
+static int32_t	command(t_vehicle *vl);
 
 __attribute__((constructor)) void construct_vehicle(void)
 {
@@ -27,48 +28,65 @@ __attribute__((constructor)) void construct_vehicle(void)
 	vehicle.command = &command;
 }
 
-static void		_initialize(t_vehicle *pl)
+static void		_initialize(t_vehicle *vl)
 {
 	int32_t i;
 
-	pl->vehicle_id = (server.simenv.track_vehicleid)++;
-	pl->tilecontainer.data = pl;
+	vl->vehicle_id = (server.simenv.track_vehicleid)++;
+	vl->tilecontainer.data = vl;
+	vl->commscontainer.data = vl;
 	i = 0;
-	vehicle.place.onboard(pl);
-	server.clients.status[pl->c_fd] = PLAYER;
-	server.clients.lookup[pl->c_fd] = pl;
+	vehicle.place.onboard(vl);
+	server.clients.status[vl->c_fd] = PLAYER;
+	server.clients.lookup[vl->c_fd] = vl;
 }
 
 static int32_t	new(int32_t cl)
 {
 	t_dblist	*temp;
-	t_vehicle 	*pl;
+	t_vehicle 	*vl;
 	int32_t		ret;
 
-	printf("[PLAYER]\n  Creating new vehicle @ : <%d>\n", cl);
+	printf("[VEHICLE]\n  Creating new vehicle @ : <%d>\n", cl);
 	ret = 0;
 	if (!(temp = vehicle.pool.pop()))
 		return (EXIT_FAILURE);
-	pl = (t_vehicle *)temp->data;
-	pl->c_fd = cl;
-	if ((!server.simenv.maxinitial_clients))
+	vl = (t_vehicle *)temp->data;
+	vl->c_fd = cl;
+	if (server.simenv.connected_vehicles == server.simenv.maxinitial_clients)
 	{
-		client.disconnect(pl->c_fd);
-		vehicle.pool.add(pl);
+		client.disconnect(vl->c_fd);
+		vehicle.pool.add(vl);
 	}
 	else
 	{
-		_initialize(pl);
+		_initialize(vl);
+		ft_enqueue(&(vehicle.data), &(vl->commscontainer), 0);
 		server.simenv.connected_vehicles++;
-		graphic.transmit.vehicles.connected(pl);
+		transmit.flag = GRAPHICAL;
+		transmit.vehicles.connected(vl);
+		transmit.flag = VEHICLE;
+		transmit.tiles.mapsize(vl);
+		transmit.tiles.all(vl);
+		transmit.vehicles.position(vl);
+		transmit.vehicles.goal(vl);
+		if (server.simenv.connected_vehicles == server.simenv.maxinitial_clients
+			&& server.flag != SIMULATE)
+		{
+			server.flag = SIMULATE;
+			transmit.flag = VEHICLE;
+			transmit.vehicles.all(NULL);
+		}
 	}
 	return (EXIT_SUCCESS);
 }
 
-static int32_t		command(t_vehicle *pl)
+static int32_t		command(t_vehicle *vl)
 {
-	if (communication.incoming(pl->c_fd) == EXIT_FAILURE)
+	if (communication.incoming(vl->c_fd) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
-	event.lookup(pl->c_fd);
+	if (server.flag != SIMULATE)
+		return (EXIT_SUCCESS);
+	event.lookup(vl->c_fd);
 	return (EXIT_SUCCESS);
 }
