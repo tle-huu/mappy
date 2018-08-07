@@ -13,6 +13,7 @@ Map::Map(int fd) : _serverMonitor(fd)
 
 		std::cout << _width << " " <<  _height << std::endl;
 
+		_traffic.resize(_width * _height);
 		_staticCars.resize(_width * _height);
 		_grid.resize(_width * _height * 4 * 25); // 25 pixels per grid square
 		for (int w = 0; w < _width * 5; w++)
@@ -38,10 +39,11 @@ Map::Map(int fd) : _serverMonitor(fd)
 		{
 			for (int h = y * 5; h < (y + 1) * 5; h++)
 			{
+				assert(w < _width && w >= 0 && h < _height && h > 0);
 				size_t index = (w + h * _width * 5) * 4;
 				unsigned barriercol = 0xff222222;
 
-				if (road)
+				if (!road)
 					std::memmove(&_grid[index], &barriercol, 4);
 			}
 		}
@@ -55,9 +57,14 @@ Map::Map(int fd) : _serverMonitor(fd)
 
 		ss >> car.from.x >> car.from.y >> car.to.x >> car.to.y >> car.time;
 
+		assert(car.from.x >= 0 && car.from.x < _width && car.from.y >= 0 && car.from.y < _height);
+		assert(car.to.x >= 0 && car.to.x < _width && car.to.y >= 0 && car.to.y < _height);
+		
 		car.timeLeft = car.time;
 		_staticCars[car.from.x + car.from.y * _width]--;
-		_movingCars.push_back(car);		
+		_movingCars.push_back(car);
+		_traffic[car.from.x + car.from.y * _width]--;
+		_traffic[car.to.x + car.to.y * _width]++;
 	};
 	_events["pnw"] = [this](std::string data)
 	{
@@ -69,6 +76,7 @@ Map::Map(int fd) : _serverMonitor(fd)
 
 		std::cout << x << " " << y << std::endl;
 		_staticCars[x + y * _width]++;
+		_traffic[x + y * _width]++;
 	};
 	_events["pdi"] = [this](std::string data)
 	{
@@ -78,7 +86,26 @@ Map::Map(int fd) : _serverMonitor(fd)
 
 		ss >> x >> y;
 
-		_staticCars[x + y * _width]--;		
+		_staticCars[x + y * _width]--;
+		_traffic[x + y * _width]--;
+	};
+	_events["des"] = [this](std::string data)
+	{
+		std::stringstream ss(data);
+
+		int x, y;
+
+		ss >> x >> y;
+
+		for (int w = x * 5; w < (x + 1) * 5; w++)
+		{
+			for (int h = y * 5; h < (y + 1) * 5; h++)
+			{
+				size_t index = (w + h * _width * 5) * 4;
+				unsigned destcol = 0xff77bb88;
+				std::memmove(&_grid[index], &destcol, 4);
+			}
+		}
 	};
 }
 
@@ -88,32 +115,15 @@ Map::~Map(void)
 
 void	Map::drawMovingCar(std::vector<unsigned char>& image, const MovingCar& car)
 {
-	glm::ivec2 dir = (car.from - car.to) * 5;
+	glm::ivec2 dir = (car.to - car.from) * 5;
 
-	dir *= car.timeLeft / car.time;
+	dir = dir * (1.0 - (car.timeLeft / car.time));
 
-	glm::ivec2 pos = car.from * 5 + dir;
+	glm::ivec2 pos = car.from * 5 + glm::ivec2(2) + dir;
 	
 	size_t index = pos.x + pos.y * _width * 5;
-	unsigned color = 0xff223377;
+	unsigned color = 0xff777722;
 	std::memmove(&image[index * 4], &color, 4);
-}
-
-static unsigned	density_color(int density)
-{
-	if (density <= 1)
-		return 0xff223377;
-	if (density == 2)
-		return 0xff223388;
-	if (density <= 3)
-		return 0xff223399;
-	if (density <= 5)
-		return 0xff2233bb;
-	if (density <= 8)
-		return 0xff3355dd;
-	if (density <= 13)
-		return 0xff4466ff;
-	return 0xff6688ff;
 }
 
 void	Map::drawStaticCars(std::vector<unsigned char>& image)
@@ -126,9 +136,47 @@ void	Map::drawStaticCars(std::vector<unsigned char>& image)
 			if (totalCars)
 			{
 				size_t index = (w * 5 + 2) + (h * 5 + 2) * (_width * 5);
-				unsigned color = density_color(totalCars);
-				
+				unsigned color = 0xff777722;
 				std::memmove(&image[index * 4], &color, 4);
+			}
+		}
+	}
+}
+
+static unsigned	traffic_color(int traffic, unsigned oldcol)
+{
+	if (traffic > 10)
+		traffic = 10;
+	unsigned red = oldcol % 256;
+	oldcol /= 256;
+	unsigned green = oldcol % 256;
+	oldcol /= 256;
+	unsigned blue = oldcol % 256;
+
+	red = (red * (10 - traffic) + 255 * traffic) / 10;
+	return red + 256 * green + 256 * 256 * blue + 256ul * 256 * 256 * 255;
+}
+
+void	Map::drawTraffic(std::vector<unsigned char>& image)
+{
+	for (int w = 0; w < _width; w++)
+	{
+		for (int h = 0; h < _height; h++)
+		{
+			int traffic = _traffic[w + h * _width];
+			if (traffic > 0)
+			{
+				for (int x = w * 5; x < w * 5 + 5; x++)
+				{
+					for (int y = h * 5; y < h * 5 + 5; y++)
+					{
+						size_t index = x + y * _width * 5;
+						unsigned oldcol;
+						std::memmove(&oldcol, &image[index * 4], 4);
+						unsigned color = traffic_color(traffic, oldcol);
+						std::memmove(&image[index * 4], &color, 4);
+					}
+				}
 			}
 		}
 	}
@@ -166,6 +214,8 @@ void	Map::Update(double dt, Window& window)
 
 	std::vector<unsigned char> image = _grid;
 
+	drawTraffic(image);
+	
 	auto it = _movingCars.begin();
 	while (it != _movingCars.end())
 	{

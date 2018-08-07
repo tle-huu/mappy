@@ -54,7 +54,7 @@ int	main(int argc, char *argv[])
 		if ((err = glGetError()) != GL_NO_ERROR)
 			std::cerr << err << std::endl;
 		window.Clear();
-		
+
 		map.Update(timer.Delta(), window);
 		
 		window.Render();

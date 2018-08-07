@@ -26,9 +26,11 @@ class	Map
 
 	std::list<MovingCar> _movingCars;
 	std::vector<int> _staticCars;
+	std::vector<int> _traffic;
 
 	void	drawMovingCar(std::vector<unsigned char>&, const MovingCar&);
 	void	drawStaticCars(std::vector<unsigned char>&);
+	void	drawTraffic(std::vector<unsigned char>&);
 	void	render(Window&, const std::vector<unsigned char>&);
 	
 public:
