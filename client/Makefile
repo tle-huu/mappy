@@ -6,7 +6,7 @@
 #    By: tle-huu- <tle-huu-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/06/25 09:04:20 by tle-huu-          #+#    #+#              #
-#    Updated: 2018/08/05 14:36:04 by tle-huu-         ###   ########.fr        #
+#    Updated: 2018/08/06 18:13:24 by tle-huu-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,9 @@ NAME = execlient
 
 SRCS = 	srcs/CommunicationSocket.cpp \
 		srcs/Datagram.cpp		\
+		srcs/utils.cpp				\
+		srcs/Graph.class.cpp				\
+		srcs/Ai.class.cpp		\
 		lol.cpp
 
 INCLUDES = includes/

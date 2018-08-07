@@ -3,17 +3,17 @@
 
 # include "mappy_client.hpp"
 # include <iostream>
+# include "Graph.class.hpp"
 
 class Ai
 {
 	private:
 		Map&		_heatmap;
-
-		bool		bfs(int start);
+		Graph&		_graph;
+		Ai();
 
 	public:
-		Ai();
-		Ai(Map &);
+		Ai(Map & map, Graph & graph);
 		~Ai();
 
 		Position	where_to(Position &pos, Position &dest, double &speed);

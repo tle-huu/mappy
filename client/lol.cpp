@@ -8,7 +8,9 @@
 
 #include "Datagram.hpp"
 #include "CommunicationSocket.hpp"
-
+#include "utils.hpp"
+#include "Graph.class.hpp"
+#include "Ai.class.hpp"
 typedef struct coucou
 
 {
@@ -31,21 +33,24 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 	Map 			map;
 	Position		start;
 	Position		destination;
+	std::string		ip("localhost");
 
-	CommunicationSocket		sock("localhost", 1337);
+	CommunicationSocket		sock(ip.c_str(), 1337);
 	sock.send_datagram("car", "\n");
 	sock.get_first_info(map, start, destination);
 	display_map(map);
-	std::cout << "start : " << start.x << " , "<< start.y << std::endl;
-	std::cout << "destination : " << destination.x << " , "<< destination.y << std::endl;
 	sock.wait_for_game();
-    //
-	// // Datagram		datagram("header : ", "message");
-    //
-	// std::string				test(s1 + " " + s2 + "\n");
-	// CommunicationSocket		sock("127.0.0.1", 1337);
-	// sock.send_datagram("bonjour", " les copains");
-	// sock.listen();
-	// sock.send_datagram(datagram);
+
+	print_map(map);
+
+	Graph		graph(map, start, destination);
+	std::cout << "\nGraph\n\n";
+	graph.print_graph();
+
+	Ai			nick(map, graph);
+
+	double speed = 12;
+	nick.where_to(start, destination, speed);
+
 	return 0;
 }

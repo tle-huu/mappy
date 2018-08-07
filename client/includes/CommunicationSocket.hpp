@@ -27,7 +27,7 @@
 
 # include "Datagram.hpp"
 
-# define BUFF_SIZE 8192
+# define BUFF_SIZE 3072000
 
 class CommunicationSocket
 {
@@ -57,7 +57,7 @@ class CommunicationSocket
 		void			get_peers(Map &map) const;
 
 	public:
-		CommunicationSocket(char * addr, int port);
+		CommunicationSocket(const char * addr, int port);
 		~CommunicationSocket();
 
 		void			listen_loop(void);

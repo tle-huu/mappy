@@ -8,7 +8,7 @@
 CommunicationSocket::CommunicationSocket()
 {}
 
-CommunicationSocket::CommunicationSocket(char* addr, int port) : _addr(addr), _port(port)
+CommunicationSocket::CommunicationSocket(const char* addr, int port) : _addr(addr), _port(port)
 {
 	struct protoent		*proto;
 	struct sockaddr_in	sin;
@@ -91,7 +91,7 @@ void	CommunicationSocket::get_peer(std::string data, Map &map) const
 	std::stringstream		ss(data);
 
 	ss >> header >> x >> y;
-	map[x][y].total_cars++;
+	(map[x][y].total_cars)++;
 }
 
 void	CommunicationSocket::get_peers(Map &map) const
@@ -99,7 +99,6 @@ void	CommunicationSocket::get_peers(Map &map) const
 	std::string			raw;
 	std::string			header;
 	bool				done = false;
-
 
 	while (!done)
 	{
@@ -109,7 +108,7 @@ void	CommunicationSocket::get_peers(Map &map) const
 		{
 			std::stringstream ss2(line);
 			ss2 >> header;
-			if (header == "ppo")		/* Position of the peers */
+			if (header == "pnw")		/* Position of the peers */
 				this->get_peer(line, map);
 			else if (header == "done")
 				done = true;
@@ -148,11 +147,6 @@ void		CommunicationSocket::send_datagram(Datagram const & datagram) const
 
 Map		CommunicationSocket::get_first_info(Map &map, Position& start, Position &end)
 {
-	// map = this->get_map();
-	// start = this->get_position();
-	// end = this->get_destination();
-	// this->get_peers(map);
-
 	std::string					header;
 	std::string					raw;
 	std::vector<std::string>	tokens;
@@ -160,7 +154,6 @@ Map		CommunicationSocket::get_first_info(Map &map, Position& start, Position &en
 
 	this->_events["msz"] = [&map](std::string data)
 	{
-		std::cout << "msz\n";
 		int					x;
 		int					y;
 		std::string			header;
@@ -174,7 +167,6 @@ Map		CommunicationSocket::get_first_info(Map &map, Position& start, Position &en
 
 	this->_events["bct"] = [&map](std::string data)
 	{
-		std::cout << "bct\n";
 		int				x;
 		int				y;
 		std::string		header;
@@ -195,6 +187,13 @@ Map		CommunicationSocket::get_first_info(Map &map, Position& start, Position &en
 	};
 
 	this->_events["des"] = [&end](std::string data)
+	{
+		std::string			header;
+		std::stringstream	ss(data);
+
+		ss >> header >> end.x >> end.y;
+	};
+	this->_events["pnw"] = [&end](std::string data)
 	{
 		std::string			header;
 		std::stringstream	ss(data);
