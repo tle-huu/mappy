@@ -27,6 +27,7 @@ CommunicationSocket::CommunicationSocket(const char* addr, int port) : _addr(add
 	if (connect(this->_socket, (const struct sockaddr *)&sin, sizeof(sin)) == -1)
 		throw(std::runtime_error("CommunicationSocket(): connect error"));
 	this->_connected = true;
+	this->send_datagram("car", "\n");
 	if (this->read() != "WELCOME\n")
 	{
 		std::cout << "\ncrash\n";
@@ -252,7 +253,7 @@ Map		CommunicationSocket::get_first_info(Map &map, Position& start, Position &en
 		}
 		// std::stringstream ss(raw);
 	}
-	std::cout << "ebefore get pers\n";
+	std::cout << "before get pers\n";
 	this->get_peers(map);
 	std::cout << "after get peers\n";
 	return (map);

@@ -22,7 +22,7 @@ struct	Square
 {
 	bool is_road;
 	int total_cars;
-    /*
+	/*
 	Square() = default;
 	Square(Square const & src)
 	{

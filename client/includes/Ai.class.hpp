@@ -16,7 +16,7 @@ class Ai
 		Ai(Map & map, Graph & graph);
 		~Ai();
 
-		Position	where_to(Position &pos, Position &dest, double &speed);
+		Position	where_to(Position pos, Position dest, double &speed);
 		void		bfs(Position &dest);
 
 };

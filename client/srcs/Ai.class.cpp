@@ -12,7 +12,7 @@ Ai::Ai(Map & map, Graph & graph) : _heatmap(map), _graph(graph)
 Ai::~Ai() {}
 
 
-Position		Ai::where_to(Position &pos, Position &dest, double &speed)
+Position		Ai::where_to(Position pos, Position dest, double &speed)
 {
 	Position			nextmove;
 	int					index = -1;
@@ -24,8 +24,11 @@ Position		Ai::where_to(Position &pos, Position &dest, double &speed)
 	std::cout << dest.x << " " << dest.y << std::endl;
 	std::cout << "current : " << current << std::endl;
 
+	/* calculating best path */
 	this->bfs(dest);
-	std::cout << "\nwhere to \n";
+
+	std::cout << "[" << current << "] => ";
+
 	color = _graph.getNode(current).color;
 	while (current != end)
 	{
@@ -39,18 +42,17 @@ Position		Ai::where_to(Position &pos, Position &dest, double &speed)
 			if (n->color < color)
 			{
 				std::cout << "[" << n->index << "] => ";
+				if (!fortest)
+				{
+					index = n->index;
+					fortest = true;
+				}
 				color = n->color;
 				current = n->index;
-
-			}
-			if (!fortest && n->color < color)
-			{
-				fortest = true;
-				index = n->index;
 			}
 		}
 	}
-	std::cout << "\nwhere to end\n";
+	std::cout << "\n index : " << index << std::endl;;
 	index_to_coor(index, pos.x, pos.y, _graph.getMapWidth());
 	return (pos);
 }

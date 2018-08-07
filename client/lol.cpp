@@ -33,13 +33,12 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 	Map 			map;
 	Position		start;
 	Position		destination;
-	std::string		ip("10.114.12.13");
-	// std::string		ip("localhost");
+	// std::string		ip("10.114.12.13");
+	std::string		ip("localhost");
 
 	// 10.114.12.13 8888
 
-	CommunicationSocket		sock(ip.c_str(), 8888);
-	sock.send_datagram("car", "\n");
+	CommunicationSocket		sock(ip.c_str(), 1337);
 	sock.get_first_info(map, start, destination);
 	display_map(map);
 	sock.wait_for_game();

@@ -66,6 +66,6 @@ class Graph
 		int			getMapHeight(void) const;
 };
 
-std::ostream & operator<<( std::ostream & o, Graph const & rhs);
+// std::ostream & operator<<( std::ostream & o, Graph const & rhs);
 
 #endif
