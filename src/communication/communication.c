@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/13 14:11:03 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/06 20:05:51 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/06 22:07:55 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "graphics.h"
 #include "client.h"
 #include "vehicle.h"
+#include "transmit.h"
 #include "communication.h"
 
 /* method function prototypes */

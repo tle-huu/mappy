@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/05 10:45:14 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/06 16:56:21 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/06 22:15:40 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ __attribute__((constructor))void	construct_board(void)
 
 static void		_generate_random_board(void)
 {
+	int32_t	fill;
 	int32_t x;
 	int32_t y;
 
@@ -40,7 +41,11 @@ static void		_generate_random_board(void)
 		y = 0;
 		while (y <= board.data.y)
 		{
-			(board.data.tiles[x]).column[y].state = arc4random_uniform((uint32_t)2);
+			fill = arc4random_uniform((uint32_t)10);
+			if (fill < 2)
+				(board.data.tiles[x]).column[y].state = 0;
+			else
+				(board.data.tiles[x]).column[y].state = 1;
 			y++;
 		}
 		x++;

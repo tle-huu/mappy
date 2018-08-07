@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/19 15:41:24 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/06 21:29:53 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/06 22:33:34 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ static int32_t 	connected(t_vehicle *vl);
 static int32_t 	exited(t_vehicle *vl);
 static int32_t	goal(void *);
 static int32_t	endtransmit(void *);
+static int32_t	datagram_pass(t_vehicle *);
 
 __attribute__((constructor)) void construct_transmit_vehicles(void)
 {
@@ -32,6 +33,7 @@ __attribute__((constructor)) void construct_transmit_vehicles(void)
 	transmit.vehicles.exited = &exited;
 	transmit.vehicles.goal = &goal;
 	transmit.vehicles.endtransmit = &endtransmit;
+	transmit.vehicles.datagram_pass = &datagram_pass;
 }
 
 static int32_t _tileloc(t_vehicle *vl)
@@ -55,6 +57,16 @@ static int32_t	exited(t_vehicle *vl)
 	_tileloc(vl);
 	num = ft_itoa((int32_t)(vl->vehicle_id));
 	server.sendbuf = ft_strfreecat(server.sendbuf, num);
+	server.sendbuf = strcat(server.sendbuf, "\n");
+	communication.graphical(NULL, server.sendbuf);
+	bzero(server.sendbuf, server.nsend);
+	return (EXIT_SUCCESS);
+}
+
+static int32_t	datagram_pass(t_vehicle *vl)
+{
+	server.sendbuf = strcat(server.sendbuf, "mvd ");
+	server.sendbuf = strcat(server.sendbuf, vl->message);
 	server.sendbuf = strcat(server.sendbuf, "\n");
 	communication.graphical(NULL, server.sendbuf);
 	bzero(server.sendbuf, server.nsend);
@@ -116,14 +128,17 @@ static int32_t all(void *trans)
 		_tileloc(vl);
 		server.sendbuf = strcat(server.sendbuf, "\n");
 		if (transmit.flag == VEHICLE)
+		{
 			communication.vehicles(vl, server.sendbuf, 0);
+		}
 		else if (transmit.flag == GRAPHIC)
 			communication.graphical(trans, server.sendbuf);
 		bzero(server.sendbuf, server.nsend);
 		temp = temp->next;
 	}
-	if (transmit.flag == VEHICLE)
-		transmit.vehicles.endtransmit(vl);
+	communication.vehicles(NULL, "done\n", 0);
+	sleep(1);
+	communication.vehicles(NULL, "start\n", 0);
 	return (EXIT_SUCCESS);
 }
 

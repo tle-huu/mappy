@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/06 14:51:22 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/06 21:05:35 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/06 22:33:40 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ typedef struct			s_transmit_vehicles
 	int32_t				(*exited)(t_vehicle *);
 	int32_t				(*goal)(void *);
 	int32_t				(*endtransmit)(void *);
+	int32_t				(*datagram_pass)(t_vehicle *);
 }						t_transmit_vehicles;
 
 typedef struct			s_transmit_tiles
