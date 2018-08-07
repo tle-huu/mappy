@@ -177,6 +177,7 @@ void	Map::Update(double dt, Window& window)
 			continue;
 		}
 		drawMovingCar(image, *it);
+		++it;
 	}
 	drawStaticCars(image);
 	
