@@ -10,29 +10,15 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = zappy
+NAME = mappy
 LIST = main \
 Window \
-Time \
-ShadingProgram \
-Sprite2D \
-ObjFileArrayExtractor \
-Obj \
-Texture \
-Model \
-Light \
-Text \
-Egg \
 Map \
-Player \
-Sound \
-FreeCamera \
-SkyBox \
-Grid \
-FPSDisplay \
 ServerMonitor \
-ResourceRenderer \
-Character3D
+Image2D \
+ShadingProgram \
+Window \
+Time
 
 SRC_DIR = src
 OBJ_DIR = obj

@@ -1,7 +1,6 @@
 #pragma once
 
-#include "zappy.hpp"
-#include <glm/vec2.hpp>
+#include "CoreInclude.hpp"
 
 void	KeyCallback(GLFWwindow*, int key, int, int action, int);
 void	MouseButtonCallback(GLFWwindow*, int button, int action, int);

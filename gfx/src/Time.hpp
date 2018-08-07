@@ -1,25 +1,22 @@
 #pragma once
 
-#include "zappy.hpp"
+#include <chrono>
 
-//! Time utility class
-class Time
+class	Time
 {
-	double _oldTime;
-	double _deltaTime;
+private:
+	
+	std::chrono::high_resolution_clock::time_point _startTime;
+	std::chrono::high_resolution_clock::time_point _delta;
+	float _totalTime;
+	float _deltaTime;
 
 public:
+
 	Time(void);
-
-	//! Reset the total time to zero, see Time.Total
-	void Reset(void);
-
-	//! Step time forward, measure delta time
-	void Step(void);
-
-	//! Time since the creation of the Time object or the last call to Time.Reset
-	double Total(void);
-
-	//! Time since the last call to Time.Step
-	double Delta(void);
+	
+	void	Reset(void);
+	void	Step(void);
+	double	Total(void);
+	double	Delta(void);
 };

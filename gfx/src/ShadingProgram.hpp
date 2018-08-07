@@ -1,6 +1,6 @@
 #pragma once
 
-#include "zappy.hpp"
+#include "CoreInclude.hpp"
 
 class	ShadingProgram
 {
