@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/19 15:41:24 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/07 12:16:09 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/07 17:42:11 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,15 @@ static int32_t	exited(t_vehicle *vl)
 
 static int32_t	datagram_pass(t_vehicle *vl)
 {
+	char	*num;
+
 	server.sendbuf = strcat(server.sendbuf, "mvd ");
 	server.sendbuf = strcat(server.sendbuf, vl->message);
+	server.sendbuf = strcat(server.sendbuf, "\n");
+	communication.vehicles(vl, server.sendbuf, 0);
+	server.sendbuf[(strlen(server.sendbuf) - 1)] = ' ';
+	num = ft_itoa((int32_t)vl->vehicle_id);
+	server.sendbuf = ft_strfreecat(server.sendbuf, num);
 	server.sendbuf = strcat(server.sendbuf, "\n");
 	communication.graphical(NULL, server.sendbuf);
 	bzero(server.sendbuf, server.nsend);
