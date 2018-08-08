@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/21 10:48:06 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/06 21:48:04 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/07 16:48:40 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "events.h"
 #include "time.h"
 #include "communication.h"
+#include "transmit.h"
 
 # define PLAYER_ENT ((t_vehicle *)entity)
 
@@ -55,10 +56,10 @@ static int32_t	lookup(int32_t cl)
 		}
 		while (i < NCOMMANDS)
 		{
-			printf("  compare to : |%s|\n", eventlookup[i].str);
+			//printf("  compare to : |%s|\n", eventlookup[i].str);
 			if (ft_strequ(*split, eventlookup[i].str))
 			{
-				printf("event found\n");
+				//printf("event found\n");
 				event.add(&(eventlookup[i]), pl, 1);
 				break ;
 			}
@@ -76,21 +77,21 @@ static int32_t	lookup(int32_t cl)
 
 static int32_t	pl_preprocess(void *entity, t_event *ev)
 {
-	printf("  Preprocess vehicle command\n  Commands in vehicles queue : %d\n",
-			PLAYER_ENT->pending.qlen);
-	printf("  Copying this message : |%s|\n", PLAYER_ENT->message);
+	//printf("  Preprocess vehicle command\n  Commands in vehicles queue : %d\n",
+			//PLAYER_ENT->pending.qlen);
+	//printf("  Copying this message : |%s|\n", PLAYER_ENT->message);
 	if (PLAYER_ENT->message[0])
 		strcpy(ev->message, PLAYER_ENT->message);
 	if (server.clients.status[PLAYER_ENT->c_fd] == WORKING
 		|| server.clients.status[PLAYER_ENT->c_fd] == INCANTED
 		|| server.clients.status[PLAYER_ENT->c_fd] == INCANTING)
 	{
-		printf("  Player is doing something already\n");
+		//printf("  Player is doing something already\n");
 		if (PLAYER_ENT->pending.qlen < 9)
 			ft_enqueue(&(PLAYER_ENT->pending), &(ev->container), 0);
 		else
 		{
-			printf("  Player has too many commands queued\n"); 
+			//printf("  Player has too many commands queued\n"); 
 			event.pool.add(ev);
 		}
 		return (1);
@@ -100,15 +101,21 @@ static int32_t	pl_preprocess(void *entity, t_event *ev)
 
 static int32_t	add(t_eventhold *eventhold, void *entity, int32_t preprocess)
 {
+	double		factor;
+	char		*shift;
+	char		*endshift;
 	t_dblist	*temp;
 	t_event		*ev;
 
-	printf("[EVENT]\n  Adding <%s>\n", eventhold->str);
+//	printf("[EVENT]\n  Adding <%s>\n", eventhold->str);
 	temp = event.pool.pop();
 	ev = (t_event *)(temp->data);
 	ev->action = eventhold->action;
 	ev->eventhold = eventhold;
-	time.setalarm(&(ev->alarm), eventhold->factor);
+	shift = strrchr(((t_vehicle *)entity)->message, ' ');
+	endshift = shift + strlen(shift);
+	factor = strtod(shift, &endshift);
+	time.setalarm(&(ev->alarm), factor);
 	ev->entity = entity;
 	if (preprocess)
 	{
@@ -116,7 +123,8 @@ static int32_t	add(t_eventhold *eventhold, void *entity, int32_t preprocess)
 			return (EXIT_SUCCESS);
 		server.clients.status[PLAYER_ENT->c_fd] = WORKING;
 	}
-	printf("  Adding event to main queue\n");
+//	printf("  Adding event to main queue\n");
+	transmit.vehicles.datagram_pass(entity);
 	event.queue.add(ev);
 	return (EXIT_SUCCESS);
 }
@@ -131,7 +139,7 @@ static void		ft_remove(void *entity)
 	{
 		if (((t_event *)(temp->data))->entity == entity)
 		{
-			printf("\nmatching events\n");
+			//printf("\nmatching events\n");
 			temp1 = temp->next;
 			ft_middel(event.queue.data, temp);
 			event.pool.add(temp->data);
@@ -152,7 +160,7 @@ static void		iswaiting(t_vehicle *pl)
 		ev = (t_event *)(temp->data);
 		if (ev->message[0])
 			strcpy(pl->message, ev->message);
-		printf("[EVENT]\n  Pullling from vehicle's command queue\n");
+		//printf("[EVENT]\n  Pullling from vehicle's command queue\n");
 		event.add(ev->eventhold, pl, 1);
 		event.pool.add(ev);
 	}

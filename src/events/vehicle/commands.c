@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/04 16:32:22 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/07 00:03:10 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/07 16:58:47 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ static int32_t		connect_nbr(void *object);
 
 __attribute__((constructor))void	construct_vehiclecommands_set1(void)
 {
-	struct s_eventhold ev0 = {"mvd", &advance, 7};
+	struct s_eventhold ev0 = {"mvd", &advance, 1};
 	struct s_eventhold ev2 = {"connect_nbr", &connect_nbr, 0};
 
 	
@@ -35,15 +35,7 @@ static int32_t	advance(void *object)
 	t_vehicle	*vl;
 
 	vl = (t_vehicle *)((t_event *)object)->entity;
-	printf("\n\nTHIS IS THE \"MESSAGE\" : %s\n\n", vl->message);
-	printf("[COMMAND]\n  vehicle <%d> advanced\n", vl->c_fd);
-//	vehicle.place.advance(vl);
 	communication.outgoing(vl->c_fd, "ok \n");
-//	transmit.flag = GRAPHICAL;
-//	transmit.vehicles.position(vl);
-//	transmit.flag = VEHICLE;
-//	transmit.vehicles.position(vl);
-	transmit.vehicles.datagram_pass(vl);
 	server.clients.status[vl->c_fd] = PLAYER;
 	event.iswaiting(vl);
 	return (EXIT_SUCCESS);

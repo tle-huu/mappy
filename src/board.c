@@ -58,7 +58,7 @@ static int32_t	new(void)
 {
 	int32_t	x;
 
-	printf("Creating the board\n");
+	//printf("Creating the board\n");
 	x = 0;
 	if (!(board.data.tiles =
 				(t_tile *)(calloc(1, sizeof(t_tile) * (board.data.x + 1)))))
@@ -103,7 +103,7 @@ static int32_t	load_file(void)
 	int32_t fd;
 	char	*line;
 
-	printf("Loading the board from file \"%s\"\n", board.data.filename);
+	//printf("Loading the board from file \"%s\"\n", board.data.filename);
 	if ((fd = open(board.data.filename, O_RDONLY)) < 3
 		|| get_next_line(fd, &line) != 1)
 		return (EXIT_FAILURE);

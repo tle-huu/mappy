@@ -70,7 +70,7 @@ static int32_t	new(int32_t cl)
 	t_vehicle 	*vl;
 	int32_t		ret;
 
-	printf("[VEHICLE]\n  Creating new vehicle @ : <%d>\n", cl);
+	//printf("[VEHICLE]\n  Creating new vehicle @ : <%d>\n", cl);
 	ret = 0;
 	if (!(temp = vehicle.pool.pop()))
 		return (EXIT_FAILURE);

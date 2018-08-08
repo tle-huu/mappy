@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 10:53:55 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/05 19:19:26 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/07 16:39:46 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "events.h"
 
 static int32_t	compare(t_timeval *relative, t_timeval *time2);
-static void		setalarm(t_timeval *alarm, float factor);
+static void		setalarm(t_timeval *alarm, double factor);
 static void		settimer(t_timeval **timer);
 
 __attribute__((constructor))void	construct_time(void)
@@ -42,7 +42,7 @@ static void		settimer(t_timeval **timer)
 	{
 		if (*timer)
 			ft_memdel((void **)timer);
-		printf("  No events to check\n");
+		//printf("  No events to check\n");
 		return ;
 	}
 	if (!(*timer))
@@ -65,14 +65,14 @@ static void		settimer(t_timeval **timer)
 
 static int32_t	compare(t_timeval *relative, t_timeval *time2)
 {
-	printf("[TIME]\n  -- Compare --\n  time2 <%ld> seconds & <%d> microseconds\n  vs\n to relative-><%ld> seconds & <%d> microseconds\n", time2->tv_sec, time2->tv_usec, relative->tv_sec, relative->tv_usec);
+	//printf("[TIME]\n  -- Compare --\n  time2 <%ld> seconds & <%d> microseconds\n  vs\n to relative-><%ld> seconds & <%d> microseconds\n", time2->tv_sec, time2->tv_usec, relative->tv_sec, relative->tv_usec);
 	if ((relative->tv_sec > time2->tv_sec)
 		|| (time2->tv_sec == relative->tv_sec && (relative->tv_usec >= time2->tv_usec)))
 		return (1);
 	return (0);
 }
 
-static void		setalarm(t_timeval *alarm, float factor)
+static void		setalarm(t_timeval *alarm, double factor)
 {
 	t_timeval	temp;
 	double		interval;
@@ -92,9 +92,10 @@ static void		setalarm(t_timeval *alarm, float factor)
 	printf("  This is the interval now : %lld\n  This is the integer : %lld\n",
 			i_interval, i_integer);
 	alarm->tv_sec = temp.tv_sec + i_integer;
-	if ((alarm->tv_usec = temp.tv_usec + i_interval) >= 1000000)
+	while ((alarm->tv_usec = temp.tv_usec + i_interval) >= 1000000)
 	{
-		alarm->tv_usec = i_interval - (1000000 - temp.tv_usec);
+		alarm->tv_usec -= 1000000;
+		i_interval -= 1000000;
 		alarm->tv_sec++;
 	}
 	printf("  Alarm at <%ld> seconds & <%d> microseconds\n",

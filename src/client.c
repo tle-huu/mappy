@@ -32,7 +32,7 @@ __attribute__((constructor))void	construct_client(void)
 
 static inline __attribute__((always_inline))void	add_fd_select(int32_t sock)
 {
-	printf("fd to add : <%d>\ncurrent nfds : <%d>\n", sock, ft_socket.nfds);
+	//printf("fd to add : <%d>\ncurrent nfds : <%d>\n", sock, ft_socket.nfds);
 	FD_SET(sock, ft_socket.copy);
 	if (ft_socket.nfds <= sock)
 		ft_socket.nfds = (sock + 1);
@@ -49,7 +49,7 @@ static int32_t		new(void)
 	(server.clients.status)[newfd] = NOT_ACCEPTED;
 	add_fd_select(newfd);
 	ret = communication.outgoing(newfd, "WELCOME\n");
-	printf("New client %d connected\n", newfd);
+	//printf("New client %d connected\n", newfd);
 	return (ret);
 }
 
@@ -72,8 +72,8 @@ static void			crash(int32_t cl)
 
 static void			disconnect(int32_t cl)
 {
-	printf("Remove client <%d> from fdset and lookup\n", cl);
+	//printf("Remove client <%d> from fdset and lookup\n", cl);
 	close(cl);
 	FD_CLR(cl, ft_socket.copy);
-	printf("  Client removed\n");
+	//printf("  Client removed\n");
 }

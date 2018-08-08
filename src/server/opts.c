@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/04 22:44:31 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/06 22:25:50 by psprawka         ###   ########.fr       */
+/*   Updated: 2018/08/07 15:32:26 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,13 +51,13 @@ static int32_t		boardx(char **argv, __attribute__((unused))t_opts *opt)
 		return (EXIT_SUCCESS);
 	
 	server.opts.boardType = XYMAP;
-	if (!(width = ft_atoi(*argv)))
+	if (!(width = atoi(*argv)))
 	{
 		while ((*argv)[i] == '0')
 			i++;
 		if ((*argv)[i])
 		{
-			ft_printf("Invalid parameter: %s\n", *argv);
+			printf("Invalid parameter: %s\n", *argv);
 			return (EXIT_FAILURE);
 		}
 	}
@@ -75,13 +75,13 @@ static int32_t		boardy(char **argv, __attribute__((unused))t_opts *opt)
 		return (EXIT_SUCCESS);
 
 	server.opts.boardType = XYMAP;
-	if (!(height = ft_atoi(*argv)))
+	if (!(height = atoi(*argv)))
 	{
 		while ((*argv)[i] == '0')
 			i++;
 		if ((*argv)[i])
 		{
-			ft_printf("Invalid parameter: %s\n", *argv);
+			printf("Invalid parameter: %s\n", *argv);
 			return (EXIT_FAILURE);
 		}
 	}
@@ -95,13 +95,13 @@ static int32_t		timeinterval(char **argv, __attribute__((unused))t_opts *opt)
 	int32_t	timeint;
 
 	i = 0;
-	if (!(timeint = ft_atoi(*argv)))
+	if (!(timeint = atoi(*argv)))
 	{
 		while ((*argv)[i] == '0')
 			i++;
 		if ((*argv)[i])
 		{
-			ft_printf("Invalid parameter: %s\n", *argv);
+			printf("Invalid parameter: %s\n", *argv);
 			return (EXIT_FAILURE);
 		}
 	}
@@ -115,13 +115,13 @@ static int32_t		maxclients(char **argv, __attribute__((unused))t_opts *opt)
 	int32_t	maxc;
 
 	i = 0;
-	if (!(maxc = ft_atoi(*argv)))
+	if (!(maxc = atoi(*argv)))
 	{
 		while ((*argv)[i] == '0')
 			i++;
 		if ((*argv)[i])
 		{
-			ft_printf("Invalid parameter: %s\n", *argv);
+			printf("Invalid parameter: %s\n", *argv);
 			return (EXIT_FAILURE);
 		}
 	}
@@ -135,13 +135,13 @@ static int32_t		port(char **argv, __attribute__((unused))t_opts *opt)
 	int32_t	port;
 
 	i = 0;
-	if (!(port = ft_atoi(*argv)))
+	if (!(port = atoi(*argv)))
 	{
 		while ((*argv)[i] == '0')
 			i++;
 		if ((*argv)[i])
 		{
-			ft_printf("Invalid parameter: %s\n", *argv);
+			printf("Invalid parameter: %s\n", *argv);
 			return (EXIT_FAILURE);
 		}
 	}

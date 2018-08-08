@@ -131,7 +131,7 @@ static int32_t all(void *trans)
 	temp = vehicle.data.first;
 	while (temp)
 	{
-		printf("TRANSMIT THIS ALL\n");
+		//printf("TRANSMIT THIS ALL\n");
 		vl = (t_vehicle *)(temp->data);
 		server.sendbuf = strcat(server.sendbuf, "pnw ");
 		num = ft_itoa((int32_t)(vl->vehicle_id));

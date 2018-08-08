@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/13 14:11:03 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/07 14:21:17 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/07 15:30:54 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,9 @@ static int32_t	incoming(int32_t cl)
 {
 	int32_t		ret;
 
-	printf("Recieving message from client <%d>\n", cl);
+	//printf("Recieving message from client <%d>\n", cl);
 	bzero(server.recvbuf, 512);
-	printf("Recv buffer zeroed\n");
+	//printf("Recv buffer zeroed\n");
 	if ((ret = recv(cl, server.recvbuf, 512, 0)) < 0)
 		return (EXIT_FAILURE);
 	else if (!ret)
@@ -61,7 +61,7 @@ static int32_t	incoming(int32_t cl)
 		return (-1);
 	}
 	server.recvbuf[(ret)] = '\0';
-	printf("  This is the buffer recieved |%s|\n", server.recvbuf);
+	//printf("  This is the buffer recieved |%s|\n", server.recvbuf);
 	return (EXIT_SUCCESS);
 }
 
@@ -115,7 +115,7 @@ static int32_t	outgoing(int32_t cl, char *str)
 
 static int32_t	printraw(void)
 {
-	printf("Unknown command, raw buffer of recieved message:\n\n|%s|\n\n",
-			server.recvbuf);
+	//printf("Unknown command, raw buffer of recieved message:\n\n|%s|\n\n",
+		//	server.recvbuf);
 	return (EXIT_SUCCESS);
 }

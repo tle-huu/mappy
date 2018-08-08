@@ -35,7 +35,7 @@ static int32_t	new(void)
 	reps = (MAX_CLIENTS * 10);
 	if (!(event.pool.data = (t_queue *)calloc(1, sizeof(t_queue))))
 		return (EXIT_FAILURE);		//error.memory
-	printf("[EVENT]\n  -- Creating event pool --\n");
+	//printf("[EVENT]\n  -- Creating event pool --\n");
 	while (i < reps)
 	{
 		if (!(ev = (t_event *)calloc(1, sizeof(t_event))))
@@ -45,7 +45,7 @@ static int32_t	new(void)
 			return (EXIT_FAILURE);
 		i++;
 	}
-	printf("  Event pool created\n");
+	//printf("  Event pool created\n");
 	return (EXIT_SUCCESS);
 }
 
@@ -59,5 +59,5 @@ static void		add(t_event *ev)
 	bzero(ev, sizeof(t_event));
 	ev->container.data = ev;
 	ft_enqueue(event.pool.data, &(ev->container), 0);
-	printf("Nodes available in events.pool.data : %d\n", (event.pool.data)->qlen);
+	//printf("Nodes available in events.pool.data : %d\n", (event.pool.data)->qlen);
 }

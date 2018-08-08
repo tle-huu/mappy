@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/04 22:43:47 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/07 14:37:33 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/07 16:03:45 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,15 +58,15 @@ static int32_t		new(void)
 		return (EXIT_FAILURE);
 	while ((select(ft_socket.nfds, ft_socket.input, NULL, NULL, timeout)) >= 0)
 	{
-		printf("\n[SELECT]\n  Body of Select\n");
+	//	printf("\n[SELECT]\n  Body of Select\n");
 		event.queue.check();
 		if ((ret = server.io()) == EXIT_FAILURE)
-			ft_printf("gameio failure\n");
+			printf("gameio failure\n");
 		time.settimer(&timeout);
 		FD_COPY(ft_socket.copy, ft_socket.input);
-		printf("\n[SELECT]\n  End of cycle\n");
+	//	printf("\n[SELECT]\n  End of cycle\n");
 	}
-	printf("EXIT\n");
+	//printf("EXIT\n");
 	return (EXIT_SUCCESS);
 }
 
@@ -115,7 +115,7 @@ static int32_t		io(void)
 		}
 		i++;
 	}
-	printf("Incoming processing done\n");
+	//printf("Incoming processing done\n");
 	return (EXIT_SUCCESS);
 }
 

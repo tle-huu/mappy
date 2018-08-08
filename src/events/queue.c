@@ -35,7 +35,7 @@ static int32_t	new(void)
 {
 	if (!(event.queue.data = (t_queue *)calloc(1, sizeof(t_queue))))
 		return (EXIT_FAILURE);	//error.memory
-	printf("Event queue created\n");
+	//printf("Event queue created\n");
 	return (EXIT_SUCCESS);
 }
 
@@ -66,7 +66,7 @@ static int32_t	add(t_event *ev)
 
 static t_dblist	*pop(void)
 {
-	printf("[EVENT]\n  First queue node, pop\n");
+	//printf("[EVENT]\n  First queue node, pop\n");
 	return (ft_popfirst(event.queue.data));
 }
 
@@ -74,7 +74,7 @@ static int32_t	check(void)
 {
 	t_dblist	*temp;
 
-	printf("[EVENT]\n  Check queue\n");
+	//printf("[EVENT]\n  Check queue\n");
 	gettimeofday(&(server.time), NULL);
 	if (event.queue.data->first)
 	{
@@ -83,7 +83,7 @@ static int32_t	check(void)
 		{
 			if (time.compare(&server.time, &CQU_OBJ->alarm))
 			{
-				printf("  Action\n");
+				//printf("  Action\n");
 				event.queue.pop();
 				CQU_OBJ->action(temp->data);
 				event.pool.add(CQU_OBJ);
@@ -93,6 +93,6 @@ static int32_t	check(void)
 			temp = (event.queue.data->first);
 		}
 	}
-	printf("  No more events ready\n");
+	//printf("  No more events ready\n");
 	return (EXIT_SUCCESS);
 }
