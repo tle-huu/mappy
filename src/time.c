@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/08 10:53:55 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/07 16:39:46 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/07 19:22:43 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ static void		settimer(t_timeval **timer)
 	}
 	if (!(*timer))
 		(*timer) = (t_timeval *)calloc(1, sizeof(t_timeval));
-	printf("  Alarm pulled : <%ld> seconds & <%d> microseconds\n",
-		alarm->tv_sec, alarm->tv_usec);
+//	printf("  Alarm pulled : <%ld> seconds & <%d> microseconds\n",
+//		alarm->tv_sec, alarm->tv_usec);
 	(*timer)->tv_sec = alarm->tv_sec - temp.tv_sec;
 	if ((*timer)->tv_sec < 0
 		|| ((((*timer)->tv_usec = alarm->tv_usec - temp.tv_usec) < 0)
@@ -59,8 +59,8 @@ static void		settimer(t_timeval **timer)
 		(*timer)->tv_usec = 1000000 + (*timer)->tv_usec;
 		(*timer)->tv_sec ? (*timer)->tv_sec-- : 0;
 	}
-	printf("  Timer set for <%ld> seconds & <%d> microseconds\n",
-	(*timer)->tv_sec, (*timer)->tv_usec);
+//	printf("  Timer set for <%ld> seconds & <%d> microseconds\n",
+//	(*timer)->tv_sec, (*timer)->tv_usec);
 }
 
 static int32_t	compare(t_timeval *relative, t_timeval *time2)
@@ -81,7 +81,7 @@ static void		setalarm(t_timeval *alarm, double factor)
 	int64_t		i_integer;
 
 	gettimeofday(&temp, NULL);
-	printf("[TIME]\n  -- Set Alarm --\n  It is <%ld> seconds & <%d> microseconds\n", temp.tv_sec, temp.tv_usec);
+//	printf("[TIME]\n  -- Set Alarm --\n  It is <%ld> seconds & <%d> microseconds\n", temp.tv_sec, temp.tv_usec);
 	interval = factor/server.simenv.timeinterval;
 	integer = 0;
 	if (interval > 1)
@@ -89,8 +89,8 @@ static void		setalarm(t_timeval *alarm, double factor)
 	interval = (interval * 1000000);
 	i_integer = (int64_t)integer;
 	i_interval = (int64_t)interval;
-	printf("  This is the interval now : %lld\n  This is the integer : %lld\n",
-			i_interval, i_integer);
+//	printf("  This is the interval now : %lld\n  This is the integer : %lld\n",
+//			i_interval, i_integer);
 	alarm->tv_sec = temp.tv_sec + i_integer;
 	while ((alarm->tv_usec = temp.tv_usec + i_interval) >= 1000000)
 	{
@@ -98,6 +98,6 @@ static void		setalarm(t_timeval *alarm, double factor)
 		i_interval -= 1000000;
 		alarm->tv_sec++;
 	}
-	printf("  Alarm at <%ld> seconds & <%d> microseconds\n",
-			alarm->tv_sec, alarm->tv_usec);
+//	printf("  Alarm at <%ld> seconds & <%d> microseconds\n",
+//			alarm->tv_sec, alarm->tv_usec);
 }

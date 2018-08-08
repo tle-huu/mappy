@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 20:48:31 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/05 19:19:21 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/07 19:27:28 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ static int32_t	check(void)
 		temp = (event.queue.data->first);
 		while (temp)
 		{
+			gettimeofday(&server.time, NULL);
 			if (time.compare(&server.time, &CQU_OBJ->alarm))
 			{
 				//printf("  Action\n");

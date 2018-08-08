@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/21 10:48:06 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/07 16:48:40 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/07 19:42:04 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static int32_t	lookup(int32_t cl)
 	int32_t		i;
 
 	pl = (t_vehicle *)server.clients.lookup[cl];
-	printf("  Looking up event |%s|\n", server.recvbuf);
+	printf("\tEvent |%s| for vehicle : %d\n", server.recvbuf, cl);
 	split = ft_strsplit(server.recvbuf, '\n');
 	strings = split;
 	while (*split)

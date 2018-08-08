@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/13 14:11:03 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/07 15:30:54 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/07 19:23:10 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,8 @@ static int32_t	vehicles(t_vehicle *vl, void *datagram, int8_t single)
 
 static int32_t	outgoing(int32_t cl, char *str)
 {
+	if (!strcmp(str, "ok \n"))
+		printf("Sending to : %d\nMessage : <<%s>>\n", cl, str);
 	if (send(cl, str, strlen(str), 0) < 0)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
