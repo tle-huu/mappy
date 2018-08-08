@@ -7,17 +7,18 @@
 
 class Ai
 {
-	private:
-		const Map&		_heatmap;
-		Graph			_graph;
-		Ai();
+	const Map& _heatmap;
+	Graph _graph;
 
-	public:
-		Ai(Map & map);
-		~Ai();
+	double	cost(int carNum);
+	double	node_weight(Position pos, Position dest, Position mapSquare);
 
-		Position	where_to(Position pos, Position dest, double &speed);
-		void		bfs(Position &dest, Position &, std::vector<int> &v);
+public:
+	Ai(Map & map);
+	~Ai();
+
+	Position	where_to(Position pos, Position dest, double &speed);
+	void		bfs(const Position& dest, const Position&, std::vector<int>& v);	
 
 };
 

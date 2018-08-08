@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <map>
+#include <unordered_map>
 
 #define KNRM  "\x1B[0m"
 #define KRED  "\x1B[31m"
@@ -22,21 +23,10 @@ struct	Square
 {
 	bool is_road;
 	int total_cars;
-	/*
-	Square() = default;
-	Square(Square const & src)
-	{
-		*this = src;
-	}
-
-	Square	&	operator=(Square const &rhs)
-	{
-		this->is_road = rhs.is_road;
-		this->total_cars = rhs.total_cars;
-		return (*this);
-	}
-	*/
 };
 
 
 typedef std::vector<std::vector<Square> > Map;
+
+template<class T>
+using graph = std::vector<std::unordered_map<size_t, T>>;

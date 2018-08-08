@@ -12,86 +12,45 @@ Ai::Ai(Map & map) : _heatmap(map), _graph()
 
 Ai::~Ai() {}
 
-Position		Ai::where_to(Position pos, Position dest, double &speed)
+double	Ai::cost(int carNum)
 {
-	Position			nextmove;
-	int					index = -1;
-	int					color = -1;
-	int					current = coord_to_index(pos.x, pos.y, _graph.getMapWidth(), _graph.getMapHeight());
-	int					end = coord_to_index(dest.x, dest.y, _graph.getMapWidth(), _graph.getMapHeight());
-	bool fortest = false;
-
-	static std::vector<int> 		path;
-	static int 				i = 0;
-
-	/* calculating best path */
-	if (i == path.size())
-		i = 0;
-	if (i == 0 && path.size() == 0)
-		this->bfs(dest, pos, path);
-	// for (auto& n : _graph.getNode(current).adjacency_list)
-	// {
-	// 	if (color < 0 || _graph.nodes[n].color < color)
-	// 	{
-	// 		index = _graph.nodes[n].index;
-	// 		color = _graph.nodes[n].color;
-	// 	}
-	// }
-	// std::cout << "[" << current << "] => " << std::endl;
-	// static int lol = 0;
-	// color = _graph.getNode(current).color;
-	// while (current != end)
-	// {
-	// 	for (auto& n : _graph.getNode(current).adjacency_list)
-	// 	{
-	// 		if (color < 0)
-	// 		{
-	// 			color = _graph.nodes[n].color;
-	// 			current = _graph.nodes[n].index;
-	// 		}
-	// 		if (_graph.nodes[n].color < color)
-	// 		{
-	// 			std::cout << "[" << _graph.nodes[n].index << "] => ";
-	// 			if (!fortest)
-	// 			{
-	// 				index = _graph.nodes[n].index;
-	// 				fortest = true;
-	// 			}
-	// 			color = _graph.nodes[n].color;
-	// 			current = _graph.nodes[n].index;
-	// 		}
-	// 	}
-	// }
-	// std::cout << "path size : " << path.size() << std::endl;
-	Position printcurrent;
-	index_to_coor(current, printcurrent.x, printcurrent.y, _graph.getMapWidth());
-	// std::cout << "i => " << i << "; current (" << printcurrent.x << "," << printcurrent.y << ") ;";
-	index_to_coor(path[i], pos.x, pos.y, _graph.getMapWidth());
-	// std::cout << " next (" << pos.x << "," << pos.y << ") ;";
-	srand (time(NULL));
-	// double  test = 0.5 + (rand() % 5) / 10;
-	speed = 0.5 +  abs(_heatmap[pos.x][pos.y].total_cars) * 0.5;
-	// speed = 1;
-	std::cout << "_heatmap[pos.x][pos.y].total_cars : " << _heatmap[pos.x][pos.y].total_cars << std::endl;
-	std::cout << " speed : " << speed << std::endl;
-	i++;
-	return (pos);
+	return carNum;
 }
 
-void			Ai::bfs(Position &dest, Position &start, std::vector<int> &path)
+double	Ai::node_weight(Position pos, Position dest, Position mapSquare)
+{
+	return cost(_heatmap[mapSquare.x][mapSquare.y].total_cars);
+}
+
+Position		Ai::where_to(Position pos, Position dest, double &speed)
+{
+	std::vector<int> path;
+	this->bfs(dest, pos, path);
+	Position next;
+	
+	if (path.size() == 0)
+	{
+		speed = 1;
+		return pos;
+	}
+	
+	index_to_coor(path[0], next.x, next.y, _heatmap.size());
+	speed = cost(_heatmap[next.x][next.y].total_cars);
+	return next;
+}
+
+void			Ai::bfs(const Position& dest, const Position& start, std::vector<int>& path)
 {
 
-	Map					mymap = this->_heatmap;
-	int					width = _graph.getMapWidth();
-	int					height = _graph.getMapHeight();
-	std::vector<bool>	visited(width * height);
-	int					s;
-	int					level = 0;
+	Map mymap = this->_heatmap;
+	int width = _graph.getMapWidth();
+	int height = _graph.getMapHeight();
+	std::vector<bool> visited(width * height);
+	int s;
+	int level = 0;
 
 	for (int i = 0; i < visited.size();i++)
 		visited[i] = false;
-	// for (auto& b : visited)
-		// b = false;
 
 	std::queue<int>		queue;
 	/* launching the bfs from the end to get the next node */
@@ -131,7 +90,7 @@ void			Ai::bfs(Position &dest, Position &start, std::vector<int> &path)
 		for (auto& n : (_graph.getNode(current)).adjacency_list)
 		{
 			// std::cout << "parent color : " << color << " n color : " << _graph.nodes[n].color << std::endl;
-			if ((_graph._nodes)[n].color <= min)
+			if ((_graph._nodes)[n].color < min)
 			{
 				min = (_graph._nodes)[n].color;
 				index = n;

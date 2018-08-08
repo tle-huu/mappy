@@ -1,5 +1,4 @@
-#ifndef GRAPH_CLASS_HPP
-# define GRAPH_CLASS_HPP
+#pragma once
 
 # include "mappy_client.hpp"
 # include <vector>
@@ -68,5 +67,3 @@ class Graph
 };
 
 // std::ostream & operator<<( std::ostream & o, Graph const & rhs);
-
-#endif
