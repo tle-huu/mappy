@@ -11,9 +11,6 @@ Graph::Graph(Map & map)
 	_mapHeight = map[0].size();
 	_vertexNumber = _mapHeight * _mapWidth;
 
-	std::cout << _mapWidth << " -- " << _mapHeight << std::endl;
-	std::cout << "vertex number : " << _vertexNumber;
-
 	this->_nodes.resize(_vertexNumber);
 	// this->_graph.resize(_vertexNumber);
 

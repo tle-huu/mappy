@@ -24,15 +24,11 @@ Position		Ai::where_to(Position pos, Position dest, double &speed)
 	static std::vector<int> 		path;
 	static int 				i = 0;
 
-	std::cout << dest.x << " " << dest.y << std::endl;
-	std::cout << "current : " << current << std::endl;
-
 	/* calculating best path */
 	if (i == path.size())
 		i = 0;
-	if (i == 0)
+	if (i == 0 && path.size() == 0)
 		this->bfs(dest, pos, path);
-	std::cout << "after bfs" << std::endl;
 	// for (auto& n : _graph.getNode(current).adjacency_list)
 	// {
 	// 	if (color < 0 || _graph.nodes[n].color < color)
@@ -66,13 +62,18 @@ Position		Ai::where_to(Position pos, Position dest, double &speed)
 	// 		}
 	// 	}
 	// }
-	std::cout << "path size : " << path.size() << std::endl;
+	// std::cout << "path size : " << path.size() << std::endl;
 	Position printcurrent;
 	index_to_coor(current, printcurrent.x, printcurrent.y, _graph.getMapWidth());
-	std::cout << "i => " << i << "; current (" << printcurrent.x << "," << printcurrent.y << ") ;";
+	// std::cout << "i => " << i << "; current (" << printcurrent.x << "," << printcurrent.y << ") ;";
 	index_to_coor(path[i], pos.x, pos.y, _graph.getMapWidth());
-	std::cout << " next (" << pos.x << "," << pos.y << ") ;";
-	speed = 1;
+	// std::cout << " next (" << pos.x << "," << pos.y << ") ;";
+	srand (time(NULL));
+	// double  test = 0.5 + (rand() % 5) / 10;
+	speed = 0.5 +  abs(_heatmap[pos.x][pos.y].total_cars) * 0.5;
+	// speed = 1;
+	std::cout << "_heatmap[pos.x][pos.y].total_cars : " << _heatmap[pos.x][pos.y].total_cars << std::endl;
+	std::cout << " speed : " << speed << std::endl;
 	i++;
 	return (pos);
 }
@@ -96,14 +97,12 @@ void			Ai::bfs(Position &dest, Position &start, std::vector<int> &path)
 	/* launching the bfs from the end to get the next node */
 	s = coord_to_index(dest.x, dest.y, width, height);
 
-	std::cout << "starting node : ( " << dest.x << "," << dest.y << ")" << s << std::endl;
 	visited[s] = true;
 	queue.push(s);
 	(this->_graph.getNode(s)).color = level;
 	while (!queue.empty())
 	{
 		s = queue.front();
-		std::cout << "icibfs0" << std::endl;
 		queue.pop();
 		level = this->_graph.getNode(s).color;
 		for (auto& n : (_graph.getNode(s)).adjacency_list)
@@ -140,9 +139,8 @@ void			Ai::bfs(Position &dest, Position &start, std::vector<int> &path)
 		}
 		path.push_back(index);
 		current = index;
-		std::cout << "[" << index << "] => ";
+		// std::cout << "[" << index << "] => ";
 	}
-	std::cout << "ending bfs : " << path.size() << std::endl;;
 	// sleep(3);
 	return ;
 }

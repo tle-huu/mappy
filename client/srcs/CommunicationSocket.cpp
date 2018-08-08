@@ -57,39 +57,50 @@ std::string			CommunicationSocket::read(void) const
 	if ((ret = recv(this->_socket, buffer, BUFF_SIZE - 1, 0)) < 0)
 		throw("CommunicationSocket:get_datagram(): recv error\n");
 	buffer[ret] = 0;
-	std::cout << "I have read " << ret << " bytes [" << buffer << "]\n";
+	// std::cout << "I have read " << ret << " bytes [" << buffer << "]\n";
 	return (std::string(buffer));
 }
 
 /* the private get_datagram has to be rewritten depending on the format of a datagram */
 
-void				CommunicationSocket::get_datagram(void)
+
+bool				CommunicationSocket::get_datagram(void)
 {
 	Datagram			datagram;
 	std::size_t			spliter;
 	std::string			raw;
+	bool				hasok = false;
 
 	raw = this->read();
 	std::stringstream ss(raw);
-
 	for (std::string line; std::getline(ss, line);)
 	{
-		std::cout << "raw_message : [" << line << "]" << std::endl;
 		if ((spliter = line.find(" ")) == std::string::npos)
-			throw(std::runtime_error("CommunicationSocket(): get_datagram line.find error"));
-		std::cout << " spliter : " << spliter << std::endl;
+		{
+			std::cout << "CommunicationSocket(): get_datagram line.find error" << std::endl;
+			return false;
+		}
 		datagram.setHeader(line.substr(0, spliter));
 		datagram.setMessage(line.substr(spliter));
-		std::cout << datagram.getHeader() << "| === |" << datagram.getMessage() << std::endl;
-		try
+		// std::cout << datagram.getHeader() << "| === |" << datagram.getMessage() << std::endl;
+		if (datagram.getHeader() == "ok")
 		{
-			this->_datagram_stack.push(datagram);
+			std::cout << KYEL << " OK " << KNRM << std::endl;
+			hasok = true;
 		}
-		catch (std::exception &e)
+		else
 		{
-			std::cout << "CommunicationSocket::getDatagram(): " << e.what() << std::endl;
+			try
+			{
+				this->_datagram_stack.push(datagram);
+			}
+			catch (std::exception &e)
+			{
+				std::cout << "CommunicationSocket::getDatagram(): " << e.what() << std::endl;
+			}
 		}
 	}
+	return hasok;
 }
 
 void	CommunicationSocket::get_peer(std::string data, Map &map) const
@@ -150,7 +161,7 @@ void		CommunicationSocket::send_datagram(std::string header, std::string message
 void		CommunicationSocket::send_datagram(Datagram const & datagram) const
 {
 	std::string			data(datagram.getHeader() + datagram.getMessage());
-
+	// std::cout << "sending datagram : [" << data << "]" << std::endl;;
 	if (send(this->_socket, data.c_str(), data.length(), 0) < 0)
 		throw("CommunicationSocket:send_datagram(): send error\n");
 }
@@ -237,8 +248,6 @@ Map		CommunicationSocket::get_first_info(Map &map, Position& start, Position &en
 		ss >> header >> id >> x >> y;
 		map[x][y].total_cars++;
 	};
-
-
 	while (!done)
 	{
 		raw = this->read();
@@ -292,7 +301,7 @@ bool		CommunicationSocket::get_datagram(Datagram & datagram)
 	{
 		if (!this->_datagram_stack.empty())
 		{
-			this->_datagram_stack.top();
+			datagram = this->_datagram_stack.top();
 			this->_datagram_stack.pop();
 			return (true);
 		}
@@ -326,18 +335,11 @@ void				CommunicationSocket::wait_for_move(void)
 	FD_COPY(&_rfds, &copy);
 
 	/* Need to think about the structure, multithreaded or not */
-	std::cout << "Entering move" << std::endl;
-	while (!moved && select(_socket + 1, &_rfds, NULL, NULL, &_tv) >= 0)
+	while (!moved && select(_socket + 1, &_rfds, NULL, NULL, NULL) >= 0)
 	{
 		if (FD_ISSET(_socket, &copy))
 		{
-			this->get_datagram();
-			data = this->_datagram_stack.top();
-			if (data.getHeader() == "ok")
-			{
-				moved = true;
-				this->_datagram_stack.pop();
-			}
+			moved = this->get_datagram();
 			FD_ZERO(&_rfds);
 			FD_COPY(&copy, &_rfds);
 		}

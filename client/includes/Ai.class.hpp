@@ -8,8 +8,8 @@
 class Ai
 {
 	private:
-		Map&		_heatmap;
-		Graph		_graph;
+		const Map&		_heatmap;
+		Graph			_graph;
 		Ai();
 
 	public:

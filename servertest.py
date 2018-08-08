@@ -1,17 +1,32 @@
 import socket
 import sys
 import time
+import random
+
+def choose():
+    n = random.randint(0, 10)
+    if n < 2:
+        return 0
+    return 1
 
 def send_map(conn):
-    conn.sendall("msz 10 5\n")
-    conn.sendall("bct 0 0 1\n")
-    conn.sendall("bct 0 1 0\n")
-    conn.sendall("bct 1 1 0\n")
-    conn.sendall("bct 1 0 0\n")
-    conn.sendall("ppo 1 0\n")
-    conn.sendall("des 0 1\n")
+    conn.sendall("WELCOME\n")
     time.sleep(1)
+    conn.sendall("msz 4 4\n")
+    for i in range(4):
+        for j in range(4):
+            msg = "bct "
+            msg += str(i) + " " + str(j) + " " + str(choose()) + "\n"
+            conn.sendall(msg)
+
+    conn.sendall("ppo 0 0\n")
+    conn.sendall("des 3 3\n")
     conn.sendall("done\n")
+    time.sleep(1)
+    conn.sendall("pnw 1 1\n")
+    conn.sendall("pnw 0 0\n")
+    conn.sendall("done\n")
+    time.sleep(1)
     conn.sendall("start\n")
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)

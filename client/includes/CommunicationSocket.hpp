@@ -50,7 +50,7 @@ class CommunicationSocket
 		CommunicationSocket();
 
 		std::string		read(void) const;
-		void			get_datagram(void);
+		bool			get_datagram(void);
 		void			disconnect();
 		void			get_peer(std::string, Map &) const;
 		void			get_peers(Map &map) const;
@@ -66,6 +66,7 @@ class CommunicationSocket
 		void			wait_for_game(void) const;
 		void			wait_for_move(void);
 		bool			get_datagram(Datagram & datagram);
+
 };
 
 #endif

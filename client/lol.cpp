@@ -65,7 +65,6 @@ int main(__attribute__((unused)) int argc, __attribute__((unused)) char *argv[])
 
 int main(int argc, char *argv[])
 {
-
 	if (argc != 3)
 		return 1;
 	Car car(argv[1], std::atoi(argv[2]));
