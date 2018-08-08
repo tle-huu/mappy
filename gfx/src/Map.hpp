@@ -24,6 +24,7 @@ class	Map
 	int _width;
 	int _height;
 
+	std::unordered_map<int, glm::ivec2> _carPositions;
 	std::list<MovingCar> _movingCars;
 	std::vector<int> _staticCars;
 	std::vector<int> _traffic;

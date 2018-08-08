@@ -54,12 +54,15 @@ Map::Map(int fd) : _serverMonitor(fd)
 
 		MovingCar car;
 		double time;
+		int id;
 
-		ss >> car.from.x >> car.from.y >> car.to.x >> car.to.y >> car.time;
+		ss >> car.from.x >> car.from.y >> car.to.x >> car.to.y >> car.time >> id;
 
 		assert(car.from.x >= 0 && car.from.x < _width && car.from.y >= 0 && car.from.y < _height);
 		assert(car.to.x >= 0 && car.to.x < _width && car.to.y >= 0 && car.to.y < _height);
-		
+
+		_carPositions[id] = car.to;
+
 		car.timeLeft = car.time;
 		_staticCars[car.from.x + car.from.y * _width]--;
 		_movingCars.push_back(car);
@@ -71,10 +74,11 @@ Map::Map(int fd) : _serverMonitor(fd)
 		std::stringstream ss(data);
 
 		int x, y;
+		int id;
 
-		ss >> x >> x >> y;
+		ss >> id  >> x >> y;
 
-		std::cout << x << " " << y << std::endl;
+		_carPositions[id] = glm::ivec2(x, y);
 		_staticCars[x + y * _width]++;
 		_traffic[x + y * _width]++;
 	};
@@ -83,9 +87,12 @@ Map::Map(int fd) : _serverMonitor(fd)
 		std::stringstream ss(data);
 
 		int x, y;
+		int id;
 
-		ss >> x >> y;
+		ss >> x >> y >> id;
 
+		x = _carPositions[id].x;
+		y = _carPositions[id].y;
 		_staticCars[x + y * _width]--;
 		_traffic[x + y * _width]--;
 	};
