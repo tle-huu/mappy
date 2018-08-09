@@ -4,6 +4,12 @@
 
 int			coord_to_index(int x, int y, int width, int height)
 {
+	if (x > width || y > height)
+	{
+		std::cout << KRED << "COOR TO INDEX POSITION OUT OF MAP SIZE" << KNRM << std::endl;
+		exit(1);
+	}
+
 	return (x % width + height * y);
 }
 

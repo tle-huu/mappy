@@ -213,6 +213,7 @@ Map		CommunicationSocket::get_first_info(Map &map, Position& start, Position &en
 			std::cout << "No size\n";
 			exit(1);
 		}
+		std::cout << "je suis en " << data << std::endl;
 		std::string			header;
 		std::stringstream	ss(data);
 		int					id;
@@ -227,6 +228,7 @@ Map		CommunicationSocket::get_first_info(Map &map, Position& start, Position &en
 			std::cout << "No size\n";
 			exit(1);
 		}
+		std::cout << "je dois aller en " << data << std::endl;
 		std::string			header;
 		std::stringstream	ss(data);
 

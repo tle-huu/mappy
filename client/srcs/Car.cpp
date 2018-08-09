@@ -1,4 +1,26 @@
 #include "Car.hpp"
+#include "utils.hpp"
+
+void display_map2(Map & map)
+{
+	std::cout << "I am entering display map\n\n";
+	for (int i = 0; i < map.size(); i++)
+	{
+		for (int j = 0; j < map[i].size(); j++)
+		{
+			std::cout << "[" << i << "," << j << ", " << map[i][j].is_road << "] " \
+			 << "(";
+			if (map[i][j].is_road)
+				std::cout << KGRN;
+			else
+				std::cout << KRED;
+			std::cout << coord_to_index(i, j, map.size(), map[0].size())<< ")"<< "    ";
+			std::cout << KNRM;
+		 }
+		std::cout << std::endl;
+	}
+	std::cout << "end display map\n";
+}
 
 Car::Car(const char* addr, int port) : _communicator(addr, port)
 {
@@ -12,6 +34,7 @@ Car::Car(const char* addr, int port) : _communicator(addr, port)
 		 // std::cout << <<
 	 };
 	_communicator.get_first_info(_map, _current_pos, _destination);
+	display_map2(_map);
 	_ai = new Ai(_map);
 	_communicator.wait_for_game();
 }
