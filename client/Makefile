@@ -19,6 +19,7 @@ SRCS = 	srcs/CommunicationSocket.cpp \
 		srcs/Ai.class.cpp		\
 		srcs/Car.cpp			\
 		srcs/get_next_line.cpp	\
+		srcs/AStar.cpp \
 		lol.cpp
 
 INCLUDES = includes/

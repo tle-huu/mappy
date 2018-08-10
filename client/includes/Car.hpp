@@ -1,6 +1,5 @@
 #pragma once
 
-#include "mappy_client.hpp"
 #include "Ai.class.hpp"
 #include "CommunicationSocket.hpp"
 #include <unordered_map>

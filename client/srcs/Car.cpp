@@ -34,7 +34,6 @@ Car::Car(const char* addr, int port) : _communicator(addr, port)
 		 // std::cout << <<
 	 };
 	_communicator.get_first_info(_map, _current_pos, _destination);
-	display_map2(_map);
 	_ai = new Ai(_map);
 	_communicator.wait_for_game();
 }
