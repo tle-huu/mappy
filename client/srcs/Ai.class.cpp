@@ -97,11 +97,10 @@ Position		Ai::where_to(Position pos, Position dest, double &speed)
 	// while (path[0] < 0)
 		// path.erase(path.begin());
 	// path.erase( remove( path.begin(), path.end(), -1 ), path.end() );
-	next_index = start;
 	int test = 0;
+	next_index = start;
 	while (end != start)
 	{
-		std::cout << end << " <= ";
 		next_index = end;
 		end = path[end];
 	}
