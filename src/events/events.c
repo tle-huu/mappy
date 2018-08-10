@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/21 10:48:06 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/07 19:42:04 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/09 22:27:39 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static int32_t	lookup(int32_t cl)
 			ft_strcpy(pl->message, (temp + 1));
 			*temp = '\0';
 		}
-		while (i < NCOMMANDS)
+		while (i < 2)
 		{
 			//printf("  compare to : |%s|\n", eventlookup[i].str);
 			if (ft_strequ(*split, eventlookup[i].str))
@@ -65,8 +65,8 @@ static int32_t	lookup(int32_t cl)
 			}
 			i++;
 		}
-		if (i == NCOMMANDS)
-			event.fail(cl);
+//		if (i == NCOMMANDS)
+//			event.fail(cl);
 		free(*split);
 		(split)++;
 	}
