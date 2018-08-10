@@ -45,7 +45,7 @@ double	Ai::cost(int carNum)
 		std::cout << KRED << "OUPS : " << carNum << KNRM;
 		exit(1);
 	}
-	return 10 * carNum + 1;
+	return carNum + 1;
 }
 
 Position	Ai::where_to(Position pos, Position dest, double &speed)
@@ -66,7 +66,7 @@ Position	Ai::where_to(Position pos, Position dest, double &speed)
 		Position p_dest = {dest % width, dest / width};
 
 		int distance =  std::abs(p_loc.x - p_dest.x) + std::abs(p_loc.y - p_dest.y);
-		return cost(0) * (double)distance;
+		return cost(_traffic[p_loc.x][p_loc.y].total_cars) * (double)distance;
 	};
 
 	auto index = [width](size_t x, size_t y){ return x + y * width; };
@@ -83,8 +83,8 @@ Position	Ai::where_to(Position pos, Position dest, double &speed)
 
 
 	Position next = { next_indx % (int)_traffic.size(), next_indx / (int)_traffic.size() };
-	speed = 1;
-	// speed = cost(_traffic[next.x][next.y].total_cars);
+	// speed = 1;
+	speed = cost(_traffic[next.x][next.y].total_cars * 0.2);
 	return next;
 }
 
