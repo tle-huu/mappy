@@ -107,15 +107,14 @@ std::vector<int>	Ai::bfs2(int start, int end)
 			}
 		}
 	}
-	int i = start;
+	int i = end;
 	std::cout << "ici start : " <<start << std::endl;
 	std::cout << "ici end : " << end << std::endl;
-	while (i != end)
+	while (i != start)
 	{
 		std::cout << i << " <= ";
 		i = came_from[i];
 	}
-	exit(1);
 	return (came_from);
 }
 
