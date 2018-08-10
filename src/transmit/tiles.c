@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/17 19:09:02 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/06 20:29:17 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/09 21:43:04 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@ static int32_t		mapsize(void *trans)
 
 	num = ft_itoa(board.data.x + 1);
 	server.sendbuf = strcat(server.sendbuf, "msz ");
-	server.sendbuf = ft_strfreecat(server.sendbuf, num);
+	server.sendbuf = strcat(server.sendbuf, num);
 	server.sendbuf = strcat(server.sendbuf, " ");
 	num = ft_itoa(board.data.y + 1);
-	server.sendbuf = ft_strfreecat(server.sendbuf, num);
+	server.sendbuf = strcat(server.sendbuf, num);
 	server.sendbuf = strcat(server.sendbuf, "\n");
 	if (transmit.flag == GRAPHICAL)
 		communication.graphical(trans, server.sendbuf);
@@ -58,13 +58,13 @@ static int32_t all(void *trans)
 		{
 			server.sendbuf = strcat(server.sendbuf, "bct ");
 			num = ft_itoa(x);
-			server.sendbuf = ft_strfreecat(server.sendbuf, num);
+			server.sendbuf = strcat(server.sendbuf, num);
 			server.sendbuf = strcat(server.sendbuf, " ");
 			num = ft_itoa(y);
-			server.sendbuf = ft_strfreecat(server.sendbuf, num);
+			server.sendbuf = strcat(server.sendbuf, num);
 			server.sendbuf = strcat(server.sendbuf, " ");
 			num = ft_itoa((board.data.tiles[x]).column[y].state);
-			server.sendbuf = ft_strfreecat(server.sendbuf, num);
+			server.sendbuf = strcat(server.sendbuf, num);
 			server.sendbuf = strcat(server.sendbuf, "\n");
 			if (transmit.flag == GRAPHICAL)
 				communication.graphical(trans, server.sendbuf);

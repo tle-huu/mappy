@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/04 16:32:22 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/07 16:58:47 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/09 21:44:50 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ static int32_t	connect_nbr(void *object)
 	bzero(server.sendbuf, 1024);
 	vl = (t_vehicle *)((t_event *)object)->entity;
 	if (!(num = ft_itoa(server.simenv.connected_vehicles))
-		|| !(server.sendbuf = ft_strfreecat(server.sendbuf, num))
+		|| !(server.sendbuf = strcat(server.sendbuf, num))
 		|| !(server.sendbuf = strcat(server.sendbuf, "\n"))
 		|| (communication.outgoing(vl->c_fd, server.sendbuf) == EXIT_FAILURE))
 		return (EXIT_FAILURE);

@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/05 10:45:14 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/09 20:45:43 by psprawka         ###   ########.fr       */
+/*   Updated: 2018/08/09 21:44:35 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,11 +130,11 @@ static int32_t	send_dimensions(int32_t cl)
 	nlen += 2;
 	if (!(num = ft_itoa(board.data.x + 1))
 		|| !(str = (char *)calloc(1, (nlen + 1)))
-		|| !(str = ft_strfreecat(str, num)))
+		|| !(str = strcat(str, num)))
 		return (EXIT_FAILURE);
 	if (!(str = strcat(str, " "))
 		|| !(num = ft_itoa(board.data.y + 1))
-		|| !(str = ft_strfreecat(str, num))
+		|| !(str = strcat(str, num))
 		|| !(str = strcat(str, "\n"))
 		|| (communication.outgoing(cl, str) == EXIT_FAILURE))
 		return (EXIT_FAILURE);

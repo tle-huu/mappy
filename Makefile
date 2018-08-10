@@ -100,7 +100,6 @@ all: $(SRV)
 
 libft: $(LIB)
 
-
 debug: CFLAGS += -g -fsanitize=address -fsanitize=null -DDEBUG
 debug: $(SRV)
 
@@ -112,6 +111,8 @@ $(SRV): $(OBJSRC)
 	@ echo "$(GREEN)$(SRV) Made$(RES)"
 
 $(LIB):
+	@ git submodule init
+	@ git submodule update
 	make -C lib/
 
 $(LIBDEBUG):
