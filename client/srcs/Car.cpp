@@ -14,8 +14,6 @@ void display_map2(Map & map)
 				std::cout << KGRN;
 			else
 				std::cout << KRED;
-			std::cout << coord_to_index(i, j, map.size(), map[0].size())<< ")"<< "    ";
-			std::cout << KNRM;
 		 }
 		std::cout << std::endl;
 	}
@@ -31,7 +29,6 @@ Car::Car(const char* addr, int port) : _communicator(addr, port)
 		 ss >> from.x >> from.y >> to.x >> to.y;
 		 _map[from.x][from.y].total_cars -= 1;
 		 _map[to.x][to.y].total_cars += 1;
-		 // std::cout << <<
 	 };
 	_communicator.get_first_info(_map, _current_pos, _destination);
 	_ai = new Ai(_map);

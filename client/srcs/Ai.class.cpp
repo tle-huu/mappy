@@ -40,7 +40,12 @@ Ai::~Ai() {}
 
 double	Ai::cost(int carNum)
 {
-	return carNum * 10 + 1;
+	if (carNum < 0)
+	{
+		std::cout << KRED << "OUPS : " << carNum << KNRM;
+		exit(1);
+	}
+	return 10 * carNum + 1;
 }
 
 Position	Ai::where_to(Position pos, Position dest, double &speed)
@@ -76,10 +81,10 @@ Position	Ai::where_to(Position pos, Position dest, double &speed)
 		end_indx = path[end_indx];
 	}
 
-		
-	Position next = { next_indx % (int)_traffic.size(), next_indx / (int)_traffic.size() };
 
-	speed = cost(_traffic[next.x][next.y].total_cars);
+	Position next = { next_indx % (int)_traffic.size(), next_indx / (int)_traffic.size() };
+	speed = 1;
+	// speed = cost(_traffic[next.x][next.y].total_cars);
 	return next;
 }
 

@@ -179,7 +179,7 @@ Map		CommunicationSocket::get_first_info(Map &map, Position& start, Position &en
 	std::string					header;
 	std::string					raw;
 	std::vector<std::string>	tokens;
-	bool						done = false;
+	int							done = 0;
 	bool						gotsize = false;
 
 	this->_events["msz"] = [&map, &gotsize](std::string data)
@@ -210,7 +210,6 @@ Map		CommunicationSocket::get_first_info(Map &map, Position& start, Position &en
 		Square			square;
 
 		ss >> header >> x >> y >> square.is_road;
-		// std::cout << "x : " << x << " y : " << y << " square : "<< square.is_road << std::endl;
 		square.total_cars = 0;
 		map[x][y] = square;
 	};
@@ -236,7 +235,7 @@ Map		CommunicationSocket::get_first_info(Map &map, Position& start, Position &en
 			std::cout << "No size\n";
 			exit(1);
 		}
-		std::cout << "je dois aller en " << data << std::endl;
+
 		std::string			header;
 		std::stringstream	ss(data);
 
@@ -256,9 +255,10 @@ Map		CommunicationSocket::get_first_info(Map &map, Position& start, Position &en
 		int					id;
 
 		ss >> header >> id >> x >> y;
+		std::cout << "we should do this testing on a map with like size 5 : "<< map[x][y].total_cars << std::endl;
 		map[x][y].total_cars++;
 	};
-	while (!done)
+	while (done != 2)
 	{
 		raw = this->read();
 		std::stringstream ss(raw);
@@ -273,7 +273,7 @@ Map		CommunicationSocket::get_first_info(Map &map, Position& start, Position &en
 			else
 			{
 				std::cout << KRED << "get_first_info(): Should not go here : " << KNRM << KYEL << line << KNRM << std::endl;
-				done = true;
+				done++;
 			}
 		}
 		// std::stringstream ss(raw);

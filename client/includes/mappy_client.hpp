@@ -22,7 +22,7 @@ struct	Position
 struct	Square
 {
 	bool is_road;
-	int total_cars;
+	int total_cars = 0;
 };
 
 typedef std::vector<std::vector<Square> > Map;
