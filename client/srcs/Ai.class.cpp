@@ -28,10 +28,13 @@ Ai::Ai(Map & map) : _heatmap(map), _graph()
 				// _graph2[i][j] = 1;
 				if (i + 1 < mapWidth && _heatmap[i + 1][j].is_road)
 					_graph2[index][coord_to_index(i + 1, j, mapWidth, mapHeight)] = 1;
+
 				if (i - 1 >= 0 && _heatmap[i - 1][j].is_road)
 					_graph2[index][coord_to_index(i - 1, j,  mapWidth, mapHeight)] = 1;
+
 				if (j + 1 < mapHeight && _heatmap[i][j + 1].is_road)
 					_graph2[index][coord_to_index(i, j + 1, mapWidth, mapHeight)] = 1;
+
 				if (j - 1 >= 0 && _heatmap[i][j - 1].is_road)
 					_graph2[index][coord_to_index(i, j - 1, mapWidth, mapHeight)] = 1;
 				// this->addNode(i, j, map[i][j]);
@@ -77,49 +80,34 @@ Position		Ai::where_to(Position pos, Position dest, double &speed)
 	std::vector<int> path;
 	int start = coord_to_index(pos.x, pos.y, _heatmap.size(), _heatmap[0].size());
 	int end = coord_to_index(dest.x, dest.y, _heatmap.size(), _heatmap[0].size());
-	std::cout << start << " --- > " << end << std::endl;
 
-	std::cout << KBLU << _heatmap[dest.x][dest.y].is_road << KNRM << std::endl;
-
-	std::cout << start << " --> " << end << std::endl;
 	Position	next;
 	int			next_index;
 
 	// path = this->bfs2(dest, pos, path);
-	// path = this->bfs2(start, end);
-	path = this->a_star_search(start, end, h1);
-	if (path.size() == 0)
+	if (start == end)
 	{
-		speed = 1;
-		sleep(50);
+		std::cout << KGRN << "DESTIANTION REACHED" << std::endl;
+		sleep(10);
 		return pos;
 	}
+	// path = this->bfs2(start, end);
+	path = this->a_star_search(start, end, h1);
 	std::cout << std::endl;
 	// while (path[0] < 0)
 		// path.erase(path.begin());
-	path.erase( remove( path.begin(), path.end(), -1 ), path.end() );
+	// path.erase( remove( path.begin(), path.end(), -1 ), path.end() );
 	next_index = start;
-	std::cout << end << " <= ";
 	int test = 0;
-	while (end != start && test < 10)
+	while (end != start)
 	{
 		std::cout << end << " <= ";
 		next_index = end;
 		end = path[end];
-		test++;
-	}
-	if (test == 100)
-	{
-		int end2 = coord_to_index(dest.x, dest.y, _heatmap.size(), _heatmap[0].size());
-		int start2 = coord_to_index(pos.x, pos.y, _heatmap.size(), _heatmap[0].size());
-
-		std::cout << KRED << "TEST CRASH " << KNRM << std::endl;
-		std::cout << start << " ---2> " << end2 << std::endl;
-		exit(1);
 	}
 	std::cout << "next move : " << next_index << std::endl;
 	index_to_coor(next_index, next.x, next.y, _heatmap.size());
-	speed = 1.5;
+	speed = 0.5;
 	// speed = cost(_heatmap[next.x][next.y].total_cars);
 	return next;
 }
@@ -146,15 +134,14 @@ std::vector<int>	Ai::bfs2(int start, int end)
 			}
 		}
 	}
-	int i = start;
+	int i = end;
 	std::cout << "ici start : " <<start << std::endl;
 	std::cout << "ici end : " << end << std::endl;
-	while (i != end)
+	while (i != start)
 	{
 		std::cout << i << " <= ";
 		i = came_from[i];
 	}
-	exit(1);
 	return (came_from);
 }
 

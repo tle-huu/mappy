@@ -21,10 +21,18 @@ CommunicationSocket::CommunicationSocket(const char* addr, int port) : _addr(add
 		throw(std::runtime_error("CommunicationSocket(): getprotobyname error"));
 	if ((this->_socket = socket(PF_INET, SOCK_STREAM, proto->p_proto)) < 0)
 		throw(std::runtime_error("CommunicationSocket(): socket error"));
-	sin.sin_family = AF_INET;
-	sin.sin_port = htons(port);
-	sin.sin_addr.s_addr = (std::string(addr) == "localhost") ? inet_addr("127.0.0.1")
-								: inet_addr(addr);
+	try
+	{
+		sin.sin_family = AF_INET;
+		sin.sin_port = htons(port);
+		sin.sin_addr.s_addr = (std::string(addr) == "localhost") ? inet_addr("127.0.0.1")
+									: inet_addr(addr);
+	}
+	catch (...)
+	{
+		std::cout << "Communincaton socket sin.sin" << std::endl;
+		exit(2);
+	}
 	if (connect(this->_socket, (const struct sockaddr *)&sin, sizeof(sin)) == -1)
 		throw(std::runtime_error("CommunicationSocket(): connect error"));
 	this->_connected = true;
