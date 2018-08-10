@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/05 10:45:14 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/07 01:34:46 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/09 20:45:43 by psprawka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,6 @@ __attribute__((constructor))void	construct_board(void)
 
 static void		_generate_random_board(void)
 {
-//	int32_t	fill;
 	int32_t x;
 	int32_t y;
 
@@ -43,11 +42,7 @@ static void		_generate_random_board(void)
 		y = 0;
 		while (y <= board.data.y)
 		{
-//			fill = arc4random_uniform((uint32_t)10);
-//			if (fill < 2)
-//				(board.data.tiles[x]).column[y].state = 0;
-//			else
-				(board.data.tiles[x]).column[y].state = 1;
+			(board.data.tiles[x]).column[y].state = 1;
 			y++;
 		}
 		x++;
@@ -70,29 +65,30 @@ static int32_t	new(void)
 			return (EXIT_FAILURE);
 		x++;
 	}
-	_generate_random_board();
+	if (server.opts.boardType == XYMAP)
+		_generate_random_board();
 	return (EXIT_SUCCESS);
 }
 
 static int32_t	_fill_board(int fd, char *line)
 {
-	int32_t x;
-	int32_t y;
+	int32_t i;
+	int32_t j;
 
-	x = 0;
-	while (x <= board.data.x)
+	i = board.data.y;
+	while (i > -1)
 	{
-		y = 0;
+		j = board.data.x;
 		if (get_next_line(fd, &line) != 1)
 			return (EXIT_FAILURE);
-		while (y <= board.data.y)
+		while (j > -1)
 		{
-			if (!line[y])
+			if (!line[i])
 				return (EXIT_FAILURE);
-			(board.data.tiles[x]).column[y].state = line[y] - 48;
-			y++;
+			(board.data.tiles[j]).column[i].state = line[j] - 48;
+			j--;
 		}
-		x++;
+		i--;
 	}
 	return (EXIT_SUCCESS);
 }
