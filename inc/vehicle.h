@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 15:30:42 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/07 01:32:09 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/10 13:34:41 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ typedef struct		s_vehiclepool
 typedef struct		s_vehicleplace
 {
 	void			(*onboard)(t_vehicle *);
-	void			(*advance)(t_vehicle *);
 	void			(*goal)(t_vehicle *);
 }					t_vehicleplace;
 

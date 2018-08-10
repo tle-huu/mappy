@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 22:58:22 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/09 23:33:29 by psprawka         ###   ########.fr       */
+/*   Updated: 2018/08/10 13:34:41 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ static void		goal(t_vehicle *vl);
 __attribute__((constructor))void	construct_vehicleplace(void)
 {
 	vehicle.place.onboard = &onboard;
-	vehicle.place.advance = &advance;
 	vehicle.place.goal = &goal;
 }
 
@@ -57,23 +56,5 @@ static void		onboard(t_vehicle *vl)
 		vl->location.orientation = 1 << (arc4random_uniform((uint32_t)3));
 		road = (board.data.tiles)[vl->location.x].column[vl->location.y].state;
 	}
-	board.setvehicle(vl);
-}
-
-static void		advance(t_vehicle *vl)
-{
-	board.removevehicle(vl);
-	if (vl->location.orientation & NORTH)
-		(vl->location.y == 0) ? vl->location.y = board.data.y + 1 :
-			(vl->location.y)--;
-	else if (vl->location.orientation & SOUTH)
-		(vl->location.y == board.data.y + 1) ? vl->location.y = 0 :
-			(vl->location.y)++;
-	else if (vl->location.orientation & WEST)
-		(vl->location.x == 0) ? vl->location.x = board.data.x + 1 :
-			(vl->location.x)--;
-	else if (vl->location.orientation & EAST)
-		(vl->location.x == board.data.x + 1) ? vl->location.x = 0 :
-			(vl->location.x)++;
 	board.setvehicle(vl);
 }
