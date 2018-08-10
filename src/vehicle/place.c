@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 22:58:22 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/10 13:34:41 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/10 13:38:42 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 #include "board.h"
 
 static void		onboard(t_vehicle *vl);
-static void		advance(t_vehicle *vl);
 static void		goal(t_vehicle *vl);
 
 __attribute__((constructor))void	construct_vehicleplace(void)
