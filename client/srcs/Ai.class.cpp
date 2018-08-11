@@ -66,12 +66,16 @@ Position	Ai::where_to(Position pos, Position dest, double &speed)
 		Position p_dest = {dest % width, dest / width};
 
 		int distance =  std::abs(p_loc.x - p_dest.x) + std::abs(p_loc.y - p_dest.y);
-		return cost(_traffic[p_loc.x][p_loc.y].total_cars) * (double)distance;
+		return cost(0) * (double)distance;
+	};
+
+	auto heuristic2 = [width, this](int loc, int dest)
+	{
+		return 0;
 	};
 
 	auto index = [width](size_t x, size_t y){ return x + y * width; };
 	std::vector<int> path = a_star(_graph, index(pos.x, pos.y), index(dest.x, dest.y), heuristic);
-
 	int start_indx = index(pos.x, pos.y);
 	int end_indx = index(dest.x, dest.y);
 	int next_indx;
@@ -80,11 +84,9 @@ Position	Ai::where_to(Position pos, Position dest, double &speed)
 		next_indx = end_indx;
 		end_indx = path[end_indx];
 	}
-
-
 	Position next = { next_indx % (int)_traffic.size(), next_indx / (int)_traffic.size() };
-	// speed = 1;
-	speed = cost(_traffic[next.x][next.y].total_cars * 0.2);
+	speed = 1;
+	// speed = cost(_traffic[next.x][next.y].total_cars * 0.2);
 	return next;
 }
 

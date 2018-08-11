@@ -38,7 +38,7 @@ CommunicationSocket::CommunicationSocket(const char* addr, int port) : _addr(add
 	this->_connected = true;
 	if (this->read() != "WELCOME\n")
 	{
-		std::cout << "\ncrash\n";
+		std::cout << "\ncrash trying to receive the welcome\n";
 		exit(1);
 	}
 	this->send_datagram("car", "\n");
