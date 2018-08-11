@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/05 10:45:14 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/10 19:38:50 by psprawka         ###   ########.fr       */
+/*   Updated: 2018/08/10 19:47:43 by psprawka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ static int32_t	new(void);
 static int32_t	load_file(void);
 static void		setvehicle(t_vehicle *pl);
 static void		removevehicle(t_vehicle *pl);
+static void	dump(void);
 
 __attribute__((constructor))void	construct_board(void)
 {
@@ -31,6 +32,7 @@ __attribute__((constructor))void	construct_board(void)
 	board.send_dimensions = &send_dimensions;
 	board.setvehicle = &setvehicle;
 	board.removevehicle = &removevehicle;
+	board.dump = &dump;
 }
 
 static void		_generate_random_board(void)
@@ -164,4 +166,44 @@ static void		removevehicle(t_vehicle *pl)
 	y = pl->location.y;
 	(((((board.data.tiles)[x]).column)[y]).vehicles)[pl->c_fd] = NULL;
 	ft_middel(&(PLAYERLIST), &(pl->tilecontainer));
+}
+
+static void		dump(void)
+{
+	int			fd;
+	int32_t		x;
+	int32_t		y;
+	char		*temp;
+	char		buff[1024] = {0};
+	size_t		len;
+
+	if ((fd = open("server.dump.map", O_RDWR | O_CREAT)) < 0)
+	{
+		printf("board.dump(): Failed to open file\n");
+		return ;
+	}
+
+	x = 0;
+	while (x <= board.data.x)
+	{
+		y = 0;
+		while (y <= board.data.y)
+		{
+			bzero(buff, 1024);
+			temp = ft_itoa(((board.data.tiles[x]).column[y]).vehicle_thoroughput);
+			len = strlen(temp);
+			strcpy(buff, temp);
+			strcat(buff, " ");
+			write(fd, buff, len + 1);
+			y++;
+		}
+		write(fd, "\n", 1);
+		x++;
+	}
+
+	if (close(fd) < 0)
+	{
+		printf("board.dump(): Failed to close file\n");
+		return ;
+	}
 }

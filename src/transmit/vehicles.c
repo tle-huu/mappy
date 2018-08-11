@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/19 15:41:24 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/09 21:42:26 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/10 17:24:19 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,13 @@ static int32_t _tileloc(t_vehicle *vl)
 	char *num;
 
 	num = ft_itoa(vl->location.x);
-	server.sendbuf = strcat(server.sendbuf, num);
-	server.sendbuf = strcat(server.sendbuf, " ");
+	if (((server.sendbuf = strcat(server.sendbuf, num)) == NULL)
+		|| ((server.sendbuf = strcat(server.sendbuf, " ")) == NULL))
+		return (EXIT_FAILURE);
 	num = ft_itoa(vl->location.y);
-	server.sendbuf = strcat(server.sendbuf, num);
-	server.sendbuf = strcat(server.sendbuf, " ");
+	if (((server.sendbuf = strcat(server.sendbuf, num)) == NULL)
+		|| ((server.sendbuf = strcat(server.sendbuf, " ")) == NULL))
+		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
 
@@ -54,11 +56,16 @@ static int32_t	exited(t_vehicle *vl)
 	char *num;
 
 	server.sendbuf = strcat(server.sendbuf, "pdi ");
-	_tileloc(vl);
+	if (_tileloc(vl) == EXIT_FAILURE)
+	{
+		bzero(server.sendbuf, server.nsend);
+		return (EXIT_FAILURE);
+	}
 	num = ft_itoa((int32_t)(vl->vehicle_id));
-	server.sendbuf = strcat(server.sendbuf, num);
-	server.sendbuf = strcat(server.sendbuf, "\n");
-	communication.graphical(NULL, server.sendbuf);
+	if (((server.sendbuf = strcat(server.sendbuf, num)) == NULL)
+		|| ((server.sendbuf = strcat(server.sendbuf, "\n")) == NULL)
+		|| (communication.graphical(NULL, server.sendbuf) == EXIT_FAILURE))
+		;
 	bzero(server.sendbuf, server.nsend);
 	return (EXIT_SUCCESS);
 }
@@ -67,8 +74,7 @@ static int32_t	datagram_pass(t_vehicle *vl)
 {
 	char	*num;
 
-	server.sendbuf = strcat(server.sendbuf, "mvd ");
-	server.sendbuf = strcat(server.sendbuf, vl->message);
+	server.sendbuf = strcat(server.sendbuf, server.recvbuf);
 	server.sendbuf = strcat(server.sendbuf, "\n");
 	communication.vehicles(vl, server.sendbuf, 0);
 	server.sendbuf[(strlen(server.sendbuf) - 1)] = ' ';

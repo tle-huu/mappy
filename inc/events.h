@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 15:58:08 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/05 23:55:40 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/10 17:18:35 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ typedef struct		s_events
 	t_eventpool		pool;
 	t_eventqueue	queue;
 	int32_t			(*lookup)(int32_t);
-	int32_t			(*add)(t_eventhold *, void *, int32_t);
+	int32_t			(*add)(t_eventhold *, void *);
 	void			(*removeall)(void *);
 	void			(*fail)(int32_t);
 	void			(*iswaiting)(t_vehicle *);

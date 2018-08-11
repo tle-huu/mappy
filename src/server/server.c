@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nkouris <nkouris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/04 22:43:47 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/09 22:27:38 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/10 18:37:45 by tle-huu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,47 +27,6 @@ void		__attribute((constructor))construct_server(void)
 	server.io = &io;
 	server.usagewarning = &warning;
 	server.new = &new;
-}
-
-static int32_t		initializers(void)
-{
-	if ((ft_socket.set() == EXIT_FAILURE)
-		|| (bind(ft_socket.sockfd, ((struct sockaddr *)&(ft_socket.address)),
-			sizeof(struct sockaddr_in)) < 0)
-		|| (listen(ft_socket.sockfd, 128) < 0)
-		|| (ft_socket.init_select() == EXIT_FAILURE)
-		|| (event.queue.new() == EXIT_FAILURE)
-		|| (event.pool.new() == EXIT_FAILURE)
-		|| (vehicle.pool.new() == EXIT_FAILURE)
-		|| (server.opts.boardType == XYMAP && board.new() == EXIT_FAILURE)
-		|| (server.opts.boardType == LOADMAP && board.load_file() == EXIT_FAILURE)
-		|| !(server.sendbuf = calloc(1, 1024)))
-		return (EXIT_FAILURE);
-	server.nsend = 1024;
-	return (EXIT_SUCCESS);
-}
-
-static int32_t		new(void)
-{
-	int32_t			ret;
-	t_timeval		*timeout;
-
-	ret = 0;
-	timeout = NULL;
-	if (initializers() == EXIT_FAILURE)
-		return (EXIT_FAILURE);
-	while ((select(ft_socket.nfds, ft_socket.input, NULL, NULL, timeout)) >= 0)
-	{
-	//	printf("\n[SELECT]\n  Body of Select\n");
-		event.queue.check();
-		if ((ret = server.io()) == EXIT_FAILURE)
-			printf("gameio failure\n");
-		time.settimer(&timeout);
-		FD_COPY(ft_socket.copy, ft_socket.input);
-	//	printf("\n[SELECT]\n  End of cycle\n");
-	}
-	//printf("EXIT\n");
-	return (EXIT_SUCCESS);
 }
 
 static inline int32_t	__attribute__((always_inline))known_socket(int32_t cl)
@@ -116,6 +75,53 @@ static int32_t		io(void)
 		i++;
 	}
 	//printf("Incoming processing done\n");
+	return (EXIT_SUCCESS);
+}
+
+static int32_t		initializers(void)
+{
+	if ((ft_socket.set() == EXIT_FAILURE)
+		|| (bind(ft_socket.sockfd, ((struct sockaddr *)&(ft_socket.address)),
+			sizeof(struct sockaddr_in)) < 0)
+		|| (listen(ft_socket.sockfd, 128) < 0)
+		|| (ft_socket.init_select() == EXIT_FAILURE)
+		|| (event.queue.new() == EXIT_FAILURE)
+		|| (event.pool.new() == EXIT_FAILURE)
+		|| (vehicle.pool.new() == EXIT_FAILURE)
+		|| (server.opts.boardType == XYMAP && board.new() == EXIT_FAILURE)
+		|| (server.opts.boardType == LOADMAP && board.load_file() == EXIT_FAILURE)
+		|| !(server.sendbuf = calloc(1, 1024)))
+		return (EXIT_FAILURE);
+	server.nsend = 1024;
+	return (EXIT_SUCCESS);
+}
+
+static int32_t		new(void)
+{
+	int32_t			ret;
+	t_timeval		*timeout;
+
+	ret = 0;
+	timeout = NULL;
+	if (initializers() == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	while ((select(ft_socket.nfds, ft_socket.input, NULL, NULL, timeout)) >= 0)
+	{
+	//	printf("\n[SELECT]\n  Body of Select\n");
+		event.queue.check();
+		if ((ret = server.io()) == EXIT_FAILURE)
+			printf("gameio failure\n");
+		time.settimer(&timeout);
+		FD_COPY(ft_socket.copy, ft_socket.input);
+		printf("\n[SELECT]\n  End of cycle\n");
+		if (server.flag == GAMEOVER)
+		{
+			board.dump();
+			break;
+		}
+
+	}
+	//printf("EXIT\n");
 	return (EXIT_SUCCESS);
 }
 

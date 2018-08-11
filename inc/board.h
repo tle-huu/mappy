@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/05 11:14:26 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/10 18:30:48 by psprawka         ###   ########.fr       */
+/*   Updated: 2018/08/10 19:48:16 by psprawka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,8 @@ typedef struct			s_tile
 	t_vehicle			*vehicles[FD_SETSIZE];
 	t_queue				vehicleslist;
 	struct s_tile		*column;
-	uint8_t				state;	
+	uint8_t				state;
+	uint32_t			vehicle_thoroughput;
 }						t_tile;
 
 typedef	struct			s_board_data
@@ -44,6 +45,7 @@ typedef struct			s_board
 	int32_t				(*send_dimensions)(int32_t);
 	void				(*setvehicle)(t_vehicle *);
 	void				(*removevehicle)(t_vehicle *pl);
+	void 				(*dump)(void);
 }						t_board;
 
 t_board					board;

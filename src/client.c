@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
+/*   By: nkouris <nkouris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 13:40:27 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/07 12:09:07 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/10 18:52:21 by tle-huu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ static void			crash(int32_t cl)
 		transmit.vehicles.exited(server.clients.lookup[cl]);
 		vehicle.pool.add(server.clients.lookup[cl]);
 		server.simenv.connected_vehicles--;
+		if (!server.simenv.connected_vehicles)
+			server.flag = GAMEOVER;
 	}
 	if (server.clients.status[cl] == GRAPHIC)
 		graphic.clear(server.clients.lookup[cl]);

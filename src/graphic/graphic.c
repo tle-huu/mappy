@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/17 17:07:12 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/06 16:06:42 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/10 17:37:10 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,9 @@ static int32_t		greeting(t_graphic *gr)
 		|| (transmit.timeunit(gr) == EXIT_FAILURE)
 		|| (transmit.tiles.all(gr) == EXIT_FAILURE)
 		|| (transmit.vehicles.all(gr) == EXIT_FAILURE))
+	{
+		printf("\nFAILED GREETING\n");
 		return (EXIT_FAILURE);
+	}
 	return (EXIT_SUCCESS);
 }
