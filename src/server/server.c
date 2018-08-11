@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nkouris <nkouris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/04 22:43:47 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/10 17:29:20 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/10 18:37:45 by tle-huu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,12 @@ static int32_t		new(void)
 		time.settimer(&timeout);
 		FD_COPY(ft_socket.copy, ft_socket.input);
 		printf("\n[SELECT]\n  End of cycle\n");
+		if (server.flag == GAMEOVER)
+		{
+			board.dump();
+			break;
+		}
+
 	}
 	//printf("EXIT\n");
 	return (EXIT_SUCCESS);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.h                                        :+:      :+:    :+:   */
+/*   server.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
+/*   By: nkouris <nkouris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/31 18:10:48 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/06 19:07:34 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/10 18:52:05 by tle-huu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@
 # define LOADMAP 84
 # define XYMAP 69
 # define UNKNOWNMAP 53
-
+# define GAMEOVER 242
 # define NORTH 0x1
 # define EAST 0x2
 # define SOUTH 0x4
@@ -54,7 +54,7 @@ void					construct_server(void);
 typedef struct			s_server_getopts
 {
 	int8_t				boardType;
-	int32_t				(*boardload)(char **, t_opts *);	
+	int32_t				(*boardload)(char **, t_opts *);
 	int32_t				(*boardx)(char **, t_opts *);
 	int32_t				(*boardy)(char **, t_opts *);
 	int32_t				(*timeinterval)(char **, t_opts *);
