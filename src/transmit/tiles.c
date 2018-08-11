@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/17 19:09:02 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/09 21:43:04 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/10 17:36:18 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,13 +67,20 @@ static int32_t all(void *trans)
 			server.sendbuf = strcat(server.sendbuf, num);
 			server.sendbuf = strcat(server.sendbuf, "\n");
 			if (transmit.flag == GRAPHICAL)
-				communication.graphical(trans, server.sendbuf);
+			{
+				if (communication.graphical(trans, server.sendbuf) == EXIT_FAILURE)
+					return (EXIT_FAILURE);
+			}
 			else if (transmit.flag == VEHICLE)
-				communication.vehicles(trans, server.sendbuf, 1);
+			{
+				if (communication.vehicles(trans, server.sendbuf, 1) == EXIT_FAILURE)
+					return (EXIT_FAILURE);
+			}
 			bzero(server.sendbuf, server.nsend);
 			y++;
 		}
 		x++;
 	}
+	bzero(server.sendbuf, server.nsend);
 	return (EXIT_SUCCESS);
 }
