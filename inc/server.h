@@ -54,6 +54,8 @@ void					construct_server(void);
 typedef struct			s_server_getopts
 {
 	int8_t				boardType;
+	int32_t				(*destinations_nb)(char **, t_opts *);
+	int32_t				(*starts_nb)(char **, t_opts *);
 	int32_t				(*boardload)(char **, t_opts *);	
 	int32_t				(*boardx)(char **, t_opts *);
 	int32_t				(*boardy)(char **, t_opts *);
@@ -93,6 +95,6 @@ typedef struct			s_server
 }						t_server;
 
 t_server				server;
-t_opts					arr_opts[7];
+t_opts					arr_opts[9];
 
 #endif

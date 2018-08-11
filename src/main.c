@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/13 11:16:44 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/06 21:44:27 by psprawka         ###   ########.fr       */
+/*   Updated: 2018/08/10 18:33:02 by psprawka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,9 @@ void	__attribute__((constructor))construct_getopts(void)
 	struct s_opts	opt3 = {"c", 1, server.opts.maxclients};
 	struct s_opts	opt4 = {"t", 1, server.opts.timeinterval};
 	struct s_opts	opt5 = {"f", 1, server.opts.boardload};
-	struct s_opts	opt6 = {NULL, 0, NULL};
+	struct s_opts	opt6 = {"d", 1, server.opts.destinations_nb};
+	struct s_opts	opt7 = {"s", 1, server.opts.starts_nb};
+	struct s_opts	opt8 = {NULL, 0, NULL};
 
 	arr_opts[0] = opt0;
 	arr_opts[1] = opt1;
@@ -36,6 +38,8 @@ void	__attribute__((constructor))construct_getopts(void)
 	arr_opts[4] = opt4;
 	arr_opts[5] = opt5;
 	arr_opts[6] = opt6;
+	arr_opts[7] = opt7;
+	arr_opts[8] = opt8;
 }
 
 int32_t		main(int argc, char **argv)

@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/05 10:45:14 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/09 21:44:35 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/10 19:38:50 by psprawka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@ static void		removevehicle(t_vehicle *pl);
 
 __attribute__((constructor))void	construct_board(void)
 {
+	board.data.des = 1;
+	board.data.starts = 1;
 	board.new = &new;
 	board.load_file = &load_file;
 	board.send_dimensions = &send_dimensions;
