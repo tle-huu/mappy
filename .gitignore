@@ -6,3 +6,5 @@ __initproj__
 *.h.bak
 ._*
 .*
+*.*.map
+*.out
