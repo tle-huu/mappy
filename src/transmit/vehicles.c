@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   vehicles.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkouris <nkouris@student.42.fr>            +#+  +:+       +#+        */
+/*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/19 15:41:24 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/11 19:48:48 by tle-huu-         ###   ########.fr       */
+/*   Updated: 2018/08/11 22:11:46 by psprawka         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static int32_t	exited(t_vehicle *vl)
 		return (EXIT_FAILURE);
 	}
 	num = ft_itoa((int32_t)(vl->vehicle_id));
-	if (((server.sendbuf = strcat(server.sendbuf, num)) == NULL)
+	if (((server.sendbuf = strcat(server.sendbuf, num)) == NULL)				//why do we even catch an exeption if we dont handle it at all?
 		|| ((server.sendbuf = strcat(server.sendbuf, "\n")) == NULL)
 		|| (communication.graphical(NULL, server.sendbuf) == EXIT_FAILURE))
 		;
@@ -78,12 +78,14 @@ static int32_t	datagram_pass(t_vehicle *vl)
 
 	server.sendbuf = strcat(server.sendbuf, server.recvbuf);
 	server.sendbuf = strcat(server.sendbuf, "\n");
-	communication.vehicles(vl, server.sendbuf, 0);
+	if (communication.vehicles(vl, server.sendbuf, 0) == EXIT_FAILURE)
+		printf("Uncaught EXIT_FAILURE: transmit/vehicles.c :82\n");
 	server.sendbuf[(strlen(server.sendbuf) - 1)] = ' ';
 	num = ft_itoa((int32_t)vl->vehicle_id);
 	server.sendbuf = strcat(server.sendbuf, num);
 	server.sendbuf = strcat(server.sendbuf, "\n");
-	communication.graphical(NULL, server.sendbuf);
+	if (communication.graphical(NULL, server.sendbuf) == EXIT_FAILURE)
+		printf("Uncaught EXIT_FAILURE: transmit/vehicles.c :88\n");
 	bzero(server.sendbuf, server.nsend);
 	return (EXIT_SUCCESS);
 }
@@ -96,12 +98,17 @@ static int32_t position(t_vehicle *vl)
 	num = ft_itoa((int32_t)vl->vehicle_id);
 	server.sendbuf = strcat(server.sendbuf, num);
 	server.sendbuf = strcat(server.sendbuf, " ");
-	_tileloc(vl);
+	if (_tileloc(vl) == EXIT_FAILURE)
+		printf("Uncaught EXIT_FAILURE: transmit/vehicles.c line 102\n");
 	server.sendbuf = strcat(server.sendbuf, "\n");
-	if (transmit.flag == VEHICLE)
-		communication.vehicles(vl, server.sendbuf, 1);
-	else if (transmit.flag == GRAPHIC)
-		communication.graphical(NULL, server.sendbuf);
+	// if (transmit.flag == VEHICLE)
+	// 	communication.vehicles(vl, server.sendbuf, 1);
+	if (transmit.flag == VEHICLE &&
+		communication.vehicles(vl, server.sendbuf, 1) == EXIT_FAILURE)
+		printf("Uncaught EXIT_FAILURE: transmit/vehicles.c :108\n");
+	else if (transmit.flag == GRAPHIC &&
+		communication.graphical(NULL, server.sendbuf) == EXIT_FAILURE)
+		printf("Uncaught EXIT_FAILURE: transmit/vehicles.c :111\n");
 	bzero(server.sendbuf, server.nsend);
 	return (EXIT_SUCCESS);
 }
@@ -116,9 +123,10 @@ static int32_t connected(t_vehicle *vl)
 		num = ft_itoa((int32_t)(vl->vehicle_id));
 		server.sendbuf = strcat(server.sendbuf, num);
 		server.sendbuf = strcat(server.sendbuf, " ");
-		_tileloc(vl);
+		if (_tileloc(vl) == EXIT_FAILURE)
+			printf("Uncaught EXIT_FAILURE: transmit/vehicles.c line 127\n");
 		server.sendbuf = strcat(server.sendbuf, "\n");
-		if (transmit.flag == GRAPHICAL)
+		if (transmit.flag == GRAPHIC)											//are you sure you meant GRAPHICAL not GRAPHIC? (GRAPHIC is everywhere else)
 			communication.graphical(NULL, server.sendbuf);
 		bzero(server.sendbuf, server.nsend);
 	}
@@ -131,9 +139,11 @@ static void	_donestamp(void)
 {
 	if (transmit.flag != VEHICLE)
 		return ;
-	communication.vehicles(NULL, "done\n", 0);
+	if (communication.vehicles(NULL, "done\n", 0) == EXIT_FAILURE)
+		printf("Uncaught EXIT_FAILURE: transmit/vehicles.c line 143\n");
 	sleep(1);
-	communication.vehicles(NULL, "start\n", 0);
+	if (communication.vehicles(NULL, "start\n", 0) == EXIT_FAILURE)
+		printf("Uncaught EXIT_FAILURE: transmit/vehicles.c line 146\n");
 	gettimeofday(&server.starting_time, NULL);
 
 }
@@ -153,12 +163,13 @@ static int32_t all(void *trans)
 		num = ft_itoa((int32_t)(vl->vehicle_id));
 		server.sendbuf = strcat(server.sendbuf, num);
 		server.sendbuf = strcat(server.sendbuf, " ");
-		_tileloc(vl);
+		if (_tileloc(vl) == EXIT_FAILURE)
+			printf("Uncaught EXIT_FAILURE: transmit/vehicles.c line 167\n");
 		server.sendbuf = strcat(server.sendbuf, "\n");
-		if (transmit.flag == VEHICLE)
-			communication.vehicles(vl, server.sendbuf, 0);
-		else if (transmit.flag == GRAPHIC)
-			communication.graphical(trans, server.sendbuf);
+		if (transmit.flag == VEHICLE && communication.vehicles(vl, server.sendbuf, 0))
+			printf("Uncaught EXIT_FAILURE: transmit/vehicles.c line 170\n");
+		else if (transmit.flag == GRAPHIC && communication.graphical(trans, server.sendbuf))
+			printf("Uncaught EXIT_FAILURE: transmit/vehicles.c line 172\n");
 		bzero(server.sendbuf, server.nsend);
 		temp = temp->next;
 	}
@@ -177,8 +188,9 @@ static int32_t	goal(t_vehicle *vl)
 	num = ft_itoa(vl->goal.y);
 	server.sendbuf = strcat(server.sendbuf, num);
 	server.sendbuf = strcat(server.sendbuf, "\n");
-	communication.vehicles(vl, server.sendbuf, 1);
-	communication.graphical(NULL, server.sendbuf);
+	if (communication.vehicles(vl, server.sendbuf, 1) == EXIT_FAILURE ||
+		communication.graphical(NULL, server.sendbuf) == EXIT_FAILURE)
+		printf("Uncaught EXIT_FAILURE: transmit/vehicles.c line 192\n");;
 	bzero(server.sendbuf, server.nsend);
 	return (EXIT_SUCCESS);
 }
@@ -188,7 +200,8 @@ static int32_t	endtransmit(void *trans)
 	char	*done = "done\n";
 
 	server.sendbuf = strcat(server.sendbuf, done);
-	communication.vehicles(trans, server.sendbuf, 1);
+	if (communication.vehicles(trans, server.sendbuf, 1) == EXIT_FAILURE)
+		printf("Uncaught EXIT_FAILURE: transmit/vehicles.c :204\n");;
 	bzero(server.sendbuf, server.nsend);
 	return (EXIT_SUCCESS);
 }
