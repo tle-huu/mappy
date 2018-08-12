@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   board.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nkouris <nkouris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/05 10:45:14 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/11 17:00:16 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/11 19:50:34 by tle-huu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -175,16 +175,23 @@ static void		dump(void)
 	int32_t		y;
 	char		*temp;
 	char		buff[1024] = {0};
+	t_timeval	end_time;
 	size_t		len;
 
 	printf("START\tboard.dump()\n");
-	if ((fd = open("server.dump.map", O_RDWR | O_CREAT)) < 0)
+	if ((fd = open("server.dump.map", O_RDWR | O_CREAT | O_TRUNC)) < 0)
 	{
 		printf("board.dump(): Failed to open file\n");
 		return ;
 	}
+	gettimeofday(&end_time, NULL);
+	strcpy(buff, ft_itoa(end_time.tv_sec - server.starting_time.tv_sec));
+	strcat(buff, "\n");
+	write(fd, buff, strlen(buff));
+	bzero(buff, 1024);
 
 	x = 0;
+
 	while (x <= board.data.x)
 	{
 		y = 0;

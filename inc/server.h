@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nkouris <nkouris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/31 18:10:48 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/11 18:12:31 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/11 19:47:54 by tle-huu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ typedef struct			s_server_getopts
 	int8_t				boardType;
 	int32_t				(*destinations_nb)(char **, t_opts *);
 	int32_t				(*starts_nb)(char **, t_opts *);
-	int32_t				(*boardload)(char **, t_opts *);	
+	int32_t				(*boardload)(char **, t_opts *);
 	int32_t				(*boardx)(char **, t_opts *);
 	int32_t				(*boardy)(char **, t_opts *);
 	int32_t				(*timeinterval)(char **, t_opts *);
@@ -86,6 +86,7 @@ typedef struct			s_server
 	t_client_assoc		clients;
 	t_simenv			simenv;
 	t_timeval			time;
+	t_timeval			starting_time;
 	char				*sendbuf;
 	int32_t				nsend;
 	uint8_t				flag;

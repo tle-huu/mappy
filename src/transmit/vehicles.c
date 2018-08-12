@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   vehicles.c                                          :+:      :+:    :+:   */
+/*   vehicles.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
+/*   By: nkouris <nkouris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/19 15:41:24 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/11 16:56:54 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/11 19:48:48 by tle-huu-         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -134,7 +134,8 @@ static void	_donestamp(void)
 	communication.vehicles(NULL, "done\n", 0);
 	sleep(1);
 	communication.vehicles(NULL, "start\n", 0);
-	
+	gettimeofday(&server.starting_time, NULL);
+
 }
 
 static int32_t all(void *trans)
