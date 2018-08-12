@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/05 14:30:05 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/11 17:33:35 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/11 19:08:25 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ static int32_t		set(void)
 	if ((setsockopt(ft_socket.sockfd, SOL_SOCKET, SO_REUSEADDR,
 			&(ft_socket.opt_val), sizeof(int32_t)) < 0)
 		|| (setsockopt(ft_socket.sockfd, SOL_SOCKET, SO_REUSEPORT,
-			&(ft_socket.opt_val), sizeof(int32_t)) < 0)
-		|| (setsockopt(ft_socket.sockfd, SOL_SOCKET, SO_NOSIGPIPE,
 			&(ft_socket.opt_val), sizeof(int32_t)) < 0))
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);

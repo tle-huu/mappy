@@ -6,11 +6,12 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/21 10:48:06 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/10 18:30:04 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/11 19:25:22 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
+#include "client.h"
 #include "events.h"
 #include "time.h"
 #include "communication.h"
@@ -59,17 +60,21 @@ static int32_t	lookup(int32_t cl)
 {
 	t_vehicle	*pl;
 	char		*temp;
+	int32_t		i;
 
 	pl = (t_vehicle *)server.clients.lookup[cl];
+	i = 0;
 	if ((temp = ft_strchr(server.recvbuf, ' ')))
 		*temp = '\0';
-	else
-		return (EXIT_FAILURE);
 	if (ft_strequ(server.recvbuf, eventlookup[0].str))
 	{
 		*temp = ' ';
 		event.add(&(eventlookup[0]), pl);
+		i++;
 	}
+	else
+		client.crash(cl);
+	printf("exited lookup\n");
 	return (EXIT_SUCCESS);
 }
 
