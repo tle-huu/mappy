@@ -42,16 +42,18 @@ double	Ai::cost(int carNum)
 {
 	if (carNum < 0)
 	{
-		std::cout << KRED << "OUPS : " << carNum << KNRM;
+		std::cout << KRED << "OUPS CARNUM NEGATIVE : " << carNum << KNRM;
 		exit(1);
 	}
-	return carNum + 1;
+	return 1;
 }
 
 Position	Ai::where_to(Position pos, Position dest, double &speed)
 {
 	if (pos.x == dest.x && pos.y == dest.y)
 	{
+		// exit(42); // Only difference with working version, seems to make everything crash
+		// sleep(50);
 		speed = cost(0);
 		return pos;
 	}
@@ -66,7 +68,7 @@ Position	Ai::where_to(Position pos, Position dest, double &speed)
 		Position p_dest = {dest % width, dest / width};
 
 		int distance =  std::abs(p_loc.x - p_dest.x) + std::abs(p_loc.y - p_dest.y);
-		return cost(0) * (double)distance;
+		return cost(0) * (double)distance * (1 / 1000);
 	};
 
 	auto heuristic2 = [width, this](int loc, int dest)
@@ -75,7 +77,7 @@ Position	Ai::where_to(Position pos, Position dest, double &speed)
 	};
 
 	auto index = [width](size_t x, size_t y){ return x + y * width; };
-	std::vector<int> path = a_star(_graph, index(pos.x, pos.y), index(dest.x, dest.y), heuristic);
+	std::vector<int> path = a_star(_graph, index(pos.x, pos.y), index(dest.x, dest.y), heuristic2);
 	int start_indx = index(pos.x, pos.y);
 	int end_indx = index(dest.x, dest.y);
 	int next_indx;
@@ -85,8 +87,9 @@ Position	Ai::where_to(Position pos, Position dest, double &speed)
 		end_indx = path[end_indx];
 	}
 	Position next = { next_indx % (int)_traffic.size(), next_indx / (int)_traffic.size() };
-	speed = 1;
-	// speed = cost(_traffic[next.x][next.y].total_cars * 0.2);
+	// speed = 0.2;
+	speed = cost(_traffic[next.x][next.y].total_cars);
+	speed = fmin(_traffic[next.x][next.y].total_cars + 1, 7);
 	return next;
 }
 

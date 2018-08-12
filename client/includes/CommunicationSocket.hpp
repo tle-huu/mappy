@@ -38,7 +38,7 @@ class CommunicationSocket
 		std::map<std::string, std::function<void(std::string)>> 	_events;
 
 		/* need a mutex to access tis variable if multithreaded */
-		std::stack<Datagram>										_datagram_stack;
+		std::queue<Datagram>										_datagram_queue;
 
 		/*  Select related << listen_loop >> */
 		fd_set				_rfds;
@@ -51,7 +51,6 @@ class CommunicationSocket
 
 		std::string		read(void) const;
 		bool			get_datagram(void);
-		void			disconnect();
 		void			get_peer(std::string, Map &) const;
 		void			get_peers(Map &map) const;
 
@@ -60,6 +59,7 @@ class CommunicationSocket
 		~CommunicationSocket();
 
 		void			listen_loop(void);
+		void			disconnect();
 		void			send_datagram(std::string header, std::string message) const;
 		void			send_datagram(Datagram const & Datagram) const;
 		Map 			get_first_info(Map& map, Position& start, Position& dest);

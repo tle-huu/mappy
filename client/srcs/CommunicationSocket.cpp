@@ -30,7 +30,7 @@ CommunicationSocket::CommunicationSocket(const char* addr, int port) : _addr(add
 	}
 	catch (...)
 	{
-		std::cout << "Communincaton socket sin.sin" << std::endl;
+		std::cout << "Communincaton socket sin.sin crash" << std::endl;
 		exit(2);
 	}
 	if (connect(this->_socket, (const struct sockaddr *)&sin, sizeof(sin)) == -1)
@@ -63,9 +63,9 @@ std::string			CommunicationSocket::read(void) const
 	Datagram			datagram;
 
 	if ((ret = recv(this->_socket, buffer, BUFF_SIZE - 1, 0)) < 0)
-		throw("CommunicationSocket:get_datagram(): recv error\n");
+		throw(std::runtime_error("CommunicationSocket(): read recv error"));
 	buffer[ret] = 0;
-	// std::cout << "I have read " << ret << " bytes [" << buffer << "]\n";
+	std::cout << "I have read " << ret << " bytes [" << buffer << "]\n";
 	return (std::string(buffer));
 }
 
@@ -100,7 +100,7 @@ bool				CommunicationSocket::get_datagram(void)
 		{
 			try
 			{
-				this->_datagram_stack.push(datagram);
+				this->_datagram_queue.push(datagram);
 			}
 			catch (std::exception &e)
 			{
@@ -151,7 +151,7 @@ void				CommunicationSocket::disconnect()
 {
 	this->_connected = false;
 	if (close(this->_socket) < 0)
-		throw("CommunicationSocket:disconnect(): close error\n");
+		throw(std::runtime_error("CommunicationSocket(): disconnect close error"));
 }
 
 /*
@@ -255,7 +255,6 @@ Map		CommunicationSocket::get_first_info(Map &map, Position& start, Position &en
 		int					id;
 
 		ss >> header >> id >> x >> y;
-		std::cout << "we should do this testing on a map with like size 5 : "<< map[x][y].total_cars << std::endl;
 		map[x][y].total_cars++;
 	};
 	while (done != 2)
@@ -309,10 +308,10 @@ bool		CommunicationSocket::get_datagram(Datagram & datagram)
 {
 	try
 	{
-		if (!this->_datagram_stack.empty())
+		if (!this->_datagram_queue.empty())
 		{
-			datagram = this->_datagram_stack.top();
-			this->_datagram_stack.pop();
+			datagram = this->_datagram_queue.front();
+			this->_datagram_queue.pop();
 			return (true);
 		}
 	}

@@ -1,13 +1,13 @@
 #include "AStar.hpp"
 
 std::vector<int>	a_star(graph<double*> graph,
-				   int start,
-				   int goal,
-				   std::function<double(int, int)> heuristic)
+					int start,
+					int goal,
+					std::function<double(int, int)> heuristic)
 {
 	std::priority_queue<std::pair<double, int>,
-			    std::vector<std::pair<double, int>>,
-			    std::greater<std::pair<double, int>>>	queue;
+				std::vector<std::pair<double, int>>,
+				std::greater<std::pair<double, int>>>	queue;
 
 	std::vector<int>	neighbors;
 	std::vector<int>	came_from(graph.size(), -1);

@@ -54,6 +54,13 @@ static Datagram	generate_move_data(Position from, Position to, double time)
 
 void	Car::move()
 {
+	if (_current_pos.x == _destination.x && _current_pos.y == _destination.y)
+	{
+		// _communicator.disconnect();
+		// exit(1);
+		_communicator.send_datagram("end", "\n");
+		sleep(200);
+	}
 	for (Datagram d; _communicator.get_datagram(d);)
 		_events[d.getHeader()](d.getMessage());
 
