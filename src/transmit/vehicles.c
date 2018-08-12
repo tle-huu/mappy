@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/19 15:41:24 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/10 17:24:19 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/11 16:56:54 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ static int32_t	exited(t_vehicle *vl)
 {
 	char *num;
 
+	printf("START\ttransmit.vehicles.exited()\n");
 	server.sendbuf = strcat(server.sendbuf, "pdi ");
 	if (_tileloc(vl) == EXIT_FAILURE)
 	{
@@ -67,6 +68,7 @@ static int32_t	exited(t_vehicle *vl)
 		|| (communication.graphical(NULL, server.sendbuf) == EXIT_FAILURE))
 		;
 	bzero(server.sendbuf, server.nsend);
+	printf("END\ttransmit.vehicles.exited()\n");
 	return (EXIT_SUCCESS);
 }
 

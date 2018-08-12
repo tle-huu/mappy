@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 13:20:08 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/07 12:11:56 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/11 18:12:30 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,16 +38,18 @@ static void		_checksimulate(void)
 	}
 }
 
-static void		_greeting(t_vehicle *vl)
+static int32_t		_greeting(t_vehicle *vl)
 {
 	transmit.flag = GRAPHICAL;
-	transmit.vehicles.connected(vl);
-	transmit.flag = VEHICLE;
-	transmit.tiles.mapsize(vl);
-	transmit.tiles.all(vl);
+	if (transmit.vehicles.connected(vl) == EXIT_FAILURE
+		|| (transmit.flag = VEHICLE) == EXIT_FAILURE
+		|| (transmit.tiles.mapsize(vl)) == EXIT_FAILURE
+		|| (transmit.tiles.all(vl)) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
 	transmit.vehicles.position(vl);
 	transmit.vehicles.goal(vl);
 	transmit.vehicles.endtransmit(vl);
+	return (EXIT_SUCCESS);
 }
 
 static void		_initialize(t_vehicle *vl)
@@ -60,6 +62,7 @@ static void		_initialize(t_vehicle *vl)
 	i = 0;
 	vehicle.place.onboard(vl);
 	vehicle.place.goal(vl);
+	server.simenv.connected_vehicles++;
 	server.clients.status[vl->c_fd] = PLAYER;
 	server.clients.lookup[vl->c_fd] = vl;
 }
@@ -85,8 +88,8 @@ static int32_t	new(int32_t cl)
 	{
 		_initialize(vl);
 		ft_enqueue(&(vehicle.data), &(vl->commscontainer), 0);
-		_greeting(vl);
-		server.simenv.connected_vehicles++;
+		if (_greeting(vl) == EXIT_FAILURE)
+			return (EXIT_FAILURE);
 		_checksimulate();
 	}
 	return (EXIT_SUCCESS);

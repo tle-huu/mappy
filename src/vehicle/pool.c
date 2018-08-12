@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 22:27:23 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/07 12:09:10 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/11 16:52:34 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,5 +63,6 @@ static void			add(t_vehicle *vl)
 	bzero(vl, sizeof(t_vehicle));
 	vl->container.data = vl;
 	vl->tilecontainer.data = vl;
+	vl->commscontainer.data = vl;
 	ft_enqueue(vehicle.pool.data, &(vl->container), 0);
 }

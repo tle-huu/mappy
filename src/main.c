@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/13 11:16:44 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/10 18:33:02 by psprawka         ###   ########.fr       */
+/*   Updated: 2018/08/11 17:02:53 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ int32_t		main(int argc, char **argv)
 	if ((arg = ft_getopts(arr_opts, argv)) != EXIT_SUCCESS)
 		server.usagewarning(argv[arg]);
 	server.new();
-	perror(strerror(errno));
+	if (errno != 60)
+		perror(strerror(errno));
 	return (EXIT_SUCCESS);
 }

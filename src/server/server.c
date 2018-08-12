@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/04 22:43:47 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/10 18:37:45 by tle-huu-         ###   ########.fr       */
+/*   Updated: 2018/08/11 17:43:54 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ static int32_t		initializers(void)
 		|| (server.opts.boardType == LOADMAP && board.load_file() == EXIT_FAILURE)
 		|| !(server.sendbuf = calloc(1, 1024)))
 		return (EXIT_FAILURE);
+	signal(SIGPIPE, client.sigpipe);
 	server.nsend = 1024;
 	return (EXIT_SUCCESS);
 }
@@ -105,23 +106,21 @@ static int32_t		new(void)
 	timeout = NULL;
 	if (initializers() == EXIT_FAILURE)
 		return (EXIT_FAILURE);
+	printf("SIMULATION\tbeginning\n");
 	while ((select(ft_socket.nfds, ft_socket.input, NULL, NULL, timeout)) >= 0)
 	{
-	//	printf("\n[SELECT]\n  Body of Select\n");
 		event.queue.check();
 		if ((ret = server.io()) == EXIT_FAILURE)
-			printf("gameio failure\n");
+			printf("\tGameio failure\n");
 		time.settimer(&timeout);
 		FD_COPY(ft_socket.copy, ft_socket.input);
-		printf("\n[SELECT]\n  End of cycle\n");
 		if (server.flag == GAMEOVER)
 		{
 			board.dump();
 			break;
 		}
-
 	}
-	//printf("EXIT\n");
+	printf("SIMULATION\tterminated\n");
 	return (EXIT_SUCCESS);
 }
 

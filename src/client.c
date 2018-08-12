@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 13:40:27 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/10 18:52:21 by tle-huu-         ###   ########.fr       */
+/*   Updated: 2018/08/11 17:48:45 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,14 @@
 static int32_t	new(void);
 static void		disconnect(int32_t cl);
 static void		crash(int32_t cl);
+static void		sigpipe(int32_t);
 
 __attribute__((constructor))void	construct_client(void)
 {
 	client.new = &new;
 	client.disconnect = &disconnect;
 	client.crash = &crash;
+	client.sigpipe = &sigpipe;
 }
 
 static inline __attribute__((always_inline))void	add_fd_select(int32_t sock)
@@ -49,12 +51,12 @@ static int32_t		new(void)
 	(server.clients.status)[newfd] = NOT_ACCEPTED;
 	add_fd_select(newfd);
 	ret = communication.outgoing(newfd, "WELCOME\n");
-	//printf("New client %d connected\n", newfd);
 	return (ret);
 }
 
 static void			crash(int32_t cl)
 {
+	printf("START\tclient.crash()\n");
 	client.disconnect(cl);
 	if (server.clients.lookup[cl])
 		event.removeall(server.clients.lookup[cl]);
@@ -70,12 +72,18 @@ static void			crash(int32_t cl)
 	}
 	if (server.clients.status[cl] == GRAPHIC)
 		graphic.clear(server.clients.lookup[cl]);
+	printf("END\tclient.crash()\n");
 }
 
 static void			disconnect(int32_t cl)
 {
-	//printf("Remove client <%d> from fdset and lookup\n", cl);
 	close(cl);
 	FD_CLR(cl, ft_socket.copy);
-	//printf("  Client removed\n");
+	printf("\tClient removed\n");
+}
+
+static void			sigpipe(__attribute__((unused))int32_t t)
+{
+	server.flag = CLEPIPE;
+	printf("There was a signal!\n");
 }

@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/31 18:10:48 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/10 19:48:04 by psprawka         ###   ########.fr       */
+/*   Updated: 2018/08/11 18:12:31 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,10 @@
 # define INCANTING 101
 # define INCANTED 102
 # define LEVELING 103
-# define DOOMED 33
-# define DEAD 66
 # define SIMULATE 75
-# define LOADMAP 84
+# define LOADMAP 8
 # define XYMAP 69
+# define CLEPIPE 66
 # define UNKNOWNMAP 53
 # define GAMEOVER 242
 # define NORTH 0x1
@@ -46,10 +45,12 @@
 
 # define WELCOME "WELCOME\n"
 
+typedef void (*sig_t) (int);
 typedef struct			timeval		t_timeval;
 
 void					construct_servergetopts(void);
 void					construct_server(void);
+sig_t					signal(int sig, sig_t func);
 
 typedef struct			s_server_getopts
 {

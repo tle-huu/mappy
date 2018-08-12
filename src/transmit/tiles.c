@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/17 19:09:02 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/10 17:36:18 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/11 18:12:32 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ static int32_t all(void *trans)
 	int32_t y;
 	char *num;
 
+	printf("BEGIN\ttransmit.tiles.all()\n");
 	x = 0;
 	while (x <= board.data.x)
 	{
@@ -74,7 +75,10 @@ static int32_t all(void *trans)
 			else if (transmit.flag == VEHICLE)
 			{
 				if (communication.vehicles(trans, server.sendbuf, 1) == EXIT_FAILURE)
+				{
+					printf("exit transmit all tiles\n");
 					return (EXIT_FAILURE);
+				}
 			}
 			bzero(server.sendbuf, server.nsend);
 			y++;
@@ -82,5 +86,6 @@ static int32_t all(void *trans)
 		x++;
 	}
 	bzero(server.sendbuf, server.nsend);
+	printf("END\ttransmit.tiles.all()\n");
 	return (EXIT_SUCCESS);
 }

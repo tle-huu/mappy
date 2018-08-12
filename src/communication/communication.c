@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/13 14:11:03 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/10 17:35:31 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/11 18:46:47 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,12 @@ static int32_t	graphical(t_graphic *gr, char *str)
 		while (temp)
 		{
 			gr = (t_graphic *)(temp->data);
-			communication.outgoing(gr->c_fd, server.sendbuf);
+			if (communication.outgoing(gr->c_fd, server.sendbuf) == EXIT_FAILURE
+				|| server.flag == CLEPIPE)
+			{
+				server.flag = SIMULATE;
+				client.crash(gr->c_fd);
+			}
 			temp = temp->next;
 		}
 	}
@@ -98,14 +103,32 @@ static int32_t	vehicles(t_vehicle *vl, void *datagram, int8_t single)
 	{
 		while (temp)
 		{
+//			printf("Top of transmit.vehicles()\n");
 			vl = (t_vehicle *)(temp->data);
 			if (vl != og)
-				communication.outgoing(vl->c_fd, datagram);
+			{
+				if (communication.outgoing(vl->c_fd, datagram) == EXIT_FAILURE
+					|| server.flag == CLEPIPE)
+				{
+					server.flag = SIMULATE;
+					client.crash(vl->c_fd);
+				}
+			}
 			temp = temp->next;
+//			printf("End of transmit.vehicles()\n");
 		}
 	}
 	else
-		communication.outgoing(vl->c_fd, datagram);
+	{
+		if (communication.outgoing(vl->c_fd, datagram) == EXIT_FAILURE
+			|| server.flag == CLEPIPE)
+		{
+			printf("here\n");
+			server.flag = SIMULATE;
+			client.crash(vl->c_fd);
+			return (EXIT_FAILURE);
+		}
+	}
 	return (EXIT_SUCCESS);
 }
 
@@ -113,7 +136,7 @@ static int32_t	outgoing(int32_t cl, char *str)
 {
 	if (send(cl, str, strlen(str), 0) < 0)
 	{
-		printf("\nFAILED\n");
+		printf("\nOUTGOING FAILED\n");
 		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);

@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/05 10:45:14 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/10 19:47:43 by psprawka         ###   ########.fr       */
+/*   Updated: 2018/08/11 17:00:16 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,6 +177,7 @@ static void		dump(void)
 	char		buff[1024] = {0};
 	size_t		len;
 
+	printf("START\tboard.dump()\n");
 	if ((fd = open("server.dump.map", O_RDWR | O_CREAT)) < 0)
 	{
 		printf("board.dump(): Failed to open file\n");
@@ -206,4 +207,5 @@ static void		dump(void)
 		printf("board.dump(): Failed to close file\n");
 		return ;
 	}
+	printf("END\tboard.dump()\n");
 }
