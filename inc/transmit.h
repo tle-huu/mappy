@@ -6,19 +6,16 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/06 14:51:22 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/07 01:30:36 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/12 12:30:27 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef TRANSMIT_H
 # define TRANSMIT_H
 
-# define GRAPHICAL 1
-# define VEHICLE 2
-
 typedef struct			s_transmit_vehicles
 {
-	int32_t				(*all)(void *);
+	int32_t				(*all)(void);
 	int32_t				(*position)(t_vehicle *);
 	int32_t				(*connected)(t_vehicle *);
 	int32_t				(*exited)(t_vehicle *);

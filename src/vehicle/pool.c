@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 22:27:23 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/11 16:52:34 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/11 22:01:24 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ static void			add(t_vehicle *vl)
 	ft_middel(&(vehicle.data), &(vl->commscontainer));
 	server.clients.status[vl->c_fd] = 0;
 	server.clients.lookup[vl->c_fd] = NULL;
-	board.removevehicle(vl);
 	bzero(vl, sizeof(t_vehicle));
 	vl->container.data = vl;
 	vl->tilecontainer.data = vl;

@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/04 16:32:22 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/10 17:43:12 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/12 11:48:16 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,6 @@ static int32_t	advance(void *object)
 
 	vl = (t_vehicle *)((t_event *)object)->entity;
 	communication.outgoing(vl->c_fd, "ok \n");
-	server.clients.status[vl->c_fd] = PLAYER;
+	server.clients.status[vl->c_fd] = VEHICLE;
 	return (EXIT_SUCCESS);
 }

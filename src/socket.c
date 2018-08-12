@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/05 14:30:05 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/11 19:08:25 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/12 11:42:15 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ static int32_t		set(void);
 
 void	__attribute__((constructor))construct_ft_socket(void)
 {
+	ft_socket.opt_val = 1;
 	ft_socket.init_select = &init_select;
 	ft_socket.set = &set;
 }

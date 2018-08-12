@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/17 17:07:12 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/10 17:37:10 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/12 12:41:29 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,11 @@ static int32_t		clear(t_graphic *gr)
 
 static int32_t		greeting(t_graphic *gr)
 {
-	transmit.flag = GRAPHICAL;
+	transmit.flag = GRAPHIC;
 	if ((transmit.tiles.mapsize(gr) == EXIT_FAILURE)
 		|| (transmit.timeunit(gr) == EXIT_FAILURE)
 		|| (transmit.tiles.all(gr) == EXIT_FAILURE)
-		|| (transmit.vehicles.all(gr) == EXIT_FAILURE))
+		|| (transmit.vehicles.all() == EXIT_FAILURE))
 	{
 		printf("\nFAILED GREETING\n");
 		return (EXIT_FAILURE);

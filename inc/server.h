@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/31 18:10:48 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/11 19:47:54 by tle-huu-         ###   ########.fr       */
+/*   Updated: 2018/08/11 22:59:08 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,26 +26,17 @@
 # define NOT_ACCEPTED 1
 # define JOINVEHICLE 2
 # define JOINGRAPHIC 3
-# define PLAYER 10
+# define VEHICLE 10
 # define GRAPHIC 11
-# define WORKING 100
-# define INCANTING 101
-# define INCANTED 102
-# define LEVELING 103
 # define SIMULATE 75
 # define LOADMAP 8
 # define XYMAP 69
 # define CLEPIPE 66
 # define UNKNOWNMAP 53
 # define GAMEOVER 242
-# define NORTH 0x1
-# define EAST 0x2
-# define SOUTH 0x4
-# define WEST 0x8
-
 # define WELCOME "WELCOME\n"
 
-typedef void (*sig_t) (int);
+typedef void 			(*sig_t) (int);
 typedef struct			timeval		t_timeval;
 
 void					construct_servergetopts(void);
@@ -60,7 +51,6 @@ typedef struct			s_server_getopts
 	int32_t				(*boardload)(char **, t_opts *);
 	int32_t				(*boardx)(char **, t_opts *);
 	int32_t				(*boardy)(char **, t_opts *);
-	int32_t				(*timeinterval)(char **, t_opts *);
 	int32_t				(*port)(char **, t_opts *);
 	int32_t				(*maxclients)(char **, t_opts *);
 }						t_server_getopts;
@@ -97,6 +87,6 @@ typedef struct			s_server
 }						t_server;
 
 t_server				server;
-t_opts					arr_opts[9];
+t_opts					arr_opts[8];
 
 #endif

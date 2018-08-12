@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/13 14:11:03 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/11 19:14:59 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/12 11:47:55 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ static int32_t	incoming(int32_t cl);
 static int32_t	printraw(void);
 static int32_t	newclient(int32_t cl);
 static int32_t	vehicles(t_vehicle *vl, void *datagram, int8_t);
-static int32_t	graphical(t_graphic *gr, char *str);
+static int32_t	graphical(void);
 
 __attribute__((constructor))void	construct_communication(void)
 {
@@ -50,44 +50,34 @@ static int32_t	incoming(int32_t cl)
 {
 	int32_t		ret;
 
-	//printf("Recieving message from client <%d>\n", cl);
 	bzero(server.recvbuf, 512);
-	//printf("Recv buffer zeroed\n");
 	if ((ret = recv(cl, server.recvbuf, 512, 0)) < 0)
 		return (EXIT_FAILURE);
 	else if (!ret)
 	{
 		client.disconnect(cl);
-		return (-1);
+		return (EXIT_FAILURE);
 	}
 	server.recvbuf[(ret)] = '\0';
-	//printf("  This is the buffer recieved |%s|\n", server.recvbuf);
 	return (EXIT_SUCCESS);
 }
 
-static int32_t	graphical(t_graphic *gr, char *str)
+static int32_t	graphical(void)
 {
 	t_dblist	*temp;
+	t_graphic	*gr;
 
-	if (!gr)
+	temp = graphic.data.first;
+	while (temp && server.flag != CLEPIPE)
 	{
-		temp = graphic.data.first;
-		while (temp)
+		gr = (t_graphic *)(temp->data);
+		if (communication.outgoing(gr->c_fd, server.sendbuf) == EXIT_FAILURE
+			|| server.flag == CLEPIPE)
 		{
-			gr = (t_graphic *)(temp->data);
-			if (communication.outgoing(gr->c_fd, server.sendbuf) == EXIT_FAILURE
-				|| server.flag == CLEPIPE)
-			{
-				server.flag = SIMULATE;
-				client.crash(gr->c_fd);
-			}
-			temp = temp->next;
+			server.flag = SIMULATE;
+			client.crash(gr->c_fd);
 		}
-	}
-	else
-	{
-		if (communication.outgoing(gr->c_fd, str) == EXIT_FAILURE)
-			return (EXIT_FAILURE);
+		temp = temp->next;
 	}
 	return (EXIT_SUCCESS);
 }
@@ -101,29 +91,24 @@ static int32_t	vehicles(t_vehicle *vl, void *datagram, int8_t single)
 	temp = vehicle.data.first;
 	if (!single)
 	{
-		while (temp)
+		while (temp && server.flag != CLEPIPE)
 		{
-//			printf("Top of transmit.vehicles()\n");
 			vl = (t_vehicle *)(temp->data);
 			if (vl != og)
 			{
-				if (communication.outgoing(vl->c_fd, datagram) == EXIT_FAILURE
-					|| server.flag == CLEPIPE)
+				if (communication.outgoing(vl->c_fd, datagram) == EXIT_FAILURE)
 				{
 					server.flag = SIMULATE;
 					client.crash(vl->c_fd);
 				}
 			}
 			temp = temp->next;
-//			printf("End of transmit.vehicles()\n");
 		}
 	}
 	else
 	{
-		if (communication.outgoing(vl->c_fd, datagram) == EXIT_FAILURE
-			|| server.flag == CLEPIPE)
+		if (communication.outgoing(vl->c_fd, datagram) == EXIT_FAILURE)
 		{
-			printf("here\n");
 			server.flag = SIMULATE;
 			client.crash(vl->c_fd);
 			return (EXIT_FAILURE);

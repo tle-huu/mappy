@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 13:20:08 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/11 18:12:30 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/12 12:40:21 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,16 +34,18 @@ static void		_checksimulate(void)
 	{
 		server.flag = SIMULATE;
 		transmit.flag = VEHICLE;
-		transmit.vehicles.all(NULL);
+		transmit.vehicles.all();
 	}
 }
 
 static int32_t		_greeting(t_vehicle *vl)
 {
-	transmit.flag = GRAPHICAL;
-	if (transmit.vehicles.connected(vl) == EXIT_FAILURE
-		|| (transmit.flag = VEHICLE) == EXIT_FAILURE
-		|| (transmit.tiles.mapsize(vl)) == EXIT_FAILURE
+	transmit.flag = GRAPHIC;
+	if (transmit.vehicles.connected(vl) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+
+	transmit.flag = VEHICLE;
+	if (transmit.tiles.mapsize(vl) == EXIT_FAILURE
 		|| (transmit.tiles.all(vl)) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	transmit.vehicles.position(vl);
@@ -54,16 +56,13 @@ static int32_t		_greeting(t_vehicle *vl)
 
 static void		_initialize(t_vehicle *vl)
 {
-	int32_t i;
-
-	vl->vehicle_id = (server.simenv.track_vehicleid)++;
 	vl->tilecontainer.data = vl;
 	vl->commscontainer.data = vl;
-	i = 0;
+	vl->vehicle_id = (server.simenv.track_vehicleid)++;
 	vehicle.place.onboard(vl);
 	vehicle.place.goal(vl);
 	server.simenv.connected_vehicles++;
-	server.clients.status[vl->c_fd] = PLAYER;
+	server.clients.status[vl->c_fd] = VEHICLE;
 	server.clients.lookup[vl->c_fd] = vl;
 }
 
@@ -71,15 +70,12 @@ static int32_t	new(int32_t cl)
 {
 	t_dblist	*temp;
 	t_vehicle 	*vl;
-	int32_t		ret;
 
-	//printf("[VEHICLE]\n  Creating new vehicle @ : <%d>\n", cl);
-	ret = 0;
 	if (!(temp = vehicle.pool.pop()))
 		return (EXIT_FAILURE);
 	vl = (t_vehicle *)temp->data;
 	vl->c_fd = cl;
-	if (server.simenv.connected_vehicles == server.simenv.maxinitial_clients)
+	if (server.flag == SIMULATE)
 	{
 		client.disconnect(vl->c_fd);
 		vehicle.pool.add(vl);

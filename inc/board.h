@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/05 11:14:26 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/10 19:48:16 by psprawka         ###   ########.fr       */
+/*   Updated: 2018/08/12 11:47:12 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,6 @@ typedef struct			s_board
 	int32_t				(*new)(void);
 	int32_t				(*load_file)(void);
 	int32_t				(*send_dimensions)(int32_t);
-	void				(*setvehicle)(t_vehicle *);
-	void				(*removevehicle)(t_vehicle *pl);
 	void 				(*dump)(void);
 }						t_board;
 

@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/05 10:45:14 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/11 19:50:34 by tle-huu-         ###   ########.fr       */
+/*   Updated: 2018/08/12 11:46:52 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,19 +19,15 @@
 static int32_t	send_dimensions(int32_t cl);
 static int32_t	new(void);
 static int32_t	load_file(void);
-static void		setvehicle(t_vehicle *pl);
-static void		removevehicle(t_vehicle *pl);
-static void	dump(void);
+static void		dump(void);
 
 __attribute__((constructor))void	construct_board(void)
 {
 	board.data.des = 1;
-	board.data.starts = 1;
+	board.data.starts = 0;
 	board.new = &new;
 	board.load_file = &load_file;
 	board.send_dimensions = &send_dimensions;
-	board.setvehicle = &setvehicle;
-	board.removevehicle = &removevehicle;
 	board.dump = &dump;
 }
 
@@ -144,28 +140,6 @@ static int32_t	send_dimensions(int32_t cl)
 		return (EXIT_FAILURE);
 	free(str);
 	return (EXIT_SUCCESS);
-}
-
-static void		setvehicle(t_vehicle *pl)
-{
-	int32_t		x;
-	int32_t		y;
-
-	x = pl->location.x;
-	y = pl->location.y;
-	(((((board.data.tiles)[x]).column)[y]).vehicles)[pl->c_fd] = pl;
-	ft_enqueue(&(PLAYERLIST), &(pl->tilecontainer), 0);
-}
-
-static void		removevehicle(t_vehicle *pl)
-{
-	int32_t		x;
-	int32_t		y;
-
-	x = pl->location.x;
-	y = pl->location.y;
-	(((((board.data.tiles)[x]).column)[y]).vehicles)[pl->c_fd] = NULL;
-	ft_middel(&(PLAYERLIST), &(pl->tilecontainer));
 }
 
 static void		dump(void)

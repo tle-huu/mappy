@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/04 22:44:31 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/10 18:37:28 by psprawka         ###   ########.fr       */
+/*   Updated: 2018/08/11 22:42:10 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ static int32_t		starts_nb(char **argv, __attribute__((unused))t_opts *opt);
 static int32_t		boardload(char **argv, __attribute__((unused))t_opts *opt);
 static int32_t		boardx(char **argv, __attribute__((unused))t_opts *opt);
 static int32_t		boardy(char **argv, __attribute__((unused))t_opts *opt);
-static int32_t		timeinterval(char **argv, __attribute__((unused))t_opts *opt);
 static int32_t		maxclients(char **argv, __attribute__((unused))t_opts *opt);
 static int32_t		port(char **argv, __attribute__((unused))t_opts *opt);
 
@@ -32,7 +31,6 @@ void		__attribute((constructor))construct_servergetopts(void)
 	server.opts.boardload = &boardload;
 	server.opts.boardx = &boardx;
 	server.opts.boardy = &boardy;
-	server.opts.timeinterval = &timeinterval;
 	server.opts.maxclients = &maxclients;
 	server.opts.port = &port;
 }
@@ -134,26 +132,6 @@ static int32_t		boardy(char **argv, __attribute__((unused))t_opts *opt)
 		}
 	}
 	board.data.y = height - 1;
-	return (EXIT_SUCCESS);
-}
-
-static int32_t		timeinterval(char **argv, __attribute__((unused))t_opts *opt)
-{
-	int32_t	i;
-	int32_t	timeint;
-
-	i = 0;
-	if (!(timeint = atoi(*argv)))
-	{
-		while ((*argv)[i] == '0')
-			i++;
-		if ((*argv)[i])
-		{
-			printf("Invalid parameter: %s\n", *argv);
-			return (EXIT_FAILURE);
-		}
-	}
-	server.simenv.timeinterval = timeint;
 	return (EXIT_SUCCESS);
 }
 

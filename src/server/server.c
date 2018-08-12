@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/04 22:43:47 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/11 17:43:54 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/12 00:07:19 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,12 @@ static inline int32_t	__attribute__((always_inline))known_socket(int32_t cl)
 		if (communication.newclient(cl) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
 	}
-	if (server.clients.status[cl] == JOINVEHICLE)
-		vehicle.new(cl);
-	else if (server.clients.status[cl] == JOINGRAPHIC)
-		graphic.new(cl);
-// if graphical client ever needs to speak to the server
-//	else if (server.clients.status[cl] == GRAPHIC)
-//		graphic.parse.request((t_graphic *)server.clients.lookup[cl])
+	if (server.clients.status[cl] == JOINVEHICLE
+		&& vehicle.new(cl) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	else if (server.clients.status[cl] == JOINGRAPHIC
+		&& graphic.new(cl) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
 	else if (vehicle.command((t_vehicle *)server.clients.lookup[cl]) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
@@ -74,7 +73,6 @@ static int32_t		io(void)
 		}
 		i++;
 	}
-	//printf("Incoming processing done\n");
 	return (EXIT_SUCCESS);
 }
 
@@ -99,10 +97,8 @@ static int32_t		initializers(void)
 
 static int32_t		new(void)
 {
-	int32_t			ret;
 	t_timeval		*timeout;
 
-	ret = 0;
 	timeout = NULL;
 	if (initializers() == EXIT_FAILURE)
 		return (EXIT_FAILURE);
@@ -110,8 +106,8 @@ static int32_t		new(void)
 	while ((select(ft_socket.nfds, ft_socket.input, NULL, NULL, timeout)) >= 0)
 	{
 		event.queue.check();
-		if ((ret = server.io()) == EXIT_FAILURE)
-			printf("\tGameio failure\n");
+		if (server.io() == EXIT_FAILURE)
+			printf("\tGAMEIO\tfailure\n");
 		time.settimer(&timeout);
 		FD_COPY(ft_socket.copy, ft_socket.input);
 		if (server.flag == GAMEOVER)
@@ -130,7 +126,10 @@ static void		warning(char *str)
 		printf("Illegal option: %s\n\n", str);
 	printf("USAGE:\n\
 ./server -p <port> [-x <width> -y <height>] || [-f <filename>]\
--c <nb> -t <t>\n\n-p port number\n-x world width\n-y world height\n\
--c number of vehicles allowed in simulation\n-t time unit\
+-c <nb>\n-p port number\n-x world width\n-y world height\n\
+-c number of vehicles allowed in simulation\n\
+-d number of destinations on the map (default is one)\n\
+-s number of starts on the map (defaults to random for all vehicles)\n\
+-f premade map load, filename\n\
 (the greater t is, the faster the simulation will run)\n\n");
 }
