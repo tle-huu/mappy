@@ -1,0 +1,150 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_OUTPUT_MODE	u-ctags	/u-ctags or e-ctags/
+!_TAG_PROGRAM_AUTHOR	Universal Ctags Team	//
+!_TAG_PROGRAM_NAME	Universal Ctags	/Derived from Exuberant Ctags/
+!_TAG_PROGRAM_URL	https://ctags.io/	/official site/
+!_TAG_PROGRAM_VERSION	0.0.0	/1aef85b/
+base_conv	src/ft_io/ft_printf/ulitobase.c	/^int		base_conv(unsigned long n, char *address, unsigned long base, int len)$/;"	f	typeref:typename:int
+base_conv_signed	src/ft_io/ft_printf/ulitobase.c	/^int		base_conv_signed(long long n, char *address, long base, int len)$/;"	f	typeref:typename:int
+buf_store	src/ft_io/ft_printf/misc.c	/^void		buf_store(t_flags *flags, int n,$/;"	f	typeref:typename:void
+clear_flags	src/ft_io/ft_printf/dispatcher.c	/^static void	clear_flags(t_flags *flags)$/;"	f	typeref:typename:void	file:
+conv_c	src/ft_io/ft_printf/conversion_sc.c	/^void		conv_c(t_flags *flags, va_list *args)$/;"	f	typeref:typename:void
+conv_d_i	src/ft_io/ft_printf/conversion_diou.c	/^void		conv_d_i(const char **format, t_flags *flags, va_list *args)$/;"	f	typeref:typename:void
+conv_d_i_u_owrite	src/ft_io/ft_printf/conversion_diou.c	/^static void	conv_d_i_u_owrite(t_flags *flags, char *str, int numlen, long lnum)$/;"	f	typeref:typename:void	file:
+conv_flag	src/ft_io/ft_printf/conversion_sc.c	/^void		conv_flag(t_flags *flags)$/;"	f	typeref:typename:void
+conv_n	src/ft_io/ft_printf/misc.c	/^void		conv_n(t_flags *flags, va_list *args)$/;"	f	typeref:typename:void
+conv_o	src/ft_io/ft_printf/conversion_diou.c	/^void		conv_o(const char **format, t_flags *flags, va_list *args)$/;"	f	typeref:typename:void
+conv_p	src/ft_io/ft_printf/conversion_xp.c	/^void		conv_p(t_flags *flags, va_list *args)$/;"	f	typeref:typename:void
+conv_s	src/ft_io/ft_printf/conversion_sc.c	/^void		conv_s(const char **format, t_flags *flags, va_list *args)$/;"	f	typeref:typename:void
+conv_s_null	src/ft_io/ft_printf/conversion_sc.c	/^static void	conv_s_null(t_flags *flags)$/;"	f	typeref:typename:void	file:
+conv_u	src/ft_io/ft_printf/conversion_diou.c	/^void		conv_u(const char **format, t_flags *flags, va_list *args)$/;"	f	typeref:typename:void
+conv_ws	src/ft_io/ft_printf/conversion_sc.c	/^static void	conv_ws(t_flags *flags, wchar_t *str)$/;"	f	typeref:typename:void	file:
+conv_x	src/ft_io/ft_printf/conversion_xp.c	/^void		conv_x(const char **format, t_flags *flags, va_list *args)$/;"	f	typeref:typename:void
+conv_x_write	src/ft_io/ft_printf/conversion_xp.c	/^static void	conv_x_write(t_flags *flags, char *str, int relen, int numlen)$/;"	f	typeref:typename:void	file:
+count_num	src/ft_io/ft_printf/ulitobase.c	/^int		count_num(unsigned long n, unsigned long base)$/;"	f	typeref:typename:int
+count_num_signed	src/ft_io/ft_printf/ulitobase.c	/^int		count_num_signed(long long n, long base)$/;"	f	typeref:typename:int
+d_list	src/ft_io/gnl/get_next_line.c	/^int		d_list(t_line **line)$/;"	f	typeref:typename:int
+dblistmerge	src/ft_list/ft_dblist/ft_dblmergesort.c	/^static t_dblist		*dblistmerge(t_dblist *one, t_dblist *two,$/;"	f	typeref:typename:t_dblist *	file:
+dblsplithalf	src/ft_list/ft_dblist/ft_dblmergesort.c	/^static t_dblist		*dblsplithalf(t_dblist *head)$/;"	f	typeref:typename:t_dblist *	file:
+del_lrot	src/ft_list/ft_rbtree/rbtree_delete.c	/^			*del_lrot(t_rbnode *temp, t_rbnode *move, t_rbtree *tree)$/;"	f	typeref:typename:t_rbnode *	file:
+del_rrot	src/ft_list/ft_rbtree/rbtree_delete.c	/^			*del_rrot(t_rbnode *temp, t_rbnode *move, t_rbtree *tree)$/;"	f	typeref:typename:t_rbnode *	file:
+delim_count	src/ft_string/ft_strsplit.c	/^static int		delim_count(char const *orig, char delim)$/;"	f	typeref:typename:int	file:
+delim_split	src/ft_string/ft_strsplit.c	/^static char		**delim_split(char **a, char const *b, char c)$/;"	f	typeref:typename:char **	file:
+find_sign	src/ft_num/ft_itoa.c	/^static int	find_sign(int o)$/;"	f	typeref:typename:int	file:
+ft_atoi	src/ft_num/ft_atoi.c	/^int		ft_atoi(const char *str)$/;"	f	typeref:typename:int
+ft_atoi_base	src/ft_num/ft_atoi_base.c	/^int			ft_atoi_base(const char *str, int base)$/;"	f	typeref:typename:int
+ft_atol	src/ft_num/ft_atol.c	/^long		ft_atol(const char *str)$/;"	f	typeref:typename:long
+ft_atol_base	src/ft_num/ft_atol_base.c	/^long		ft_atol_base(const char *str, int base)$/;"	f	typeref:typename:long
+ft_bstminnode	src/ft_list/ft_rbtree/rbtree_utils.c	/^t_rbnode	*ft_bstminnode(t_rbnode *node)$/;"	f	typeref:typename:t_rbnode *
+ft_bzero	src/ft_memory/ft_bzero.c	/^void	ft_bzero(void *s, size_t n)$/;"	f	typeref:typename:void
+ft_dblistinsert	src/ft_list/ft_dblist/ft_dblistinsert.c	/^void	ft_dblistinsert(t_dblist *current, t_dblist *insert)$/;"	f	typeref:typename:void
+ft_dblistnew	src/ft_list/ft_dblist/ft_dblistnew.c	/^t_dblist	*ft_dblistnew(void *content, size_t content_size)$/;"	f	typeref:typename:t_dblist *
+ft_dblistpop	src/ft_list/ft_dblist/ft_dblistpop.c	/^t_dblist	*ft_dblistpop(t_dblist *node)$/;"	f	typeref:typename:t_dblist *
+ft_dblmergesort	src/ft_list/ft_dblist/ft_dblmergesort.c	/^t_dblist			*ft_dblmergesort(t_dblist *head, int (*f)(void *, void *))$/;"	f	typeref:typename:t_dblist *
+ft_enqueue	src/ft_list/ft_queue/ft_enqueue.c	/^int			ft_enqueue(t_queue **key, void *data, size_t size)$/;"	f	typeref:typename:int
+ft_getopts	src/ft_io/ft_getopts/ft_getopts.c	/^int32_t		ft_getopts(t_opts *opts, char **argv)$/;"	f	typeref:typename:int32_t
+ft_isspace	src/ft_num/ft_atoi.c	/^int		ft_isspace(char c)$/;"	f	typeref:typename:int
+ft_itoa	src/ft_num/ft_itoa.c	/^char		*ft_itoa(int n)$/;"	f	typeref:typename:char *
+ft_leftrot	src/ft_list/ft_rbtree/rbtree_utils.c	/^void		ft_leftrot(t_rbnode *node, t_rbtree *tree)$/;"	f	typeref:typename:void
+ft_listadd	src/ft_list/ft_snglist/ft_listadd.c	/^void	ft_listadd(t_list **alst, void *content, size_t content_size)$/;"	f	typeref:typename:void
+ft_listcritpop	src/ft_list/ft_snglist/ft_listcritpop.c	/^t_list	*ft_listcritpop(t_list **node, int (*f)(void *))$/;"	f	typeref:typename:t_list *
+ft_listnew	src/ft_list/ft_snglist/ft_listnew.c	/^t_list	*ft_listnew(void *content, size_t content_size)$/;"	f	typeref:typename:t_list *
+ft_memalloc	src/ft_memory/ft_memalloc.c	/^void	*ft_memalloc(size_t size)$/;"	f	typeref:typename:void *
+ft_memccpy	src/ft_memory/ft_memccpy.c	/^void	*ft_memccpy(void *dst, const void *src, int c, size_t n)$/;"	f	typeref:typename:void *
+ft_memchr	src/ft_memory/ft_memchr.c	/^void	*ft_memchr(const void *s, int c, size_t n)$/;"	f	typeref:typename:void *
+ft_memcmp	src/ft_memory/ft_memcmp.c	/^int	ft_memcmp(const void *s1, const void *s2, size_t n)$/;"	f	typeref:typename:int
+ft_memcpy	src/ft_memory/ft_memcpy.c	/^void	*ft_memcpy(void *dst, const void *src, size_t n)$/;"	f	typeref:typename:void *
+ft_memdel	src/ft_memory/ft_memdel.c	/^void	ft_memdel(void **ap)$/;"	f	typeref:typename:void
+ft_memmove	src/ft_memory/ft_memmove.c	/^void	*ft_memmove(void *dst, void *src, size_t len)$/;"	f	typeref:typename:void *
+ft_memset	src/ft_memory/ft_memset.c	/^void	*ft_memset(void *b, int c, size_t len)$/;"	f	typeref:typename:void *
+ft_natol	src/ft_num/ft_natol.c	/^long		ft_natol(const char *str, size_t n)$/;"	f	typeref:typename:long
+ft_nlookup	src/ft_string/ft_nlookup.c	/^int				ft_nlookup(char *key, const char *str, size_t len, char b)$/;"	f	typeref:typename:int
+ft_nlookup	src/ft_string/ft_nnlookup.c	/^int				ft_nlookup(char *key, const char *str, size_t len, char b)$/;"	f	typeref:typename:int
+ft_numlen	src/ft_num/ft_numlen.c	/^int			ft_numlen(int num)$/;"	f	typeref:typename:int
+ft_penqueue	src/ft_list/ft_queue/ft_penqueue.c	/^int			ft_penqueue(t_queue **key, void *data, size_t size,$/;"	f	typeref:typename:int
+ft_popfirst	src/ft_list/ft_queue/ft_popfirst.c	/^t_dblist	*ft_popfirst(t_queue *key)$/;"	f	typeref:typename:t_dblist *
+ft_poplast	src/ft_list/ft_queue/ft_poplast.c	/^t_dblist	*ft_poplast(t_queue *key)$/;"	f	typeref:typename:t_dblist *
+ft_printf	src/ft_io/ft_printf/dispatcher.c	/^int			ft_printf(const char *format, ...)$/;"	f	typeref:typename:int
+ft_pushfirst	src/ft_list/ft_queue/ft_pushfirst.c	/^void		ft_pushfirst(t_queue *key, t_dblist *data)$/;"	f	typeref:typename:void
+ft_pushlast	src/ft_list/ft_queue/ft_pushlast.c	/^void		ft_pushlast(t_queue *key, t_dblist *data)$/;"	f	typeref:typename:void
+ft_putchar	src/ft_io/ft_putchar.c	/^void	ft_putchar(char c)$/;"	f	typeref:typename:void
+ft_putchar_fd	src/ft_io/ft_putchar_fd.c	/^void	ft_putchar_fd(char c, int fd)$/;"	f	typeref:typename:void
+ft_putendl	src/ft_io/ft_putendl.c	/^void	ft_putendl(char const *s)$/;"	f	typeref:typename:void
+ft_putendl_fd	src/ft_io/ft_putendl_fd.c	/^void	ft_putendl_fd(char const *s, int fd)$/;"	f	typeref:typename:void
+ft_putnbr	src/ft_io/ft_putnbr.c	/^void	ft_putnbr(int n)$/;"	f	typeref:typename:void
+ft_putnbr_fd	src/ft_io/ft_putnbr_fd.c	/^void	ft_putnbr_fd(int n, int fd)$/;"	f	typeref:typename:void
+ft_putstr	src/ft_io/ft_putstr.c	/^void	ft_putstr(char *str)$/;"	f	typeref:typename:void
+ft_putstr_fd	src/ft_io/ft_putstr_fd.c	/^void	ft_putstr_fd(const char *str, int fd)$/;"	f	typeref:typename:void
+ft_queue_postmsort	src/ft_list/ft_queue/ft_queue_postmsort.c	/^void	ft_queue_postmsort(t_queue *key)$/;"	f	typeref:typename:void
+ft_queuedel	src/ft_list/ft_queue/ft_queuedel.c	/^void	ft_queuedel(t_queue *key, t_dblist *(*f)(t_dblist *del))$/;"	f	typeref:typename:void
+ft_rbdelete	src/ft_list/ft_rbtree/rbtree_delstart.c	/^void		ft_rbdelete(t_rbtree *tree, t_rbnode *node)$/;"	f	typeref:typename:void
+ft_rbdelete_lassoc_rot	src/ft_list/ft_rbtree/rbtree_delete.c	/^static t_rbnode	*ft_rbdelete_lassoc_rot(t_rbnode *move, t_rbtree *tree)$/;"	f	typeref:typename:t_rbnode *	file:
+ft_rbdelete_rassoc_rot	src/ft_list/ft_rbtree/rbtree_delete.c	/^static t_rbnode	*ft_rbdelete_rassoc_rot(t_rbnode *move, t_rbtree *tree)$/;"	f	typeref:typename:t_rbnode *	file:
+ft_rbdelete_rot	src/ft_list/ft_rbtree/rbtree_delete.c	/^void		ft_rbdelete_rot(t_rbtree *tree, t_rbnode *move)$/;"	f	typeref:typename:void
+ft_rbinsert	src/ft_list/ft_rbtree/rbtree_insert.c	/^int		ft_rbinsert(t_rbtree *tree, t_rbnode *new)$/;"	f	typeref:typename:int
+ft_rbinsert_lassoc_rot	src/ft_list/ft_rbtree/rbtree_insert.c	/^static t_rbnode	*ft_rbinsert_lassoc_rot(t_rbnode *node, t_rbtree *tree)$/;"	f	typeref:typename:t_rbnode *	file:
+ft_rbinsert_rassoc_rot	src/ft_list/ft_rbtree/rbtree_insert.c	/^static t_rbnode	*ft_rbinsert_rassoc_rot(t_rbnode *node, t_rbtree *tree)$/;"	f	typeref:typename:t_rbnode *	file:
+ft_rbinsert_rot	src/ft_list/ft_rbtree/rbtree_insert.c	/^static void		ft_rbinsert_rot(t_rbtree *tree, t_rbnode *node)$/;"	f	typeref:typename:void	file:
+ft_rbnewnode	src/ft_list/ft_rbtree/rbtree_utils.c	/^t_rbnode	*ft_rbnewnode(int content)$/;"	f	typeref:typename:t_rbnode *
+ft_rbsubtransfer	src/ft_list/ft_rbtree/rbtree_utils.c	/^void		ft_rbsubtransfer(t_rbtree *tree, t_rbnode *node, t_rbnode *temp)$/;"	f	typeref:typename:void
+ft_rightrot	src/ft_list/ft_rbtree/rbtree_utils.c	/^void		ft_rightrot(t_rbnode *node, t_rbtree *tree)$/;"	f	typeref:typename:void
+ft_skip_spaces	src/ft_num/ft_atoi.c	/^int		ft_skip_spaces(const char *str)$/;"	f	typeref:typename:int
+ft_strcat	src/ft_string/ft_strcat.c	/^char	*ft_strcat(char *dst, const char *src)$/;"	f	typeref:typename:char *
+ft_strchr	src/ft_string/ft_strchr.c	/^char	*ft_strchr(const char *s, int c)$/;"	f	typeref:typename:char *
+ft_strclr	src/ft_string/ft_strclr.c	/^void	ft_strclr(char *s)$/;"	f	typeref:typename:void
+ft_strcmp	src/ft_string/ft_strcmp.c	/^int		ft_strcmp(const char *s1, const char *s2)$/;"	f	typeref:typename:int
+ft_strcpy	src/ft_string/ft_strcpy.c	/^char	*ft_strcpy(char *dst, const char *src)$/;"	f	typeref:typename:char *
+ft_strdel	src/ft_string/ft_strdel.c	/^void	ft_strdel(char **as)$/;"	f	typeref:typename:void
+ft_strdup	src/ft_string/ft_strdup.c	/^char	*ft_strdup(const char *str)$/;"	f	typeref:typename:char *
+ft_strequ	src/ft_string/ft_strequ.c	/^int		ft_strequ(char const *s1, char const *s2)$/;"	f	typeref:typename:int
+ft_strfreecat	src/ft_string/ft_strfreecat.c	/^char	*ft_strfreecat(char *dst, char *src)$/;"	f	typeref:typename:char *
+ft_striter	src/ft_string/ft_striter.c	/^void	ft_striter(char *s, void (*f)(char *))$/;"	f	typeref:typename:void
+ft_striteri	src/ft_string/ft_striteri.c	/^void	ft_striteri(char *s, void (*f)(unsigned int, char *))$/;"	f	typeref:typename:void
+ft_strjoin	src/ft_string/ft_strjoin.c	/^char	*ft_strjoin(char const *s1, char const *s2)$/;"	f	typeref:typename:char *
+ft_strlcat	src/ft_string/ft_strlcat.c	/^size_t	ft_strlcat(char *dst, const char *src, size_t size)$/;"	f	typeref:typename:size_t
+ft_strlen	src/ft_string/ft_strlen.c	/^size_t	ft_strlen(const char *str)$/;"	f	typeref:typename:size_t
+ft_strmap	src/ft_string/ft_strmap.c	/^char	*ft_strmap(char const *s, char (*f)(char))$/;"	f	typeref:typename:char *
+ft_strmapi	src/ft_string/ft_strmapi.c	/^char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))$/;"	f	typeref:typename:char *
+ft_strncat	src/ft_string/ft_strncat.c	/^char	*ft_strncat(char *dst, const char *src, size_t n)$/;"	f	typeref:typename:char *
+ft_strnchr	src/ft_string/ft_strnchr.c	/^char	*ft_strnchr(const char *s, int c)$/;"	f	typeref:typename:char *
+ft_strncmp	src/ft_string/ft_strncmp.c	/^int		ft_strncmp(const char *s1, const char *s2, size_t n)$/;"	f	typeref:typename:int
+ft_strncpy	src/ft_string/ft_strncpy.c	/^char	*ft_strncpy(char *dst, const char *src, size_t len)$/;"	f	typeref:typename:char *
+ft_strnequ	src/ft_string/ft_strnequ.c	/^int		ft_strnequ(char const *s1, char const *s2, size_t n)$/;"	f	typeref:typename:int
+ft_strnew	src/ft_string/ft_strnew.c	/^char	*ft_strnew(size_t size)$/;"	f	typeref:typename:char *
+ft_strnstr	src/ft_string/ft_strnstr.c	/^char			*ft_strnstr(const char *big, const char *little, size_t len)$/;"	f	typeref:typename:char *
+ft_strrchr	src/ft_string/ft_strrchr.c	/^char	*ft_strrchr(const char *s, int c)$/;"	f	typeref:typename:char *
+ft_strsplit	src/ft_string/ft_strsplit.c	/^char			**ft_strsplit(char const *s, char c)$/;"	f	typeref:typename:char **
+ft_strstr	src/ft_string/ft_strstr.c	/^char			*ft_strstr(const char *big, const char *little)$/;"	f	typeref:typename:char *
+ft_strsub	src/ft_string/ft_strsub.c	/^char	*ft_strsub(char const *s, unsigned int start, size_t len)$/;"	f	typeref:typename:char *
+ft_strtrim	src/ft_string/ft_strtrim.c	/^char	*ft_strtrim(char const *s)$/;"	f	typeref:typename:char *
+ft_subdeletemov	src/ft_list/ft_rbtree/rbtree_delstart.c	/^*ft_subdeletemov(t_rbtree *tree, t_rbnode *move, t_rbnode *node,$/;"	f	typeref:typename:t_rbnode *	file:
+ft_sublistpop	src/ft_list/ft_snglist/ft_sublistpop.c	/^t_list	*ft_sublistpop(t_list **node, int (*f)(void *))$/;"	f	typeref:typename:t_list *
+get_next_line	src/ft_io/gnl/get_next_line.c	/^int		get_next_line(const int fd, char **line)$/;"	f	typeref:typename:int
+if_occur	src/ft_string/ft_nlookup.c	/^static int		if_occur(char *key, const char *look, size_t ind, char b)$/;"	f	typeref:typename:int	file:
+if_occur	src/ft_string/ft_nnlookup.c	/^static int		if_occur(char *look, const char *find, size_t ind, char b)$/;"	f	typeref:typename:int	file:
+if_occur	src/ft_string/ft_strnstr.c	/^static char		*if_occur(char *look, const char *find, size_t ind)$/;"	f	typeref:typename:char *	file:
+if_occur	src/ft_string/ft_strstr.c	/^static char		*if_occur(char *look, const char *find)$/;"	f	typeref:typename:char *	file:
+insertion_point	src/ft_list/ft_queue/ft_penqueue.c	/^static __attribute__((always_inline))int32_t	insertion_point(t_queue *key,$/;"	f	typeref:typename:int32_t	file:
+itoa_count_num	src/ft_num/ft_itoa.c	/^static int	itoa_count_num(int p)$/;"	f	typeref:typename:int	file:
+kill_switch	src/ft_io/ft_printf/misc.c	/^int			kill_switch(t_flags *flags)$/;"	f	typeref:typename:int
+left_check	src/ft_io/gnl/get_next_line.c	/^int		left_check(t_line *work, t_line **left)$/;"	f	typeref:typename:int
+make_line	src/ft_io/gnl/get_next_line.c	/^int		make_line(t_line *work, char **line)$/;"	f	typeref:typename:int
+match_opts	src/ft_io/ft_getopts/ft_getopts.c	/^			match_opts(t_opts *opts, char **argv, int32_t *word)$/;"	f	typeref:typename:int32_t	file:
+naive_write	src/ft_io/ft_printf/dispatcher.c	/^static void	naive_write(const char **format, t_flags *flags)$/;"	f	typeref:typename:void	file:
+param_action	src/ft_io/ft_getopts/ft_getopts.c	/^			param_action(t_opts *opts, char **argv, int32_t *word)$/;"	f	typeref:typename:int32_t	file:
+parse_conv	src/ft_io/ft_printf/dispatcher.c	/^static void	parse_conv(const char **format, t_flags *flags, va_list *args)$/;"	f	typeref:typename:void	file:
+print_padding	src/ft_io/ft_printf/printflags.c	/^int			print_padding(t_flags *flags, int *strlen)$/;"	f	typeref:typename:int
+print_padding_num	src/ft_io/ft_printf/printflags.c	/^int			print_padding_num(t_flags *flags, int numlen, long lnum)$/;"	f	typeref:typename:int
+print_prec_num	src/ft_io/ft_printf/printflags.c	/^static void	print_prec_num(t_flags *flags, int p_pad, long lnum)$/;"	f	typeref:typename:void	file:
+re_assigned	src/ft_io/ft_printf/misc.c	/^static void	re_assigned(t_flags *flags, char *new)$/;"	f	typeref:typename:void	file:
+skip_spaces	src/ft_num/ft_atoi_base.c	/^static int	skip_spaces(const char *str)$/;"	f	typeref:typename:int	file:
+skip_spaces	src/ft_num/ft_atol.c	/^static int	skip_spaces(const char *str)$/;"	f	typeref:typename:int	file:
+skip_spaces	src/ft_num/ft_atol_base.c	/^static int	skip_spaces(const char *str)$/;"	f	typeref:typename:int	file:
+skip_spaces	src/ft_num/ft_natol.c	/^static int	skip_spaces(const char *str)$/;"	f	typeref:typename:int	file:
+store_padp	src/ft_io/ft_printf/storeflags.c	/^static void	store_padp(const char **format, t_flags *flags, int *found,$/;"	f	typeref:typename:void	file:
+store_padw	src/ft_io/ft_printf/storeflags.c	/^static void	store_padw(const char **format, t_flags *flags, int *found,$/;"	f	typeref:typename:void	file:
+store_pre	src/ft_io/ft_printf/storeflags.c	/^void		store_pre(const char **format, t_flags *flags, va_list *args)$/;"	f	typeref:typename:void
+store_pre1	src/ft_io/ft_printf/storeflags.c	/^static void	store_pre1(const char **format, t_flags *flags, int *found)$/;"	f	typeref:typename:void	file:
+upper	src/ft_io/ft_printf/misc.c	/^void		upper(char *str)$/;"	f	typeref:typename:void
+work_check	src/ft_io/gnl/get_next_line.c	/^void	work_check(t_line *work, t_line *left, char *buf)$/;"	f	typeref:typename:void

@@ -1,3 +1,11 @@
+*swp*
+__initproj__
+*.c.bak
+*.h.bak
+._*
+.*
+*.*.map
+
 # Prerequisites
 *.d
 
@@ -50,4 +58,3 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
-
