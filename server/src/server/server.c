@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/04 22:43:47 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/12 17:25:24 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/13 12:30:04 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ static int32_t		io(void)
 	return (EXIT_SUCCESS);
 }
 
-static int32_t		initializers(void)
+static int32_t		_initializers(void)
 {
 	if ((ft_socket.set() == EXIT_FAILURE)
 		|| (bind(ft_socket.sockfd, ((struct sockaddr *)&(ft_socket.address)),
@@ -101,7 +101,7 @@ static int32_t		new(void)
 	t_timeval		*timeout;
 
 	timeout = NULL;
-	if (initializers() == EXIT_FAILURE)
+	if (_initializers() == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	printf("SIMULATION\tbeginning\n");
 	while ((select(ft_socket.nfds, ft_socket.input, NULL, NULL, timeout)) >= 0)

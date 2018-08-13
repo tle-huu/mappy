@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/17 17:07:12 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/12 15:32:44 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/13 13:42:51 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ static int32_t		new(int32_t cl)
 {
 	t_graphic	*gr;
 
-	printf("  Graphic fd : %d\n", cl);
 	if (!(gr = (t_graphic *)calloc(1, sizeof(t_graphic))))
 		return (EXIT_FAILURE);
 	gr->c_fd = cl;

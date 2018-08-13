@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/19 15:41:24 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/12 17:20:33 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/13 13:45:44 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,11 +158,14 @@ static int32_t all(void)
 		bzero(server.sendbuf, server.nsend);
 		temp = temp->next;
 	}
-	sleep(5);
-	ret = _donestamp();
-	sleep(5);
-	ret = _startstamp();
-	sleep(5);
+	if (transmit.flag != GRAPHIC)
+	{
+		sleep(5);
+		ret = _donestamp();
+		sleep(5);
+		ret = _startstamp();
+		sleep(5);
+	}
 	return (ret);
 }
 

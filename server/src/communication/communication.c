@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/13 14:11:03 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/12 17:33:50 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/13 13:43:45 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ static int32_t	graphical(void)
 	t_graphic	*gr;
 
 	temp = graphic.data.first;
-	while (temp && server.flag != CLEPIPE)
+	while (temp)
 	{
 		gr = (t_graphic *)(temp->data);
 		if (communication.outgoing(gr->c_fd, server.sendbuf) == EXIT_FAILURE)
