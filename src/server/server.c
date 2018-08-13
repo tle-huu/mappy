@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/04 22:43:47 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/12 00:07:19 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/12 17:25:24 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,15 @@ static inline int32_t	__attribute__((always_inline))known_socket(int32_t cl)
 	{
 		if (communication.newclient(cl) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
+		if (server.clients.status[cl] == JOINVEHICLE
+			&& vehicle.new(cl) == EXIT_FAILURE)
+			return (EXIT_FAILURE);
+		else if (server.clients.status[cl] == JOINGRAPHIC
+			&& graphic.new(cl) == EXIT_FAILURE)
+			return (EXIT_FAILURE);
 	}
-	if (server.clients.status[cl] == JOINVEHICLE
-		&& vehicle.new(cl) == EXIT_FAILURE)
-		return (EXIT_FAILURE);
-	else if (server.clients.status[cl] == JOINGRAPHIC
-		&& graphic.new(cl) == EXIT_FAILURE)
-		return (EXIT_FAILURE);
-	else if (vehicle.command((t_vehicle *)server.clients.lookup[cl]) == EXIT_FAILURE)
+	else if (server.clients.status[cl] == VEHICLE
+		&& vehicle.command((t_vehicle *)server.clients.lookup[cl]) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
 }
@@ -90,8 +91,8 @@ static int32_t		initializers(void)
 		|| (server.opts.boardType == LOADMAP && board.load_file() == EXIT_FAILURE)
 		|| !(server.sendbuf = calloc(1, 1024)))
 		return (EXIT_FAILURE);
-	signal(SIGPIPE, client.sigpipe);
 	server.nsend = 1024;
+	server.simenv.timeinterval = 1;
 	return (EXIT_SUCCESS);
 }
 

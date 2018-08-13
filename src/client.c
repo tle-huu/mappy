@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 13:40:27 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/12 11:45:49 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/12 16:18:45 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,10 @@ static int32_t		new(void)
 				(struct sockaddr *)&(ft_socket.temp), &(ft_socket.socklen));
 	if (setsockopt(newfd, SOL_SOCKET, SO_NOSIGPIPE,
 			&(ft_socket.opt_val), sizeof(int32_t)) < 0)
+	{
+		printf("sockopt failed\n");
+		return (EXIT_FAILURE);
+	}
 	(server.clients.status)[newfd] = NOT_ACCEPTED;
 	add_fd_select(newfd);
 	return (communication.outgoing(newfd, "WELCOME\n"));

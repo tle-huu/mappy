@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 22:58:22 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/12 00:07:18 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/12 16:55:26 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ static void		goal(t_vehicle *vl)
 	static int32_t	y;
 	
 	road = 0;
-	x = 0;
-	y = 0;
 	if (!board.data.goal
 		|| (board.data.des > 1 && !(server.simenv.connected_vehicles %
 				(server.simenv.maxinitial_clients / board.data.des))))

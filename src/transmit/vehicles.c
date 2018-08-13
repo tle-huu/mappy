@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/19 15:41:24 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/12 12:42:11 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/12 17:20:33 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,18 +119,18 @@ static int32_t connected(t_vehicle *vl)
 	return (ret);
 }
 
-static int32_t	_donestamp(void)
+static int32_t	_startstamp(void)
 {
 	int32_t	ret;
 
-	ret = EXIT_FAILURE;
-	if (communication.vehicles(NULL, "done\n", 0) == EXIT_SUCCESS)
-	{
-		sleep(1);
-		ret = communication.vehicles(NULL, "start\n", 0); 
-	}
+	ret = communication.vehicles(NULL, "start\n", 0);
 	gettimeofday(&server.starting_time, NULL);
 	return (ret);
+}
+
+static int32_t	_donestamp(void)
+{
+	return (communication.vehicles(NULL, "done\n", 0));
 }
 
 static int32_t all(void)
@@ -158,7 +158,11 @@ static int32_t all(void)
 		bzero(server.sendbuf, server.nsend);
 		temp = temp->next;
 	}
+	sleep(5);
 	ret = _donestamp();
+	sleep(5);
+	ret = _startstamp();
+	sleep(5);
 	return (ret);
 }
 

@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/13 14:11:03 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/12 11:47:55 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/12 17:25:03 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,10 @@ static int32_t	graphical(void)
 	while (temp && server.flag != CLEPIPE)
 	{
 		gr = (t_graphic *)(temp->data);
-		if (communication.outgoing(gr->c_fd, server.sendbuf) == EXIT_FAILURE
-			|| server.flag == CLEPIPE)
+		if (communication.outgoing(gr->c_fd, server.sendbuf) == EXIT_FAILURE)
 		{
-			server.flag = SIMULATE;
 			client.crash(gr->c_fd);
+			return (EXIT_FAILURE);
 		}
 		temp = temp->next;
 	}
@@ -84,8 +83,8 @@ static int32_t	graphical(void)
 
 static int32_t	vehicles(t_vehicle *vl, void *datagram, int8_t single)
 {
-	t_vehicle	*og;
 	t_dblist	*temp;
+	t_vehicle	*og;
 
 	og = vl;
 	temp = vehicle.data.first;
@@ -97,10 +96,7 @@ static int32_t	vehicles(t_vehicle *vl, void *datagram, int8_t single)
 			if (vl != og)
 			{
 				if (communication.outgoing(vl->c_fd, datagram) == EXIT_FAILURE)
-				{
-					server.flag = SIMULATE;
 					client.crash(vl->c_fd);
-				}
 			}
 			temp = temp->next;
 		}
@@ -108,11 +104,7 @@ static int32_t	vehicles(t_vehicle *vl, void *datagram, int8_t single)
 	else
 	{
 		if (communication.outgoing(vl->c_fd, datagram) == EXIT_FAILURE)
-		{
-			server.flag = SIMULATE;
 			client.crash(vl->c_fd);
-			return (EXIT_FAILURE);
-		}
 	}
 	return (EXIT_SUCCESS);
 }
@@ -120,16 +112,6 @@ static int32_t	vehicles(t_vehicle *vl, void *datagram, int8_t single)
 static int32_t	outgoing(int32_t cl, char *str)
 {
 	if (send(cl, str, strlen(str), 0) < 0)
-	{
-		printf("\nOUTGOING FAILED\n");
 		return (EXIT_FAILURE);
-	}
-	return (EXIT_SUCCESS);
-}
-
-static int32_t	printraw(void)
-{
-	//printf("Unknown command, raw buffer of recieved message:\n\n|%s|\n\n",
-		//	server.recvbuf);
 	return (EXIT_SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/17 19:09:02 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/12 11:52:14 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/12 16:10:15 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,10 @@ static int32_t all(void *trans)
 	char *num;
 
 	x = 0;
-	while (x <= board.data.x && server.flag != CLEPIPE)
+	while (x <= board.data.x)
 	{
 		y = 0;
-		while (y <= board.data.y && server.flag != CLEPIPE)
+		while (y <= board.data.y)
 		{
 			server.sendbuf = strcat(server.sendbuf, "bct ");
 			num = ft_itoa(x);

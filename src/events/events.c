@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/21 10:48:06 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/11 19:25:22 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/12 16:55:59 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,9 +42,7 @@ static void		_vehicle_thoroughput(void)
 	y = 0;
 	temp = strchr(server.recvbuf, ' ');
 	for (int32_t i = 0; i < 2; i++)
-	{
 		temp = strchr((temp + 1), ' ');
-	}
 	x = atoi(temp);
 	temp = strchr((temp + 1), ' ');
 	y = atoi(temp);
@@ -86,6 +84,7 @@ static int32_t	add(t_eventhold *eventhold, void *entity)
 	t_dblist	*temp;
 	t_event		*ev;
 
+	printf("entered add\n");
 	temp = event.pool.pop();
 	ev = (t_event *)(temp->data);
 	ev->action = eventhold->action;

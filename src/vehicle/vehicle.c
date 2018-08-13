@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 13:20:08 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/12 12:40:21 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/12 17:25:40 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ static int32_t		_greeting(t_vehicle *vl)
 
 	transmit.flag = VEHICLE;
 	if (transmit.tiles.mapsize(vl) == EXIT_FAILURE
-		|| (transmit.tiles.all(vl)) == EXIT_FAILURE)
+		|| transmit.tiles.all(vl) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	transmit.vehicles.position(vl);
 	transmit.vehicles.goal(vl);
