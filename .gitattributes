@@ -1,3 +1,5 @@
 *.pdf linguist-language=text
 *.md linguist-language=text
 *.cpp.* linguist-language=text
+
+gfx/lib/lodepng/* linguist-language=text
