@@ -6,7 +6,7 @@
 #    By: logan  <logan@42.us.org>                   +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/03/13 10:03:24 by logan             #+#    #+#              #
-#    Updated: 2018/04/19 14:05:41 by lkaser           ###   ########.fr        #
+#    Updated: 2018/08/12 18:04:33 by nkouris          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,15 +28,12 @@ OBJ = $(addsuffix .o, $(addprefix $(OBJ_DIR)/, $(LIST)))
 
 CPPFLAGS = -std=c++14 \
 $(shell pkg-config --cflags glfw3 glm) \
--I lib/entt/src \
--I lib/lodepng \
--g -O3 -march=native \
--fsanitize=address
+-g -O3 -march=native
+#-fsanitize=address
 
 LDFLAGS = -framework OpenGl \
-$(shell pkg-config --libs glfw3 glm) \
--L lib/lodepng -llodepng \
--fsanitize=address
+$(shell pkg-config --libs glfw3 glm)
+#-fsanitize=address
 
 all: $(OBJ_DIR) $(NAME)
 
@@ -47,12 +44,7 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@echo "\033[34;1mCompiling: \033[0m"$<
 	@clang++ $(CPPFLAGS) -c -o $@ $<
 
-lib/lodepng/liblodepng.a: lib/lodepng/lodepng.cpp
-	@echo "\033[35;1mCompiling Dependency: \033[0m"$<
-	@clang++ $(CPPFLAGS) -c -o lib/lodepng/lodepng.o $<
-	@ar rcs $@ lib/lodepng/lodepng.o
-
-$(NAME): lib/lodepng/liblodepng.a $(OBJ)
+$(NAME): $(OBJ)
 	@echo "\033[32;1mLinking.. \033[0m"
 	@clang++ $(LDFLAGS) -o $@ $^
 	@echo "\033[32;1mCreated:\033[0m "$(NAME)
