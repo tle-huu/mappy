@@ -66,7 +66,7 @@ std::string			CommunicationSocket::read(void) const
 	if ((ret = recv(this->_socket, buffer, BUFF_SIZE - 1, 0)) < 0)
 		throw(std::runtime_error("CommunicationSocket(): read recv error"));
 	buffer[ret] = 0;
-	// std::cout << "I have read " << ret << " bytes [" << buffer << "]\n";
+	std::cout << "I have read " << ret << " bytes [" << buffer << "]\n";
 	return (std::string(buffer));
 }
 
@@ -242,7 +242,6 @@ Map		CommunicationSocket::get_first_info(Map &map, Position& start, Position &en
 				done++;
 			}
 		}
-		// std::stringstream ss(raw);
 	}
 
 	return (map);

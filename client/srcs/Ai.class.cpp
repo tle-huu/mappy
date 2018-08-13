@@ -81,9 +81,6 @@ Position	Ai::where_to(Position pos, Position dest, double &speed)
 	int start_indx = index(pos.x, pos.y);
 	int end_indx = index(dest.x, dest.y);
 	int next_indx;
-	for (auto& x : path)
-		std::cout << x << " , ";
-	std::cout << std::endl;
 	while (end_indx != start_indx)
 	{
 
