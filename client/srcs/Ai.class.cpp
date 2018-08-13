@@ -52,8 +52,6 @@ Position	Ai::where_to(Position pos, Position dest, double &speed)
 {
 	if (pos.x == dest.x && pos.y == dest.y)
 	{
-		// exit(42); // Only difference with working version, seems to make everything crash
-		// sleep(50);
 		speed = cost(0);
 		return pos;
 	}
@@ -77,19 +75,28 @@ Position	Ai::where_to(Position pos, Position dest, double &speed)
 	};
 
 	auto index = [width](size_t x, size_t y){ return x + y * width; };
+
 	std::vector<int> path = a_star(_graph, index(pos.x, pos.y), index(dest.x, dest.y), heuristic2);
+
 	int start_indx = index(pos.x, pos.y);
 	int end_indx = index(dest.x, dest.y);
 	int next_indx;
+	for (auto& x : path)
+		std::cout << x << " , ";
+	std::cout << std::endl;
 	while (end_indx != start_indx)
 	{
+
 		next_indx = end_indx;
 		end_indx = path[end_indx];
 	}
+
 	Position next = { next_indx % (int)_traffic.size(), next_indx / (int)_traffic.size() };
+
 	// speed = 0.2;
-	speed = cost(_traffic[next.x][next.y].total_cars);
+	// speed = cost(_traffic[next.x][next.y].total_cars);
 	speed = fmin(_traffic[next.x][next.y].total_cars + 1, 7);
+	// speed = _traffic[next.x][next.y].total_cars + 1;
 	return next;
 }
 

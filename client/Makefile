@@ -6,7 +6,7 @@
 #    By: tle-huu- <tle-huu-@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2018/06/25 09:04:20 by tle-huu-          #+#    #+#              #
-#    Updated: 2018/08/07 12:38:52 by tle-huu-         ###   ########.fr        #
+#    Updated: 2018/08/12 17:05:05 by tle-huu-         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ SRCS = 	srcs/CommunicationSocket.cpp \
 		srcs/Car.cpp			\
 		srcs/get_next_line.cpp	\
 		srcs/AStar.cpp \
-		lol.cpp
+		main.cpp
 
 INCLUDES = includes/
 OBJS = $(SRCS:.cpp=.o)

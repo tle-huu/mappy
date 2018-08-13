@@ -59,6 +59,7 @@ void	Car::move()
 		// _communicator.disconnect();
 		// exit(1);
 		_communicator.send_datagram("end", "\n");
+		_communicator.dump();
 		sleep(200);
 	}
 	for (Datagram d; _communicator.get_datagram(d);)

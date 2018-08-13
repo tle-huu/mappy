@@ -16,6 +16,7 @@ CommunicationSocket::CommunicationSocket(const char* addr, int port) : _addr(add
 
 	_tv.tv_sec = 0;
 	_tv.tv_usec = 0;
+	_distance = 0;
 
 	if (!(proto = getprotobyname("tcp")))
 		throw(std::runtime_error("CommunicationSocket(): getprotobyname error"));
@@ -65,7 +66,7 @@ std::string			CommunicationSocket::read(void) const
 	if ((ret = recv(this->_socket, buffer, BUFF_SIZE - 1, 0)) < 0)
 		throw(std::runtime_error("CommunicationSocket(): read recv error"));
 	buffer[ret] = 0;
-	std::cout << "I have read " << ret << " bytes [" << buffer << "]\n";
+	// std::cout << "I have read " << ret << " bytes [" << buffer << "]\n";
 	return (std::string(buffer));
 }
 
@@ -95,6 +96,7 @@ bool				CommunicationSocket::get_datagram(void)
 		{
 			std::cout << KYEL << " OK " << KNRM << std::endl;
 			hasok = true;
+			_distance++;
 		}
 		else
 		{
@@ -109,42 +111,6 @@ bool				CommunicationSocket::get_datagram(void)
 		}
 	}
 	return hasok;
-}
-
-void	CommunicationSocket::get_peer(std::string data, Map &map) const
-{
-	std::string				header;
-	int						x;
-	int						y;
-	int						id;
-	std::stringstream		ss(data);
-
-	ss >> header >> x >> y >> id;
-	(map[x][y].total_cars)++;
-}
-
-void	CommunicationSocket::get_peers(Map &map) const
-{
-	std::string			raw;
-	std::string			header;
-	bool				done = false;
-
-	while (!done)
-	{
-		raw = this->read();
-		std::stringstream ss(raw);
-		for (std::string line; std::getline(ss, line);)
-		{
-			std::stringstream ss2(line);
-			ss2 >> header;
-			if (header == "pnw")		/* Position of the peers */
-				this->get_peer(line, map);
-			else if (header == "done")
-				done = true;
-			else
-				std::cout << "CommunicationSocket::get_peers() : Wrong header\n";
-		}
-	}
 }
 
 void				CommunicationSocket::disconnect()
@@ -213,7 +179,7 @@ Map		CommunicationSocket::get_first_info(Map &map, Position& start, Position &en
 		square.total_cars = 0;
 		map[x][y] = square;
 	};
-	this->_events["ppo"] = [&start, &gotsize](std::string data)
+	this->_events["ppo"] = [this, &start, &gotsize](std::string data)
 	{
 		if (!gotsize)
 		{
@@ -226,6 +192,7 @@ Map		CommunicationSocket::get_first_info(Map &map, Position& start, Position &en
 		int					id;
 
 		ss >> header >> id >> start.x >> start.y;
+		_id = id;
 	};
 
 	this->_events["des"] = [&end, &gotsize](std::string data)
@@ -294,7 +261,10 @@ void		CommunicationSocket::wait_for_game(void) const
 		for (std::string line; std::getline(ss, line);)
 		{
 			if (line == "start")
+			{
 				start = true;
+				::gettimeofday(((timeval *)(&_start)), NULL);
+			}
 			else
 			{
 				std::cout << "Waiting for game to start but received : " << data << std::endl;
@@ -353,4 +323,24 @@ void				CommunicationSocket::wait_for_move(void)
 			FD_COPY(&copy, &_rfds);
 		}
 	}
+}
+
+int				CommunicationSocket::get_id(void) const
+{
+	return _id;
+}
+
+void			CommunicationSocket::dump(void)
+{
+	timeval		end;
+	std::ofstream myfile;
+
+	::gettimeofday(&end, NULL);
+
+	_diff = end.tv_sec - _start.tv_sec;
+
+	myfile.open ("logs.txt", std::ios_base::app);
+	myfile << _id << " " << _distance << " " << _diff << "\n";
+	myfile.close();
+
 }

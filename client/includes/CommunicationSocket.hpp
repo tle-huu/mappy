@@ -25,8 +25,13 @@
 # include <map>
 # include <stack>
 # include "mappy_client.hpp"
-
+# include <numeric>
+# include <chrono>
+# include <sys/time.h>
+# include <time.h>
 # include "Datagram.hpp"
+# include <fstream>
+
 
 class CommunicationSocket
 {
@@ -37,8 +42,13 @@ class CommunicationSocket
 		bool														_connected;
 		std::map<std::string, std::function<void(std::string)>> 	_events;
 
-		/* need a mutex to access tis variable if multithreaded */
+		/* need a mutex to access this variable if multithreaded */
 		std::queue<Datagram>										_datagram_queue;
+
+		int					_id;
+		double				_diff;
+		timeval				_start;
+		double				_distance;
 
 		/*  Select related << listen_loop >> */
 		fd_set				_rfds;
@@ -66,7 +76,8 @@ class CommunicationSocket
 		void			wait_for_game(void) const;
 		void			wait_for_move(void);
 		bool			get_datagram(Datagram & datagram);
-
+		int				get_id(void) const;
+		void			dump(void) ;
 };
 
 #endif
