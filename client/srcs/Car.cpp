@@ -40,12 +40,14 @@ Car::~Car()
 	delete _ai;
 }
 
-static Datagram	generate_move_data(Position from, Position to, double time)
+Datagram		Car::generate_move_data(Position from, Position to, double time)
 {
 	Datagram out;
 	out.setHeader("mvd ");
 
 	std::stringstream ss;
+	if (to.x == _destination.x && to.y == _destination.y)
+		time = 1;
 	ss << from.x << " " << from.y << " " << to.x << " " << to.y << " " << time;
 	out.setMessage(ss.str());
 
@@ -56,10 +58,10 @@ void	Car::move()
 {
 	if (_current_pos.x == _destination.x && _current_pos.y == _destination.y)
 	{
-		// _communicator.disconnect();
-		// exit(1);
 		_communicator.send_datagram("end", "\n");
 		_communicator.dump();
+		// _communicator.disconnect();
+		exit(1);
 		sleep(200);
 	}
 	for (Datagram d; _communicator.get_datagram(d);)

@@ -38,14 +38,36 @@ Ai::Ai(Map& map) : _traffic(map)
 
 Ai::~Ai() {}
 
+bool		Ai::is_intersection(Position pos) const
+{
+	int		x = pos.x;
+	int		y = pos.y;
+	int		nb = 0;
+	bool	ret = false;
+
+	if (x >= 1 && _traffic[x - 1][y].is_road)
+		nb++;
+	if (x < _traffic.size() - 1 && _traffic[x + 1][y].is_road)
+		nb++;
+	if (y >= 1 && _traffic[x][y - 1].is_road)
+		nb++;
+	if (y < _traffic[0].size() && _traffic[x][y + 1].is_road)
+		nb++;
+	if (nb >= 3)
+		return (true);
+	return (false);
+}
+
 double	Ai::cost(int carNum)
 {
 	if (carNum < 0)
 	{
 		std::cout << KRED << "OUPS CARNUM NEGATIVE : " << carNum << KNRM;
-		exit(1);
+		// exit(1);
+		carNum = 0;
 	}
 	return 1;
+	return carNum * 2 + 1;
 }
 
 Position	Ai::where_to(Position pos, Position dest, double &speed)
@@ -66,7 +88,7 @@ Position	Ai::where_to(Position pos, Position dest, double &speed)
 		Position p_dest = {dest % width, dest / width};
 
 		int distance =  std::abs(p_loc.x - p_dest.x) + std::abs(p_loc.y - p_dest.y);
-		return cost(0) * (double)distance * (1 / 1000);
+		return cost(0) * (double)distance * (1 + (1 / 1000));
 	};
 
 	auto heuristic2 = [width, this](int loc, int dest)
@@ -93,6 +115,8 @@ Position	Ai::where_to(Position pos, Position dest, double &speed)
 	// speed = 0.2;
 	// speed = cost(_traffic[next.x][next.y].total_cars);
 	speed = fmin(_traffic[next.x][next.y].total_cars + 1, 7);
+	// if (is_intersection(next))
+		// speed = 1;
 	// speed = _traffic[next.x][next.y].total_cars + 1;
 	return next;
 }

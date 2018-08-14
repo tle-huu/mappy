@@ -5,7 +5,7 @@
 # include <iostream>
 # include "Graph.class.hpp"
 
-#include "AStar.hpp"
+# include "AStar.hpp"
 
 class Ai
 {
@@ -13,7 +13,9 @@ class Ai
 	std::vector<std::vector<double>> _estimatedCosts;
 	graph<double*>	_graph;
 
-	double	cost(int carNum);
+	double		cost(int carNum);
+	bool		is_intersection(Position pos) const;
+
 
 public:
 	Ai(Map & map);

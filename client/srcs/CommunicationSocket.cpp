@@ -1,6 +1,6 @@
 
 #include "CommunicationSocket.hpp"
-# define BUFF_SIZE 3072000
+# define BUFF_SIZE 32768
 
 /*
 ** ==================		CONSTRUCTORS DESTRUCTORS	 	==================
@@ -59,15 +59,34 @@ CommunicationSocket::~CommunicationSocket()
 
 std::string			CommunicationSocket::read(void) const
 {
-	char				buffer[BUFF_SIZE] = {0};
-	int					ret;
-	Datagram			datagram;
+	char					buffer[BUFF_SIZE] = {0};
+	std::string				raw;
+	static std::string		remainer;
+	int						ret;
+	std::size_t				last_occ;
+	Datagram				datagram;
+
 
 	if ((ret = recv(this->_socket, buffer, BUFF_SIZE - 1, 0)) < 0)
 		throw(std::runtime_error("CommunicationSocket(): read recv error"));
 	buffer[ret] = 0;
 	std::cout << "I have read " << ret << " bytes [" << buffer << "]\n";
-	return (std::string(buffer));
+
+	raw = std::string(buffer);
+	if (!remainer.empty())
+	{
+		raw = remainer + raw;
+		remainer.clear();
+	}
+	if (raw.back() != '\n')
+	{
+		last_occ = raw.find_last_of('\n');
+		if (last_occ == std::string::npos)
+			remainer = raw;
+		remainer = raw.substr(last_occ + 1);
+		raw = raw.substr(0, last_occ);
+	}
+	return (raw);
 }
 
 /* the private get_datagram has to be rewritten depending on the format of a datagram */
@@ -86,7 +105,7 @@ bool				CommunicationSocket::get_datagram(void)
 	{
 		if ((spliter = line.find(" ")) == std::string::npos)
 		{
-			std::cout << "CommunicationSocket(): get_datagram line.find error" << std::endl;
+			std::cout << "CommunicationSocket(): get_datagram line.find error >> "<< line << "<< " << std::endl;
 			return false;
 		}
 		datagram.setHeader(line.substr(0, spliter));
@@ -129,7 +148,7 @@ void		CommunicationSocket::send_datagram(std::string header, std::string message
 	std::string			data(header + message);
 
 	if (send(this->_socket, data.c_str(), data.length(), 0) < 0)
-		throw("CommunicationSocket:send_datagram(): send error\n");
+		throw(std::runtime_error("CommunicationSocket(): send_datagram1 send error"));
 }
 
 void		CommunicationSocket::send_datagram(Datagram const & datagram) const
@@ -137,7 +156,7 @@ void		CommunicationSocket::send_datagram(Datagram const & datagram) const
 	std::string			data(datagram.getHeader() + datagram.getMessage());
 	// std::cout << "sending datagram : [" << data << "]" << std::endl;;
 	if (send(this->_socket, data.c_str(), data.length(), 0) < 0)
-		throw("CommunicationSocket:send_datagram(): send error\n");
+		throw(std::runtime_error("CommunicationSocket(): send_datagram2 send error"));
 }
 
 Map		CommunicationSocket::get_first_info(Map &map, Position& start, Position &end)
@@ -186,7 +205,6 @@ Map		CommunicationSocket::get_first_info(Map &map, Position& start, Position &en
 			std::cout << "No size\n";
 			exit(1);
 		}
-		std::cout << "je suis en " << data << std::endl;
 		std::string			header;
 		std::stringstream	ss(data);
 		int					id;
@@ -224,6 +242,9 @@ Map		CommunicationSocket::get_first_info(Map &map, Position& start, Position &en
 		ss >> header >> id >> x >> y;
 		map[x][y].total_cars++;
 	};
+
+	static std::string		remainer;
+
 	while (done != 2)
 	{
 		raw = this->read();
@@ -236,11 +257,10 @@ Map		CommunicationSocket::get_first_info(Map &map, Position& start, Position &en
 			{
 				this->_events[header](line);
 			}
-			else
-			{
-				std::cout << KRED << "get_first_info(): Should not go here : " << KNRM << KYEL << line << KNRM << std::endl;
+			else if (header == "done")
 				done++;
-			}
+			else
+				std::cout << KRED << "get_first_info(): Should not go here : " << KNRM << KYEL << line << KNRM << std::endl;
 		}
 	}
 

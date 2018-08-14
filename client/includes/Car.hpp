@@ -12,6 +12,7 @@ class	Car
 	CommunicationSocket _communicator;
 	Map _map;
 	std::unordered_map<std::string, std::function<void(std::string)>> _events;
+	Datagram	generate_move_data(Position from, Position to, double time);
 
 public:
 
