@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/19 15:41:24 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/13 13:45:44 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/13 20:36:30 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,15 @@ static int32_t	exited(t_vehicle *vl)
 static int32_t	datagram_pass(t_vehicle *vl)
 {
 	char	*num;
+	char	buf[513] = {0};
 	int32_t	ret;
 
 	server.sendbuf = strcat(server.sendbuf, server.recvbuf);
 	server.sendbuf = strcat(server.sendbuf, "\n");
+	strcpy(buf, server.sendbuf);
 	if (communication.vehicles(vl, server.sendbuf, 0) == EXIT_SUCCESS)
 	{
+		strcpy(server.sendbuf, buf);
 		server.sendbuf[(strlen(server.sendbuf) - 1)] = ' ';
 		num = ft_itoa((int32_t)vl->vehicle_id);
 		server.sendbuf = strcat(server.sendbuf, num);
@@ -160,11 +163,14 @@ static int32_t all(void)
 	}
 	if (transmit.flag != GRAPHIC)
 	{
-		sleep(5);
+		sleep(3);
+		printf("Transmiting done\n");
 		ret = _donestamp();
-		sleep(5);
+		printf("pause\n");
+		sleep(3);
+		printf("Transmitting start\n");
 		ret = _startstamp();
-		sleep(5);
+		sleep(3);
 	}
 	return (ret);
 }

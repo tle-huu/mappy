@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/13 14:11:03 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/13 13:43:45 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/13 20:28:58 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ static int32_t	vehicles(t_vehicle *vl, void *datagram, int8_t single)
 	temp = vehicle.data.first;
 	if (!single)
 	{
-		while (temp && server.flag != CLEPIPE)
+		while (temp)
 		{
 			vl = (t_vehicle *)(temp->data);
 			if (vl != og)

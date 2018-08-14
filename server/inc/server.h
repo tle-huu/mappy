@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/05/31 18:10:48 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/11 22:59:08 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/13 16:20:27 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,10 +80,12 @@ typedef struct			s_server
 	char				*sendbuf;
 	int32_t				nsend;
 	uint8_t				flag;
+	int8_t				iter;
 	char				recvbuf[513];
 	int32_t				(*io)(void);
 	void				(*usagewarning)(char *);
 	int32_t				(*new)(void);
+	int32_t				(*reset)(void);
 }						t_server;
 
 t_server				server;

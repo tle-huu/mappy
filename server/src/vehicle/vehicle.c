@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/02 13:20:08 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/12 17:25:40 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/13 17:30:42 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,8 @@ static void		_initialize(t_vehicle *vl)
 	vl->tilecontainer.data = vl;
 	vl->commscontainer.data = vl;
 	vl->vehicle_id = (server.simenv.track_vehicleid)++;
-	vehicle.place.onboard(vl);
 	vehicle.place.goal(vl);
+	vehicle.place.onboard(vl);
 	server.simenv.connected_vehicles++;
 	server.clients.status[vl->c_fd] = VEHICLE;
 	server.clients.lookup[vl->c_fd] = vl;

@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.us.org>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/21 10:48:06 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/12 16:55:59 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/13 19:25:20 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ static void		_vehicle_thoroughput(void)
 	x = atoi(temp);
 	temp = strchr((temp + 1), ' ');
 	y = atoi(temp);
+	printf("HEAP OVERFLOW DAWG\n");
 	(board.data.tiles[x]).column[y].vehicle_thoroughput++;
 }
 
@@ -60,18 +61,22 @@ static int32_t	lookup(int32_t cl)
 	char		*temp;
 	int32_t		i;
 
+	printf("entered lookup\n");
 	pl = (t_vehicle *)server.clients.lookup[cl];
 	i = 0;
 	if ((temp = ft_strchr(server.recvbuf, ' ')))
-		*temp = '\0';
-	if (ft_strequ(server.recvbuf, eventlookup[0].str))
 	{
-		*temp = ' ';
-		event.add(&(eventlookup[0]), pl);
-		i++;
+		*temp = '\0';
+		if (ft_strequ(server.recvbuf, eventlookup[0].str))
+		{
+			*temp = ' ';
+			event.add(&(eventlookup[0]), pl);
+			i++;
+		}
 	}
 	else
 		client.crash(cl);
+	bzero(server.recvbuf, 513);
 	printf("exited lookup\n");
 	return (EXIT_SUCCESS);
 }
@@ -97,7 +102,6 @@ static int32_t	add(t_eventhold *eventhold, void *entity)
 	ev->entity = entity;
 	transmit.vehicles.datagram_pass(entity);
 	event.queue.add(ev);
-	bzero(server.recvbuf, 513);
 	return (EXIT_SUCCESS);
 }
 

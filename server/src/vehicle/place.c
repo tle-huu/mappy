@@ -6,7 +6,7 @@
 /*   By: psprawka <psprawka@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/06/12 22:58:22 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/12 16:55:26 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/13 17:32:31 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,8 @@ static void		onboard(t_vehicle *vl)
 		|| (board.data.starts && !(server.simenv.connected_vehicles %
 				(server.simenv.maxinitial_clients / board.data.starts))))
 	{
-		while (!road)
+		while (!road
+				|| (x == vl->goal.x && y == vl->goal.y))
 		{
 			x = arc4random_uniform((uint32_t)board.data.x + 1);
 			y = arc4random_uniform((uint32_t)board.data.y + 1);

@@ -6,7 +6,7 @@
 /*   By: nkouris <nkouris@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/08/04 22:43:47 by nkouris           #+#    #+#             */
-/*   Updated: 2018/08/13 12:30:04 by nkouris          ###   ########.fr       */
+/*   Updated: 2018/08/13 20:45:03 by nkouris          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,22 @@
 static void			warning(char *str);
 static int32_t		io(void);
 static int32_t		new(void);
+static int32_t		reset(void);
 
 void		__attribute((constructor))construct_server(void)
 {
 	server.io = &io;
 	server.usagewarning = &warning;
 	server.new = &new;
+	server.reset = &reset;
+}
+
+static int32_t		reset(void)
+{
+	server.flag = 0;
+	bzero(server.sendbuf, server.nsend);
+	bzero(server.recvbuf, 512);
+	return (EXIT_SUCCESS);
 }
 
 static inline int32_t	__attribute__((always_inline))known_socket(int32_t cl)
@@ -113,8 +123,8 @@ static int32_t		new(void)
 		FD_COPY(ft_socket.copy, ft_socket.input);
 		if (server.flag == GAMEOVER)
 		{
-			board.dump();
-			break;
+			printf("SIMULATION\treset\n");
+			server.reset();
 		}
 	}
 	printf("SIMULATION\tterminated\n");
