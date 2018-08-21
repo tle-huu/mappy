@@ -63,25 +63,31 @@ double	Ai::cost(int carNum)
 	if (carNum < 0)
 	{
 		std::cout << KRED << "OUPS CARNUM NEGATIVE : " << carNum << KNRM;
-		// exit(1);
 		carNum = 0;
 	}
-	return 1;
+	// Put the cost to 1 for no information
+	// return 1;
 	return carNum * 2 + 1;
 }
 
 Position	Ai::where_to(Position pos, Position dest, double &speed)
 {
+	int width = _traffic.size();
+
+
+	// If arrived
 	if (pos.x == dest.x && pos.y == dest.y)
 	{
 		speed = cost(0);
 		return pos;
 	}
-	for (size_t x = 0; x < _estimatedCosts.size(); x++)
-		for (size_t y = 0; y < _estimatedCosts[0].size(); y++)
-			_estimatedCosts[x][y] = cost(_traffic[x][y].total_cars);
 
-	int width = _traffic.size();
+	for (size_t x = 0; x < _estimatedCosts.size(); x++) {
+		for (size_t y = 0; y < _estimatedCosts[0].size(); y++) {
+			_estimatedCosts[x][y] = cost(_traffic[x][y].total_cars);
+		}
+	}
+
 	auto heuristic = [width, this](int loc, int dest)
 	{
 		Position p_loc = {loc % width, loc / width};
@@ -98,7 +104,7 @@ Position	Ai::where_to(Position pos, Position dest, double &speed)
 
 	auto index = [width](size_t x, size_t y){ return x + y * width; };
 
-	std::vector<int> path = a_star(_graph, index(pos.x, pos.y), index(dest.x, dest.y), heuristic2);
+	std::vector<int> path = a_star(_graph, index(pos.x, pos.y), index(dest.x, dest.y), heuristic);
 
 	int start_indx = index(pos.x, pos.y);
 	int end_indx = index(dest.x, dest.y);
@@ -112,18 +118,14 @@ Position	Ai::where_to(Position pos, Position dest, double &speed)
 
 	Position next = { next_indx % (int)_traffic.size(), next_indx / (int)_traffic.size() };
 
-	// speed = 0.2;
-	// speed = cost(_traffic[next.x][next.y].total_cars);
 	speed = fmin(_traffic[next.x][next.y].total_cars + 1, 7);
-	// if (is_intersection(next))
-		// speed = 1;
-	// speed = _traffic[next.x][next.y].total_cars + 1;
+	if (is_intersection(next))
+		speed = 1;
 	return next;
 }
 
 /*
-
-std::vector<int>	Ai::bfs2(int start, int end)
+std::vector<int>	Ai::bfs(int start, int end)
 {
 	std::queue<int>		queue;
 	int					current;
@@ -149,21 +151,7 @@ std::vector<int>	Ai::bfs2(int start, int end)
 	std::cout << "ici start : " <<start << std::endl;
 	std::cout << "ici end : " << end << std::endl;
 	while (i != start)
-	{
-		std::cout << i << " <= ";
 		i = came_from[i];
-	}
 	return (came_from);
 }
-
 */
-
-// std::vector<size_t>    Ai::astar(size_t begin, size_t end, std::function<double(size_t)> heuristic)
-// {
-// 	size_t index = begin;
-// 	double distanceFromStart = 0;
-// 	std::set<std::pair<double, size_t>> neighbors; // distance from start + index, sorted using heuristic
-// 	std::map<size_t, double> neighborNodes; // node index -> distance from start
-// 	std::unordered_set<size_t> visited;
-//double h1(int pos, int des, int width)
-// }

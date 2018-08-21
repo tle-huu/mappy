@@ -1,6 +1,7 @@
 #include "Car.hpp"
 #include "utils.hpp"
 
+/*
 void display_map2(Map & map)
 {
 	std::cout << "I am entering display map\n\n";
@@ -19,6 +20,7 @@ void display_map2(Map & map)
 	}
 	std::cout << "end display map\n";
 }
+*/
 
 Car::Car(const char* addr, int port) : _communicator(addr, port)
 {
@@ -56,14 +58,16 @@ Datagram		Car::generate_move_data(Position from, Position to, double time)
 
 void	Car::move()
 {
+	// Disconnect socket and leave when having reached destination
 	if (_current_pos.x == _destination.x && _current_pos.y == _destination.y)
 	{
 		_communicator.send_datagram("end", "\n");
 		_communicator.dump();
-		// _communicator.disconnect();
-		exit(1);
-		sleep(200);
+		_communicator.disconnect();
+		exit(1); // should turn connected to false
+		return ;
 	}
+
 	for (Datagram d; _communicator.get_datagram(d);)
 		_events[d.getHeader()](d.getMessage());
 

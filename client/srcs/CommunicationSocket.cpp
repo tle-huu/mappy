@@ -29,26 +29,28 @@ CommunicationSocket::CommunicationSocket(const char* addr, int port) : _addr(add
 		sin.sin_addr.s_addr = (std::string(addr) == "localhost") ? inet_addr("127.0.0.1")
 									: inet_addr(addr);
 	}
-	catch (...)
+	catch (std::exception& e)
 	{
-		std::cout << "Communincaton socket sin.sin crash" << std::endl;
-		exit(2);
+		// retry
+		std::cout << "Communincaton socket sin.sin crash : " << e.what() << std::endl;
 	}
 	if (connect(this->_socket, (const struct sockaddr *)&sin, sizeof(sin)) == -1)
 		throw(std::runtime_error("CommunicationSocket(): connect error"));
 	this->_connected = true;
 	if (this->read() != "WELCOME\n")
 	{
-		std::cout << "\ncrash trying to receive the welcome\n";
+		std::cout << "\nCrash trying to receive the welcome\n";
 		exit(1);
 	}
 	this->send_datagram("car", "\n");
-
+	/* Uncomment for debugging
 	std::cout << "CommunicationSocket has been connected to " << addr << ":" << port<< std::endl;
+	*/
 }
 
 CommunicationSocket::~CommunicationSocket()
 {
+	this->disconnect();
 	std::cout << "Communication socket destroyed" << std::endl;
 }
 
@@ -70,8 +72,9 @@ std::string			CommunicationSocket::read(void) const
 	if ((ret = recv(this->_socket, buffer, BUFF_SIZE - 1, 0)) < 0)
 		throw(std::runtime_error("CommunicationSocket(): read recv error"));
 	buffer[ret] = 0;
-	std::cout << "I have read " << ret << " bytes [" << buffer << "]\n";
-
+	/* Uncomment for debugging
+	**		std::cout << "I have read " << ret << " bytes [" << buffer << "]\n";
+	*/
 	raw = std::string(buffer);
 	if (!remainer.empty())
 	{
@@ -110,7 +113,6 @@ bool				CommunicationSocket::get_datagram(void)
 		}
 		datagram.setHeader(line.substr(0, spliter));
 		datagram.setMessage(line.substr(spliter));
-		// std::cout << datagram.getHeader() << "| === |" << datagram.getMessage() << std::endl;
 		if (datagram.getHeader() == "ok")
 		{
 			std::cout << KYEL << " OK " << KNRM << std::endl;
@@ -154,12 +156,11 @@ void		CommunicationSocket::send_datagram(std::string header, std::string message
 void		CommunicationSocket::send_datagram(Datagram const & datagram) const
 {
 	std::string			data(datagram.getHeader() + datagram.getMessage());
-	// std::cout << "sending datagram : [" << data << "]" << std::endl;;
 	if (send(this->_socket, data.c_str(), data.length(), 0) < 0)
 		throw(std::runtime_error("CommunicationSocket(): send_datagram2 send error"));
 }
 
-Map		CommunicationSocket::get_first_info(Map &map, Position& start, Position &end)
+Map		CommunicationSocket::get_first_info(Map &map, Position &start, Position &end)
 {
 	std::string					header;
 	std::string					raw;
@@ -184,10 +185,7 @@ Map		CommunicationSocket::get_first_info(Map &map, Position& start, Position &en
 	this->_events["bct"] = [&map, &gotsize](std::string data)
 	{
 		if (!gotsize)
-		{
-			std::cout << "No size\n";
-			exit(1);
-		}
+			throw(std::runtime_error("Trying to get pnw but did not receive any size"));
 		int				x;
 		int				y;
 		std::string		header;
@@ -201,10 +199,7 @@ Map		CommunicationSocket::get_first_info(Map &map, Position& start, Position &en
 	this->_events["ppo"] = [this, &start, &gotsize](std::string data)
 	{
 		if (!gotsize)
-		{
-			std::cout << "No size\n";
-			exit(1);
-		}
+			throw(std::runtime_error("Trying to get pnw but did not receive any size"));
 		std::string			header;
 		std::stringstream	ss(data);
 		int					id;
@@ -216,10 +211,7 @@ Map		CommunicationSocket::get_first_info(Map &map, Position& start, Position &en
 	this->_events["des"] = [&end, &gotsize](std::string data)
 	{
 		if (!gotsize)
-		{
-			std::cout << "No size\n";
-			exit(1);
-		}
+			throw(std::runtime_error("Trying to get pnw but did not receive any size"));
 
 		std::string			header;
 		std::stringstream	ss(data);
@@ -229,10 +221,7 @@ Map		CommunicationSocket::get_first_info(Map &map, Position& start, Position &en
 	this->_events["pnw"] = [&map, &gotsize](std::string data)
 	{
 		if (!gotsize)
-		{
-			std::cout << "No size\n";
-			exit(1);
-		}
+			throw(std::runtime_error("Trying to get pnw but did not receive any size"));
 		std::string			header;
 		std::stringstream	ss(data);
 		int					x;
@@ -254,16 +243,13 @@ Map		CommunicationSocket::get_first_info(Map &map, Position& start, Position &en
 			std::stringstream ss2(line);
 			ss2 >> header;
 			if (this->_events.count(header) > 0)
-			{
 				this->_events[header](line);
-			}
 			else if (header == "done")
 				done++;
 			else
 				std::cout << KRED << "get_first_info(): Should not go here : " << KNRM << KYEL << line << KNRM << std::endl;
 		}
 	}
-
 	return (map);
 }
 
@@ -304,8 +290,9 @@ bool		CommunicationSocket::get_datagram(Datagram & datagram)
 			return (true);
 		}
 	}
-	catch (...)
+	catch (std::exception &e)
 	{
+		std::cout << e.what();
 		return (false);
 	}
 	return (false);
@@ -351,14 +338,14 @@ int				CommunicationSocket::get_id(void) const
 
 void			CommunicationSocket::dump(void)
 {
-	timeval		end;
-	std::ofstream myfile;
+	timeval			end;
+	std::ofstream	myfile;
 
 	::gettimeofday(&end, NULL);
 
 	_diff = end.tv_sec - _start.tv_sec;
 
-	myfile.open ("logs.txt", std::ios_base::app);
+	myfile.open("logs.txt", std::ios_base::app);
 	myfile << _id << " " << _distance << " " << _diff << "\n";
 	myfile.close();
 
